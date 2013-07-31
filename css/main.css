@@ -1,0 +1,27 @@
+/*
+   	Default stylesheet included.
+*/
+@import "../js/vendors/bootstrap/css/bootstrap.min.css";
+/*
+	Default responsive stylesheet included with Twitter Bootstrap Framework.
+	This stylesheet included for adding responsive nature of Bootstrap framework 
+	in your web applications.
+
+	NOTE: You can remove this stylesheet; If there is no requirement for responsive website.
+*/
+@import "../js/vendors/bootstrap/css/bootstrap-responsive.min.css";
+
+/*
+	This stylesheet included for overrite the default styles of Bootstrap framework.	
+*/
+@import "../js/vendors/bootstrap/css/bootstrap-custom.css";
+@import "../js/vendors/bootstrap/css/bootstrap.responsive-custom.css";
+
+@import "../js/vendors/bootstrap/plugins/fuelux/css/fuelux.min.css";
+@import "../js/vendors/bootstrap/plugins/fuelux/css/fuelux-responsive.min.css";
+
+/*
+	Here are the list of stylesheets included for writing all the styles which are common between different 
+	modules.
+*/
+@import "common/common.css";

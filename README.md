@@ -1,4 +1,2 @@
-lundariSurvey
-=============
-
-In-house Survey on-line solution
+Loondri Survey
+==============
