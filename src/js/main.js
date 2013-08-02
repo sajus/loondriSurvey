@@ -49,7 +49,8 @@ requirejs.config({
             'handlebars_Helpers': 'utilities/handlebars-helpers',
 
             // List of Bootstrap plugins:
-            'fuelux': 'vendors/bootstrap/plugins/fuelux/all.min'
+            'fuelux': 'vendors/bootstrap/plugins/fuelux/all.min',
+            'datePicker': 'vendors/bootstrap/plugins/datepicker/datepicker.js'
     },
 
     /*
@@ -73,6 +74,9 @@ requirejs.config({
             deps: ['jquery']
         },
         fuelux: {
+            deps: ['bootstrap']
+        },
+        datePicker: {
             deps: ['bootstrap']
         },
         i18n: {
