@@ -15,7 +15,7 @@
 	This stylesheet included for overrite the default styles of Bootstrap framework.	
 */
 @import "../js/vendors/bootstrap/css/bootstrap-custom.css";
-@import "../js/vendors/bootstrap/css/bootstrap.responsive-custom.css";
+@import "../js/vendors/bootstrap/css/bootstrap-responsive-custom.css";
 
 @import "../js/vendors/bootstrap/plugins/fuelux/css/fuelux.min.css";
 @import "../js/vendors/bootstrap/plugins/fuelux/css/fuelux-responsive.min.css";
