@@ -1,7 +1,7 @@
-define(['backbone','events','text!templates/login/login.html'], function(Backbone, Events, loginPageTemplate){
-    
+define(['backbone','events','template!templates/login/login'], function(Backbone, Events, loginPageTemplate){
+
     var LoginPage = Backbone.View.extend({
-        
+
         el: '.page',
 
         events:{
@@ -15,11 +15,11 @@ define(['backbone','events','text!templates/login/login.html'], function(Backbon
 		forgotMYPaswd: function(){
 		    console.log('Forgot my password');
 		 },
-        
+
         render: function () {
             this.$el.html(loginPageTemplate);
         }
     });
-    
+
     return LoginPage;
 });
