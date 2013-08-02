@@ -28,6 +28,8 @@ requirejs.config({
         'handlebars': 'vendors/handlebars/handlebars',
         'moment': 'vendors/moment/moment',
         'i18n': 'vendors/i18n/i18n',
+        'modelBinder':'vendors/modelBinder/modelBinder',
+        'validator':'vendors/backboneValidator/backboneValidation',
 
         /* List of framework to be included in this architecture. */
         'bootstrap': 'vendors/bootstrap/js/bootstrap.min',
@@ -71,6 +73,10 @@ requirejs.config({
         },
         i18n: {
             deps: ['jquery']
+        },
+        modelBinder:{
+            deps:['backbone'],
+            exports:'Backbone.ModelBinder'
         }
     }
 });
