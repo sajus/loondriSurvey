@@ -1,4 +1,4 @@
-define(['jquery', 'backbone', 'core', 'events', 'text!templates/layout.html'], function($, Backbone, Core, Events, layoutTemplate) {
+define(['jquery', 'backbone', 'core', 'events', 'template!templates/layout'], function($, Backbone, Core, Events, layoutTemplate) {
 
     var AppView = Backbone.View.extend({
 
