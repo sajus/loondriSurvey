@@ -6,7 +6,7 @@ define(['jquery', 'underscore', 'backbone', 'core'], function ($, _, Backbone, C
             'about': 'about',
             'contact': 'contact',
             'help': 'help',
-
+			'user': 'user',
             // Default - catch all
             '*actions': 'defaultAction'
         }
@@ -37,6 +37,12 @@ define(['jquery', 'underscore', 'backbone', 'core'], function ($, _, Backbone, C
             });
         });
 
+		router.on('route:user', function () {
+            require(['views/users/userView'], function (userPage) {
+                var userPage = Core.create(appView, 'userPage', userPage);
+                userPage.render();
+            });
+        });
         router.on('route:help', function () {
             require(['views/help/helpView'], function (HelpPage) {
                 var helpPage = Core.create(appView, 'HelpPage', HelpPage);
