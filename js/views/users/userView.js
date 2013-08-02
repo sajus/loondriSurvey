@@ -1,13 +1,13 @@
-define(['jquery', 'underscore', 'backbone', 'template!templates/users/page'], function($, _, Backbone, aboutPageTemplate){
+define(['jquery', 'underscore', 'backbone', 'template!templates/users/page','bootstrap'], function($, _, Backbone, userPageTemplate){
 
-    var AboutPage = Backbone.View.extend({
+    var userPage = Backbone.View.extend({
 
         el: '.page',
 
         render: function () {
-            this.$el.html(aboutPageTemplate);
+            this.$el.html(userPageTemplate);
         }
     });
 
-    return AboutPage;
+    return userPage;
 });

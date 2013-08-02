@@ -45,6 +45,7 @@ define(['jquery', 'underscore', 'backbone', 'core'], function ($, _, Backbone, C
                 userPage.render();
             });
         });
+		
         router.on('route:help', function () {
             require(['views/help/helpView'], function (HelpPage) {
                 var helpPage = Core.create(appView, 'HelpPage', HelpPage);
