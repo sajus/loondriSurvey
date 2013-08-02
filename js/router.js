@@ -40,8 +40,9 @@ define(['jquery', 'underscore', 'backbone', 'core'], function ($, _, Backbone, C
         });
 
 		router.on('route:user', function () {
-            require(['views/users/userView'], function (userPage) {
-                var userPage = Core.create(appView, 'userPage', userPage);
+            require(['views/users/userView','models/userModel'], function (userPage, UserModel) {
+                var userModel = new UserModel();
+				var userPage = Core.create(appView, 'userPage', userPage, {model: userModel });
                 userPage.render();
             });
         });
