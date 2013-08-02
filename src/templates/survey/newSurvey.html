@@ -1,0 +1,71 @@
+<form class="form-horizontal">
+    <div class="alert alert-error" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Ooops!</strong> You did not pass the validation.
+    </div>
+    <div class="alert alert-success" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Success!</strong> You passed the validation.
+    </div>
+    <fieldset>
+        <legend>Create New Survey</legend>
+        <div class="control-group">
+            <label class="control-label" for="title">Title</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge title" id="title" name="title">
+                <span class="help-inline"></span>
+                <p class="help-block">This is the title for survey</p>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="welcomeMessage">Welcome Message</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge" id="welcomeMessage" name="welcomeMessage">
+                <span class="help-inline"></span>
+                <p class="help-block">This is the welcome message for survey</p>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="question">Question</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge" id="question" name="question">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="creatorName">Creator Name</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge" id="creatorName" name="creatorName">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="startDate">Start Date</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge" id="startDate" name="startDate">
+                <span class="help-inline"></span>
+                <p class="help-block">This is the start date for survey</p>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="endDate">End Date</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge" id="endDate" name="endDate">
+                <span class="help-inline"></span>
+                <p class="help-block">This is the end date for survey</p>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="option1">Option1</label>
+            <div class="controls">
+                <input type="text" class="input-xlarge" id="option1" name="option1">
+                <span class="help-inline"></span>
+                <p class="help-block">Add your options for question here</p>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button class="btn">Cancel</button>
+        </div>
+    </fieldset>
+</form>
