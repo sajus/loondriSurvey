@@ -1,0 +1,38 @@
+{
+	"templates": {
+		"header": {
+			"navbar": {
+				"projectName": "Loondri Survey"
+			}
+		}
+	},
+	"symbols": {
+		"question": "&#63;",
+		"exclamation": "&#33;",
+		"hash":"&#35;",
+		"percent":"&#37;",
+		"ampersand":"&#38;",
+		"asterisk":"&#42;",
+		"plus":"&#43;",
+		"minus":"#45;",
+		"accent":"&#96;",
+		"tilde":"&#126;",
+		"at":"&#64;",
+		"brokenVerticalBar":"&#166;",
+		"copyright":"&#169;",
+		"trademark": "#8482;",
+		"registered":"&#174;",
+		"fractionOneQuarter":"&#188;",
+		"fractionOneHalf":"&#189;",
+		"fractionThreeQuarters":"&#190;"
+	},
+	"currency": {
+		"pounds": "£",
+		"euro": "€",
+		"dollar": "$",
+		"cent": "¢",
+		"Yen": "¥",
+		"rupees": "Rs",
+		"rupeesIndian": "र"
+	}
+}

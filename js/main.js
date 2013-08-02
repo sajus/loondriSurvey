@@ -86,9 +86,24 @@ requirejs.config({
 });
 
 /* Load app.js to initialize your application module. */
-require(['views/app', 'router', 'core'], function(AppView, Router, Core) {
+require(['views/app', 'router', 'core', 'i18n'], function(AppView, Router, Core, i18n) {
     var appView = Core.create({}, 'AppView', AppView);
     appView.render();
+
+    /*
+        This file is used to initialize your application.
+    */
+    i18n.init({
+        lng: 'en',
+        debug: true,
+        fallbackLng: false,
+        load:'unspecific',
+        resGetPath: "locales/__lng__/__ns__.json",
+        ns: {
+            namespaces: ['translation'],
+            defaultNs: 'translation'
+        }
+    });
 
     /*
         The router now has a copy of all main appview
