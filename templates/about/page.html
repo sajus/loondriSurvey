@@ -20,3 +20,121 @@
         <p><a class="btn" href="#">View details &raquo;</a></p>
     </div>
 </div>
+<div class="row-fluid">
+
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#createUser" data-toggle="tab">Create</a></li>
+				<li><a href="#modifyUsers" data-toggle="tab">Modify</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="createUser"> 
+					<!--create user form start -->
+						<h3> Add New User</h3>
+						<div class="form-horizontal row-fluid">
+							<div class="control-group">
+								<div class="alert alert-error span6 hide"> Please fill all the fields.</div>
+								<div class="alert alert-success span6 hide"> User Successfully Added.</div>
+							</div>
+							<div class="control-group">	
+								<label class="control-label" for="userName">Name</label>
+								<div class="controls">
+									<input type="text" id="userName" placeholder="full name" />
+								</div>
+							</div>
+							<div class="control-group">	
+								<label class="control-label" for="userId">User Id</label>
+								<div class="controls">
+									<input type="text" id="userId"  />
+								</div>
+							</div>
+							<div class="control-group">	
+								<label class="control-label" for="userEmail">Email</label>
+								<div class="controls">
+									<input type="text" id="userEmail" placeholder="Email ID" />
+								</div>
+							</div>
+							<div class="control-group">	
+								<label class="control-label" for="userDesignation">Designation</label>
+								<div class="controls">
+									<input type="text" id="userDesignation" placeholder="Designation" />
+								</div>
+							</div>
+							<div class="control-group">	
+								<label class="control-label" for="userAccess">Access Level</label>
+								<div class="controls">
+									<input type="text" id="userAccess" placeholder="Access Level" />
+								</div>
+							</div>
+							<div class="control-group">	
+								<label class="control-label"></label>
+								<div class="controls">
+									<a class="btn btn-primary" href="#" id="addUser">Submit</a>
+									<a class="btn" href="#" id="resetForm">Reset</a>
+								</div>
+							</div>
+							
+						</div>
+					<!--end of create user-->
+				</div>
+				<div class="tab-pane" id="modifyUsers"> 
+					<!--create user table starts here-->
+					<h3> Users List</h3>
+						<table class="table table-bordered">
+							<tr>
+								<th>Name</th>
+								<th>User Id</th>
+								<th>Email</th>
+								<th>Designation</th>
+								<th>Access Level</th>
+								<th>Actions</th>
+							</tr>
+							<tr>
+								<td>Pradnya Joshi</td>
+								<td>pradnyajo</td>
+								<td>pradnyajo@cybage.com</td>
+								<td>Web Dev</td>
+								<td>Level 2</td>
+								<td>
+									<a href="#" class="btn btn-small"><i class="icon-edit"></i></a>
+									<a href="#" class="btn btn-small"><i class="icon-trash"></i></a>
+								</td>
+							</tr>
+							<tr>
+								<td>Ashwin Hegde</td>
+								<td>Ashwin12</td>
+								<td>ashwinh@cybage.com</td>
+								<td>Web Dev</td>
+								<td>Level 2</td>
+								<td>
+									<a href="#" class="btn btn-small"><i class="icon-edit"></i></a>
+									<a href="#" class="btn btn-small"><i class="icon-trash"></i></a>
+								</td>
+							</tr>
+							<tr>
+								<td>Sneha Verma</td>
+								<td>snehav</td>
+								<td>snehava@cybage.com</td>
+								<td>Sr. Web Designer</td>
+								<td>Level 3</td>
+								<td>
+									<a href="#" class="btn btn-small"><i class="icon-edit"></i></a>
+									<a href="#" class="btn btn-small"><i class="icon-trash"></i></a>
+								</td>
+							</tr>
+							<tr>
+								<td>Shrikan Rana</td>
+								<td>Shrikanra</td>
+								<td>Shrikanra@cybage.com</td>
+								<td>Web Analyst</td>
+								<td>Level 4</td>
+								<td>
+									<a href="#" class="btn btn-small"><i class="icon-edit"></i></a>
+									<a href="#" class="btn btn-small"><i class="icon-trash"></i></a>
+								</td>
+							</tr>
+							
+						</table>
+					<!--end of user table-->
+				</div>
+			</div>
+</div>
