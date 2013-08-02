@@ -1,7 +1,7 @@
-define(['backbone', 'core', 'text!templates/help/page.html'], function(Backbone, Core, helpPageTemplate){
-    
+define(['backbone', 'core', 'template!templates/help/page'], function(Backbone, Core, helpPageTemplate){
+
     var HelpPage = Backbone.View.extend({
-        
+
         el: '.page',
 
         render: function () {

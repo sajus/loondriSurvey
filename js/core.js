@@ -1,5 +1,5 @@
 define(['backbone', 'events'], function(Backbone, Events){
-    
+
     var views = {};
 
     var create = function (context, name, View, options) {
@@ -14,7 +14,7 @@ define(['backbone', 'events'], function(Backbone, Events){
                 views[name].clean();
             }
         }
-        
+
         var view = new View(options);
         views[name] = view;
 
@@ -24,7 +24,7 @@ define(['backbone', 'events'], function(Backbone, Events){
         } else {
             context.children[name] = view;
         }
-        
+
         Events.trigger('viewCreated');
         return view;
     };

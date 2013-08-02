@@ -1,5 +1,5 @@
 define(['jquery', 'backbone', 'core', 'events', 'text!templates/layout.html'], function($, Backbone, Core, Events, layoutTemplate) {
-    
+
     var AppView = Backbone.View.extend({
 
         el: '.container',
@@ -16,9 +16,9 @@ define(['jquery', 'backbone', 'core', 'events', 'text!templates/layout.html'], f
 
         render: function () {
             var self = this;
-            
+
             this.$el.html(layoutTemplate);
-            
+
             require(['views/header/menuView'], function (HeaderMenuView) {
                 var headerMenuView = Core.create(self, 'HeaderMenuView', HeaderMenuView);
                 headerMenuView.render();

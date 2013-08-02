@@ -1,12 +1,12 @@
 define(['jquery', 'underscore', 'backbone', 'core'], function ($, _, Backbone, Core) {
-    
+
     var AppRouter = Backbone.Router.extend({
         routes: {
             // Pages
             'about': 'about',
             'contact': 'contact',
             'help': 'help',
-          
+
             // Default - catch all
             '*actions': 'defaultAction'
         }

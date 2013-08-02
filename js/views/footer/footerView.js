@@ -1,13 +1,13 @@
-define(['backbone', 'events', 'text!templates/footer/footer.html'], function(Backbone, Events, footerTemplate){
-    
+define(['backbone', 'events', 'template!templates/footer/footer'], function(Backbone, Events, footerTemplate){
+
     var FooterView = Backbone.View.extend({
-        
+
         el: '.footer',
-    
+
         render: function () {
-          	this,$el.html(footerTemplate);          
+          	this.$el.html(footerTemplate);
         }
-        
+
     });
 
     return FooterView;

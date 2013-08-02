@@ -20,32 +20,36 @@ requirejs.config({
       See http://requirejs.org/docs/api.html#config-paths for details.
     */
     paths: {
+
         /* List of libraries to be included in this architecture. */
-        'jquery': 'vendors/jquery/jquery',    
+        'jquery': 'vendors/jquery/jquery',
         'underscore': 'vendors/underscore/underscore',
         'backbone': 'vendors/backbone/backbone', // https://github.com/amdjs
-        
+
         'handlebars': 'vendors/handlebars/handlebars',
         'moment': 'vendors/moment/moment',
         'i18n': 'vendors/i18n/i18n',
-        'modelBinder':'vendors/modelBinder/modelBinder',
-        'validator':'vendors/backboneValidator/backboneValidation',
 
         /* List of framework to be included in this architecture. */
         'bootstrap': 'vendors/bootstrap/js/bootstrap.min',
 
         /* List of [architecture based custom JavaScript] files to be loaded in this architecture. */
         'templates': '../templates',
+        'template': 'utilities/handlebars-template-mapper',
 
         /* List of Plugins to be included in this architecture. */
-        // List of Require.js plugins:
-        'text': 'vendors/require/plugins/text',
+            // List of Backbone.js plugins:
+            'modelValidator':'vendors/backbone/plugins/backbone-validation',
+            'modelBinder':'vendors/backbone/plugins/backbone-modelbinder',
 
-        // List of Handlebars plugins:
-        'handlebars_Helpers': 'utilities/handlebars-helpers',
+            // List of Require.js plugins:
+            'text': 'vendors/require/plugins/text',
 
-        // List of Bootstrap plugins:
-        'fuelux': 'vendors/bootstrap/plugins/fuelux/all.min'
+            // List of Handlebars plugins:
+            'handlebars_Helpers': 'utilities/handlebars-helpers',
+
+            // List of Bootstrap plugins:
+            'fuelux': 'vendors/bootstrap/plugins/fuelux/all.min'
     },
 
     /*
@@ -54,7 +58,7 @@ requirejs.config({
         define() to declare the dependencies and set a module value.
         See http://requirejs.org/docs/api.html#config-shim for more details.
     */
-    shim: {        
+    shim: {
         backbone: {
             deps: ['jquery','underscore'],
             exports: 'Backbone'
@@ -67,7 +71,7 @@ requirejs.config({
         },
         bootstrap: {
             deps: ['jquery']
-        },        
+        },
         fuelux: {
             deps: ['bootstrap']
         },
@@ -83,12 +87,11 @@ requirejs.config({
 
 /* Load app.js to initialize your application module. */
 require(['views/app', 'router', 'core'], function(AppView, Router, Core) {
-    
     var appView = Core.create({}, 'AppView', AppView);
     appView.render();
 
     /*
         The router now has a copy of all main appview
     */
-    Router.initialize({appView: appView});  
+    Router.initialize({appView: appView});
 });

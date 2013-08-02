@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'text!templates/contact/page.html'], function($, _, Backbone, contactPageTemplate){
-	
+define(['jquery', 'underscore', 'backbone', 'template!templates/contact/page'], function($, _, Backbone, contactPageTemplate){
+
 	var ContactPage = Backbone.View.extend({
 
 		el: '.page',
@@ -7,8 +7,8 @@ define(['jquery', 'underscore', 'backbone', 'text!templates/contact/page.html'],
 		render: function () {
 	  		this.$el.html(contactPageTemplate);
 		}
-		
+
 	});
-	
+
 	return ContactPage;
 });
