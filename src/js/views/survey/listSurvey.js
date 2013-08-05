@@ -92,7 +92,7 @@ define(['backbone', 'template!templates/survey/listSurvey', 'fueluxDataSource', 
                         pageSize: 5
                     },
                     stretchHeight: false
-                })
+                });
                 return this;
             }
         });

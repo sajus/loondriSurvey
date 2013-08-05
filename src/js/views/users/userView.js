@@ -7,7 +7,7 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/page', 'mo
 			//instance of new modelBinder
 			
 			this.modelBinder = new Backbone.ModelBinder();
-			this.bind("reset", this.updateView);
+			this.on("reset", this.updateView);
 		},
         el: '.page',
 		events: {

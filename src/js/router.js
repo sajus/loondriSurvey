@@ -60,13 +60,23 @@ define(['jquery', 'underscore', 'backbone', 'core'], function ($, _, Backbone, C
         });
 
 		router.on('route:user', function () {
-            require(['views/users/userView','models/user/userModel'], function (userPage, UserModel) {
+            require(['views/users/userView','views/users/modifyView','models/user/userModel'], function (userPage, modifyUserPage, UserModel) {
                 var userModel = new UserModel();
 				var userPage = Core.create(appView, 'userPage', userPage, {model: userModel });
                 userPage.render();
+				var modifyPage = Core.create(appView, 'modifyUserPage', modifyUserPage);
+				modifyPage.render();
             });
         });
-
+		/*
+		router.on('route:user', function () {
+            require(['views/users/modifyView'], function (modifyUserPage) {
+              //  var userModel = new UserModel();
+				var modifyUserPage = Core.create(appView, 'userPage', modifyUserPage);
+                modifyUserPage.render();
+            });
+        });
+		*/
         router.on('route:help', function () {
             require(['views/help/helpView'], function (HelpPage) {
                 var helpPage = Core.create(appView, 'HelpPage', HelpPage);

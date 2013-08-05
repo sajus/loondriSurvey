@@ -8,12 +8,16 @@
 				<div class="tab-pane active" id="createUser"> 
 					<!--create user form start -->
 					<form class="form-horizontal" id="userForm">
+						<div class="alert alert-error  hide">
+							<button data-dismiss="alert" class="close" type="button">&times;</button>
+							Please fill all the fields.
+						</div>
+						<div class="alert alert-success hide"> 
+							<button data-dismiss="alert" class="close" type="button">&times;</button>
+							User Added Successfully.
+						</div>
 						<fieldset>
 						<legend> Create New User</legend>
-							<div class="control-group">
-								<div class="alert alert-error span6 hide"> Please fill all the fields.</div>
-								<div class="alert alert-success span6 hide"> User Added Successfully.</div>
-							</div>
 							<div class="control-group">	
 								<label class="control-label" for="userName">Name</label>
 								<div class="controls">
@@ -32,7 +36,10 @@
 							<div class="control-group">	
 								<label class="control-label" for="userEmail">Email</label>
 								<div class="controls">
-									<input type="text" id="userEmail" name="userEmail" placeholder="abc@cybage.com" class="input-xlarge"/>
+									<div class="input-append">
+									  <input class="span2 input-xlarge" id="userEmail" name="userEmail" type="text">
+									  <span class="add-on">@cybage.com</span>
+									</div>
 									<span class="help-inline"></span>
 									<span class="help-block">Company email-id</span>
 								</div>
@@ -41,7 +48,7 @@
 								<label class="control-label" for="userDesignation">Designation</label>
 								<div class="controls">
 									<select id="userDesignation" name="userDesignation" class="input-xlarge">
-										<option selected="true"> Select</option>
+										<option selected> Select</option>
 										<option> Designer</option>
 										<option> Sr. Designer</option>
 										<option> Design Analyst</option>
@@ -63,17 +70,14 @@
 									  <input type="radio" id="accessAdmin" value="accessAdmin" name="userAccess"> Admin
 									</label>
 									<label class="radio inline">
-									  <input type="radio" id="accessUser" value="accessUser" name="userAccess"> User
+									  <input type="radio" id="accessUser" value="accessUser" name="userAccess" checked="true"> User
 									</label>
 								</div>
 								
 							</div>
-							<div class="control-group">	
-								<label class="control-label"></label>
-								<div class="controls">
+							<div class="form-actions">	
 									<button class="btn btn-primary" href="#" id="addUser">Submit</button>
 									<button class="btn" href="#" id="resetForm" type="button">Reset</button>
-								</div>
 							</div>
 							</fieldset>
 						</form>
@@ -82,125 +86,80 @@
 				<div class="tab-pane" id="modifyuser"> 
 					<!--create user table starts here-->
 					<h3> Users List</h3>
-					
-					<table id="MyGrid" class="table table-bordered datagrid">
+					<div class="fuelux">
+						<table id="MyGrid" class="table table-bordered datagrid">
 							<thead>
-								<tr>
-									<th>
-										<span class="datagrid-header-title">Geographic Data Sample</span>
+							<tr>
+								<th>
+									<span class="datagrid-header-title">Search Survey</span>
 
-										<div class="datagrid-header-left">
-											<div class="input-append search datagrid-search">
+									<div class="datagrid-header-left">
+										<div class="input-append search datagrid-search">
 											<input type="text" class="input-medium" placeholder="Search">
 											<button type="button" class="btn"><i class="icon-search"></i></button>
-											</div>
 										</div>
-										<div class="datagrid-header-right">
-											<div class="select filter" data-resize="auto">
+									</div>
+									<!-- <div class="datagrid-header-right">
+										<div class="select filter" data-resize="auto">
+											<button type="button" data-toggle="dropdown" class="btn dropdown-toggle">
+												<span class="dropdown-label"></span>
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu">
+												<li data-value="all" data-selected="true"><a href="#">All</a></li>
+												<li data-value="lt5m"><a href="#">Population < 5M</a></li>
+												<li data-value="gte5m"><a href="#">Population >= 5M</a></li>
+											</ul>
+										</div>
+									</div> -->
+								</th>
+							</tr>
+							</thead>
+							<tfoot>
+							<tr>
+								<th>
+									<div class="datagrid-footer-left" style="display:none;">
+										<div class="grid-controls">
+											<span>
+												<span class="grid-start"></span> -
+												<span class="grid-end"></span> of
+												<span class="grid-count"></span>
+											</span>
+											<div class="select grid-pagesize" data-resize="auto">
 												<button type="button" data-toggle="dropdown" class="btn dropdown-toggle">
 													<span class="dropdown-label"></span>
 													<span class="caret"></span>
 												</button>
 												<ul class="dropdown-menu">
-													<li data-value="all" data-selected="true"><a href="#">All</a></li>
-													<li data-value="lt5m"><a href="#">Population < 5M</a></li>
-													<li data-value="gte5m"><a href="#">Population >= 5M</a></li>
+													<li data-value="5" ><a href="#">5</a></li>
+													<li data-value="10" data-selected="true"><a href="#">10</a></li>
+													<li data-value="20"><a href="#">20</a></li>
+													<li data-value="50"><a href="#">50</a></li>
+													<li data-value="100"><a href="#">100</a></li>
 												</ul>
 											</div>
+											<span>Per Page</span>
 										</div>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Pradnya Joshi</td>
-									<td>pradnyajo</td>
-									<td>pradnyajo@cybage.com</td>
-									<td>Web Dev</td>
-									<td>Level 2</td>
-									<td>
-										<a href="#" class="btn btn-small"><i class="icon-edit"></i></a>
-										<a href="#" class="btn btn-small"><i class="icon-trash"></i></a>
-									</td>
-								</tr>
-								<tr>
-									<td>Ashwin Hegde</td>
-									<td>Ashwin12</td>
-									<td>ashwinh@cybage.com</td>
-									<td>Web Dev</td>
-									<td>Level 2</td>
-									<td>
-										<a href="#" class="btn btn-small"><i class="icon-edit"></i></a>
-										<a href="#" class="btn btn-small"><i class="icon-trash"></i></a>
-									</td>
-								</tr>
-								<tr>
-									<td>Sneha Verma</td>
-									<td>snehav</td>
-									<td>snehava@cybage.com</td>
-									<td>Sr. Web Designer</td>
-									<td>Level 3</td>
-									<td>
-										<a href="#" class="btn btn-small"><i class="icon-edit"></i></a>
-										<a href="#" class="btn btn-small"><i class="icon-trash"></i></a>
-									</td>
-								</tr>
-								<tr>
-									<td>Shrikan Rana</td>
-									<td>Shrikanra</td>
-									<td>Shrikanra@cybage.com</td>
-									<td>Web Analyst</td>
-									<td>Level 4</td>
-									<td>
-										<a href="#" class="btn btn-small"><i class="icon-edit"></i></a>
-										<a href="#" class="btn btn-small"><i class="icon-trash"></i></a>
-									</td>
-								</tr>
-							<tbody>
-							<tfoot>
-								<tr>
-									<th>
-										<div class="datagrid-footer-left" style="display:none;">
-											<div class="grid-controls">
-												<span>
-												<span class="grid-start"></span> -
-												<span class="grid-end"></span> of
-												<span class="grid-count"></span>
-												</span>
-												<div class="select grid-pagesize" data-resize="auto">
-												<button type="button" data-toggle="dropdown" class="btn dropdown-toggle">
-												<span class="dropdown-label"></span>
-												<span class="caret"></span>
-												</button>
-												<ul class="dropdown-menu">
-												<li data-value="5" data-selected="true"><a href="#">5</a></li>
-												<li data-value="10"><a href="#">10</a></li>
-												<li data-value="20"><a href="#">20</a></li>
-												<li data-value="50"><a href="#">50</a></li>
-												<li data-value="100"><a href="#">100</a></li>
-												</ul>
-												</div>
-												<span>Per Page</span>
-											</div>
-										</div>
-										<div class="datagrid-footer-right" style="display:none;">
-											<div class="grid-pager">
-												<button type="button" class="btn grid-prevpage"><i class="icon-chevron-left"></i></button>
-												<span>Page</span>
+									</div>
+									<div class="datagrid-footer-right" style="display:none;">
+										<div class="grid-pager">
+											<button type="button" class="btn grid-prevpage"><i class="icon-chevron-left"></i></button>
+											<span>Page</span>
 
-												<div class="input-append dropdown combobox">
+											<div class="input-append dropdown combobox">
 												<input class="span1" type="text">
 												<button type="button" class="btn" data-toggle="dropdown"><i class="caret"></i></button>
 												<ul class="dropdown-menu"></ul>
-												</div>
-												<span>of <span class="grid-pages"></span></span>
-												<button type="button" class="btn grid-nextpage"><i class="icon-chevron-right"></i></button>
 											</div>
+											<span>of <span class="grid-pages"></span></span>
+											<button type="button" class="btn grid-nextpage"><i class="icon-chevron-right"></i></button>
 										</div>
-									</th>
-								</tr>
+									</div>
+								</th>
+							</tr>
 							</tfoot>
-					</table>
+						</table>
+					</div>
 						<!--<table class="table table-bordered">
 							<tr>
 								<th>Name</th>

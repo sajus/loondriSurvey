@@ -7,20 +7,20 @@ define(['backbone','modelValidator'], function(Backbone) {
 		validation:{
 			userName:{
 				required: true,
-				msg: 'please enter user Name.'
+				msg: 'Please enter username.'
 			},
 			userId: {
 				required: true,
 				pattern: 'number',
-				msg: 'Please enter valid User Id.'
+				msg: 'Please enter valid userid.'
 			},
 			userEmail:[{
 					required: true,
-					msg: 'Please enter Email Id.'
+					msg: 'Please enter email.'
 				},
 				{
-					pattern: 'email',
-					msg: 'Email Id is not correct.'
+					pattern: '^[a-z0-9_-]{3,15}$',
+					msg: 'Email is not correct.'
 				}
 			]
 		}
