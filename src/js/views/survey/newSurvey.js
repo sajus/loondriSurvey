@@ -1,4 +1,4 @@
-define(['backbone', 'template!templates/survey/newSurvey', 'modelValidator', 'modelBinder'], function(Backbone, newSurveyTemplate, Validator) {
+define(['backbone', 'template!templates/survey/newSurvey', 'modelValidator', 'modelBinder','bootstrapAlert','datePicker'], function(Backbone, newSurveyTemplate, Validator) {
 
     return Backbone.View.extend({
         el: '.page',
@@ -26,6 +26,8 @@ define(['backbone', 'template!templates/survey/newSurvey', 'modelValidator', 'mo
         },
         render: function() {
             this.$el.html(newSurveyTemplate);
+            // Initialize the datepicker
+            $('.date').datepicker();
             this._modelBinder.bind(this.model, this.el);
             Backbone.Validation.bind(this, {
                 invalid: this.showError,

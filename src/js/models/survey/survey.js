@@ -10,6 +10,14 @@ define(['backbone','modelValidator'], function(Backbone) {
             welcomeMessage:{
                 required:true,
                 msg:'Please enter welcome message'
+            },
+            startDate:{
+                required:true,
+                msg:'Please enter start date'
+            },
+            endDate:{
+                required:true,
+                msg:'Please enter end date'
             }
     	}
     });

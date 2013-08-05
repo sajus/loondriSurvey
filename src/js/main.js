@@ -32,6 +32,7 @@ requirejs.config({
 
         /* List of framework to be included in this architecture. */
         'bootstrap': 'vendors/bootstrap/js/bootstrap.min',
+        'bootstrapAlert': 'vendors/bootstrap/js/bootstrap-alert',
 
         /* List of [architecture based custom JavaScript] files to be loaded in this architecture. */
         'templates': '../templates',
@@ -50,7 +51,7 @@ requirejs.config({
 
             // List of Bootstrap plugins:
             'fuelux': 'vendors/bootstrap/plugins/fuelux/all.min',
-            'datePicker': 'vendors/bootstrap/plugins/datepicker/datepicker.js'
+            'datePicker': 'vendors/bootstrap/plugins/datepicker/datepicker'
     },
 
     /*
@@ -71,6 +72,9 @@ requirejs.config({
             exports: 'Handlebars'
         },
         bootstrap: {
+            deps: ['jquery']
+        },
+        bootstrapAlert: {
             deps: ['jquery']
         },
         fuelux: {
