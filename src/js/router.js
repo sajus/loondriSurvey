@@ -38,7 +38,6 @@ define(['jquery', 'underscore', 'backbone', 'core'], function ($, _, Backbone, C
             });
         });
 
-
         router.on('route:defaultAction', function (actions) {
             require(['views/home/homeView'], function (HomePage) {
                 var homePage = Core.create(appView, 'HomePage', HomePage);
@@ -75,13 +74,14 @@ define(['jquery', 'underscore', 'backbone', 'core'], function ($, _, Backbone, C
             });
         });
 
-         router.on('route:login', function () {
-            require(['views/login/loginView'], function (LoginPage) {
-                var loginPage = Core.create(appView, 'LoginPage', LoginPage);
+        router.on('route:login', function () {
+            require(['views/login/loginView','models/login/login'], function (LoginPage, LoginModel) {
+                var loginModel=new LoginModel();
+                var loginPage = Core.create(appView, 'LoginPage', LoginPage,{model:loginModel});
                 loginPage.render();
             });
         });
-
+        
         Backbone.history.start();
     };
 

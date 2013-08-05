@@ -1,26 +1,31 @@
-<div class="hero-unit">
-  <h2>User Login</h2>
-   <form class="form-horizontal">
-  <div class="control-group">
-    <label class="control-label" for="inputEmail">Email</label>
-    <div class="controls">
-      <input type="email" id="inputEmail" placeholder="Email">
+<form class="form-horizontal">
+    <div class="alert alert-error" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        Please enter correct values.
     </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label" for="inputPassword">Password</label>
-    <div class="controls">
-      <input type="password" id="inputPassword" placeholder="Password">
+    <div class="alert alert-success" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Thanks!</strong> You have successfully logged in.
     </div>
-  </div>
-  <div class="control-group">
-    <div class="controls">
-      <label class="checkbox">
-        <input type="checkbox"> Remember me
-      </label>
-      <button type="submit" class="btn btn-primary">Sign in</button>
-      <button type="button" class="btn">Forgot Password?</button>
-    </div>
-  </div>
+    <fieldset>
+        <legend>User Login</legend>
+        <div class="control-group">
+            <label class="control-label" for="title">Email</label>
+            <div class="controls">
+                <input type="text" id="inputEmail" name="inputEmail" placeholder="Email">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="welcomeMessage">Password</label>
+            <div class="controls">
+                <input type="password" id="inputPassword" name="inputPassword" placeholder="Password">
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Sign in</button>
+            <button type="button" class="btn">Forgot Password?</button>
+        </div>
+    </fieldset>
 </form>
-</div>
