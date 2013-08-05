@@ -27,16 +27,19 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/page', 'mo
 				this.$('.alert-error').addClass('hide').fadeOut();	
 			}
 			else{
-				console.log('validation');
 				this.$('.alert-error').removeClass('hide').fadeIn();
 				this.$('.alert-success').addClass('hide').fadeOut();	
 			}
 		},
 		resetForm: function(e){
+		e.preventDefault();
 			this.trigger('reset');
 		},
 		updateView: function(){
 			this.render();
+			//to clear all validation stored in model
+			this.model.clear();
+			document.getElementById('userForm').reset();
 		},
         render: function () {
             this.$el.html(userPageTemplate);
@@ -69,7 +72,6 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/page', 'mo
 		},
 		hideError: function(view, attr, error){
 			// hiding errors on UI
-			console.log(error);
 			var targetView = view.$el,
             targetSelector = targetView.find("[name="+attr+"]"),
             targetParent = targetSelector.closest(".control-group");
