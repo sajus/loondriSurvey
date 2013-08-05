@@ -7,10 +7,12 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/page', 'mo
 			//instance of new modelBinder
 			
 			this.modelBinder = new Backbone.ModelBinder();
+			this.bind("reset", this.updateView);
 		},
         el: '.page',
 		events: {
-			'submit .form-horizontal': 'processForm',
+			//'submit .form-horizontal': 'processForm',
+			'click #addUser': 'processForm',
 			'blur input[type=text]':'processField',
 			'click #resetForm': 'resetForm'
 		},
@@ -31,9 +33,10 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/page', 'mo
 			}
 		},
 		resetForm: function(e){
-			e.preventDefault();
-			this.$('.form-horizontal').find("input[type=text], textarea, select").val("");
-			this.hideError(view, attr, error);
+			this.trigger('reset');
+		},
+		updateView: function(){
+			this.render();
 		},
         render: function () {
             this.$el.html(userPageTemplate);
