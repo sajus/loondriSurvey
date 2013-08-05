@@ -31,15 +31,21 @@ requirejs.config({
         'i18n': 'vendors/i18n/i18n',
 
         /* List of framework to be included in this architecture. */
-        'bootstrap': 'vendors/bootstrap/js/bootstrap.min',
-        'bootstrapAlert': 'vendors/bootstrap/js/bootstrap-alert',
+        /* ==========================================================================
+           =BOOTSTRAP
+           ========================================================================== */
+            'bootstrap': 'vendors/bootstrap/js/bootstrap.min',
+            'bootstrapAlert': 'vendors/bootstrap/js/bootstrap-alert',
+            'bootstrapDropdown': 'vendors/bootstrap/js/bootstrap-dropdown',
+            'bootstrapTransition': 'vendors/bootstrap/js/bootstrap-transition',
 
         /* List of [architecture based custom JavaScript] files to be loaded in this architecture. */
-        'templates': '../templates',
-        'template': 'utilities/handlebars-template-mapper',
+            'templates': '../templates',
+            'template': 'utilities/handlebars-template-mapper',
 
-        /* List of Plugins to be included in this architecture. */
-            // List of Backbone.js plugins:
+        /* ==========================================================================
+           =Backbone.js plugins
+           ========================================================================== */
             'modelValidator':'vendors/backbone/plugins/backbone-validation',
             'modelBinder':'vendors/backbone/plugins/backbone-modelbinder',
 
@@ -49,8 +55,21 @@ requirejs.config({
             // List of Handlebars plugins:
             'handlebars_Helpers': 'utilities/handlebars-helpers',
 
-            // List of Bootstrap plugins:
-            'fuelux': 'vendors/bootstrap/plugins/fuelux/all.min',
+
+        /* ==========================================================================
+           =FUEL UX
+           ========================================================================== */
+            'fuelux': 'vendors/bootstrap/plugins/fuelux/all',
+            'fueluxDataGrid': 'vendors/bootstrap/plugins/fuelux/datagrid',
+            'fueluxDataSource': 'vendors/bootstrap/plugins/fuelux/datasource',
+            'fueluxComboBox': 'vendors/bootstrap/plugins/fuelux/combobox',
+            'fueluxSelectBox': 'vendors/bootstrap/plugins/fuelux/select',
+            'fueluxSearchBox': 'vendors/bootstrap/plugins/fuelux/search',
+            'util': 'vendors/bootstrap/plugins/fuelux/util',
+
+        /* ==========================================================================
+           =EXTERNAL PLUGINS
+           ========================================================================== */
             'datePicker': 'vendors/bootstrap/plugins/datepicker/datepicker'
     },
 
@@ -77,11 +96,8 @@ requirejs.config({
         bootstrapAlert: {
             deps: ['jquery']
         },
-        fuelux: {
-            deps: ['bootstrap']
-        },
         datePicker: {
-            deps: ['bootstrap']
+            deps: ['bootstrap','jquery']
         },
         i18n: {
             deps: ['jquery']

@@ -6,7 +6,7 @@ define(['backbone', 'template!templates/survey/newSurvey','template!templates/su
         initialize: function() {
             this._modelBinder = new Backbone.ModelBinder();
         },
-        'events': {
+        events: {
             'submit .form-horizontal': 'processForm',
             'blur input[type=text]':'processField',
             'click .addOption':'addOption',

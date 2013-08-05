@@ -1,7 +1,19 @@
+/* ==========================================================================
+   HTML ELEMENTS
+   ========================================================================== */
+textarea{
+	width: 270px;
+}
+
+
 .main-menu-container{
   height: 50px;
   margin-bottom:20px;
 }
 .control-group.error .help-block{
 	color: inherit;
+}
+
+.menubar a{
+	color: #000;
 }

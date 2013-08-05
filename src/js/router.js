@@ -9,6 +9,7 @@ define(['jquery', 'underscore', 'backbone', 'core'], function ($, _, Backbone, C
 			'user': 'user',
             'login': 'login',
             'newSurvey':'newSurvey',
+            'listSurvey':'listSurvey',
 
             // Default - catch all
             '*actions': 'defaultAction'
@@ -27,6 +28,13 @@ define(['jquery', 'underscore', 'backbone', 'core'], function ($, _, Backbone, C
                 surveyModel=new SurveyModel();
                 var newSurvey = Core.create(appView, 'NewSurvey', NewSurvey,{model:surveyModel});
                 newSurvey.render();
+            });
+        });
+
+        router.on('route:listSurvey', function() {
+            require(['views/survey/listSurvey'], function(ListSurvey) {
+                var listSurvey = Core.create(appView, 'ListSurvey', ListSurvey);
+                listSurvey.render();
             });
         });
 
