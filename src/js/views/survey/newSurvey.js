@@ -1,4 +1,4 @@
-define(['backbone', 'template!templates/survey/newSurvey','template!templates/survey/newOption', 'modelValidator', 'modelBinder','bootstrapAlert','datePicker'],
+define(['backbone', 'template!templates/survey/newSurvey','template!templates/survey/newOption', 'modelValidator', 'modelBinder','bootstrapAlert','datePicker','fueluxWizard'],
     function(Backbone, newSurveyTemplate,newOptionTemplate, Validator) {
 
     return Backbone.View.extend({

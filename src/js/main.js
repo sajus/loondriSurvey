@@ -66,6 +66,7 @@ requirejs.config({
             'fueluxSelectBox': 'vendors/bootstrap/plugins/fuelux/select',
             'fueluxSearchBox': 'vendors/bootstrap/plugins/fuelux/search',
             'util': 'vendors/bootstrap/plugins/fuelux/util',
+            'fueluxWizard': 'vendors/bootstrap/plugins/fuelux/wizard',
 
         /* ==========================================================================
            =EXTERNAL PLUGINS
