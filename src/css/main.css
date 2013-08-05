@@ -1,4 +1,10 @@
 /*
+	Here are the list of stylesheets included for writing all the styles which are common between different 
+	modules.
+*/
+@import "common/common.css";
+@import "common/html5-boilerplate.css";
+/*
    	Default stylesheet included.
 */
 @import "../js/vendors/bootstrap/css/bootstrap.min.css";
@@ -22,9 +28,3 @@
 
 @import "../js/vendors/bootstrap/plugins/datepicker/datepicker.css";
 
-/*
-	Here are the list of stylesheets included for writing all the styles which are common between different 
-	modules.
-*/
-@import "common/common.css";
-@import "common/html5-boilerplate.css";

@@ -1,4 +1,5 @@
-define(['backbone', 'template!templates/survey/newSurvey', 'modelValidator', 'modelBinder','bootstrapAlert','datePicker'], function(Backbone, newSurveyTemplate, Validator) {
+define(['backbone', 'template!templates/survey/newSurvey','template!templates/survey/newOption', 'modelValidator', 'modelBinder','bootstrapAlert','datePicker'],
+    function(Backbone, newSurveyTemplate,newOptionTemplate, Validator) {
 
     return Backbone.View.extend({
         el: '.page',
@@ -7,7 +8,9 @@ define(['backbone', 'template!templates/survey/newSurvey', 'modelValidator', 'mo
         },
         'events': {
             'submit .form-horizontal': 'processForm',
-            'blur input[type=text]':'processField'
+            'blur input[type=text]':'processField',
+            'click .addOption':'addOption',
+            'click .removeOption':'removeOption',
         },
         processField:function(e){
             var target$=$(e.target),fieldNameAttr=target$.attr('name');
@@ -53,6 +56,28 @@ define(['backbone', 'template!templates/survey/newSurvey', 'modelValidator', 'mo
             targetParent$=targetSelector$.closest(".control-group");
             targetParent$.find(".help-inline").html("");
             targetParent$.removeClass("error");
+        },
+        addOption:function(e){
+            e.preventDefault();
+            this.$('.form-actions').before(newOptionTemplate({id:this.$('[data-name=option]').size()+1}));
+            console.log("in add option");
+        },
+        removeOption:function(e){
+            e.preventDefault();
+            var target = $(e.target);
+            target.closest('.control-group').remove();
+            this.updateOptionSequence();
+        },
+        updateOptionSequence:function(){
+            this.$('[data-name=option]').each(function(index){
+                var targetParent$=$(this).closest('.control-group'),
+                    targetIndex=index+1,
+                    label="Option"+targetIndex,
+                    value="option"+targetIndex;
+                targetParent$.find(".control-label").attr("for",value).text(label).end()
+                    .find("[data-name=option]").attr({id:value,name:value});
+
+            });
         },
         postData:function(){
             console.log("In the post data function");
