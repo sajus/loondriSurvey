@@ -1,4 +1,4 @@
-<div class="row-fluid" style="padding-top:50px;">
+<div style="padding-top:50px;">
 
 			<ul class="nav nav-tabs" id="userTabs">
 				<li class="active"><a href="#createUser" data-toggle="tab">Create</a></li>
@@ -7,51 +7,76 @@
 			<div class="tab-content">
 				<div class="tab-pane active" id="createUser"> 
 					<!--create user form start -->
-						<h3> Add New User</h3>
-						<div class="form-horizontal row-fluid">
+					<form class="form-horizontal" id="userForm">
+						<fieldset>
+						<legend> Create New User</legend>
 							<div class="control-group">
 								<div class="alert alert-error span6 hide"> Please fill all the fields.</div>
-								<div class="alert alert-success span6 hide"> User Successfully Added.</div>
+								<div class="alert alert-success span6 hide"> User Added Successfully.</div>
 							</div>
 							<div class="control-group">	
 								<label class="control-label" for="userName">Name</label>
 								<div class="controls">
-									<input type="text" id="userName" placeholder="full name" />
+									<input type="text" id="userName" name="userName" class="input-xlarge" placeholder="eg. Johnd" />
+									<span class="help-inline"></span>
 								</div>
 							</div>
 							<div class="control-group">	
 								<label class="control-label" for="userId">User Id</label>
 								<div class="controls">
-									<input type="text" id="userId"  />
+									<input type="text" id="userId" name="userId"  class="input-xlarge" placehoder="XXXX" maxLength="5" />
+									<span class="help-inline"></span>
+									<span class="help-block">Company employee id</span>
 								</div>
 							</div>
 							<div class="control-group">	
 								<label class="control-label" for="userEmail">Email</label>
 								<div class="controls">
-									<input type="text" id="userEmail" placeholder="Email ID" />
+									<input type="text" id="userEmail" name="userEmail" placeholder="abc@cybage.com" class="input-xlarge"/>
+									<span class="help-inline"></span>
+									<span class="help-block">Company email-id</span>
 								</div>
 							</div>
 							<div class="control-group">	
 								<label class="control-label" for="userDesignation">Designation</label>
 								<div class="controls">
-									<input type="text" id="userDesignation" placeholder="Designation" />
+									<select id="userDesignation" name="userDesignation" class="input-xlarge">
+										<option selected="true"> Select</option>
+										<option> Designer</option>
+										<option> Sr. Designer</option>
+										<option> Design Analyst</option>
+										<option> Web Developer</option>
+										<option> Sr. Web Developer</option>
+										<option> WebDev Analyst</option>
+									</select>
+									<span class="help-inline"></span>
+									<span class="help-block">Current designation of user</span>
 								</div>
 							</div>
 							<div class="control-group">	
 								<label class="control-label" for="userAccess">Access Level</label>
 								<div class="controls">
-									<input type="text" id="userAccess" placeholder="Access Level" />
+									<label class="radio inline">
+									  <input type="radio" id="accessSuperAdmin" value="accessSuperAdmin" name="userAccess"> Super Admin
+									</label>
+									<label class="radio inline">
+									  <input type="radio" id="accessAdmin" value="accessAdmin" name="userAccess"> Admin
+									</label>
+									<label class="radio inline">
+									  <input type="radio" id="accessUser" value="accessUser" name="userAccess"> User
+									</label>
 								</div>
+								
 							</div>
 							<div class="control-group">	
 								<label class="control-label"></label>
 								<div class="controls">
-									<a class="btn btn-primary" href="#" id="addUser">Submit</a>
-									<a class="btn" href="#" id="resetForm">Reset</a>
+									<button class="btn btn-primary" href="#" id="addUser">Submit</button>
+									<button class="btn" href="#" id="resetForm">Reset</button>
 								</div>
 							</div>
-							
-						</div>
+							</fieldset>
+						</form>
 					<!--end of create user-->
 				</div>
 				<div class="tab-pane" id="modifyuser"> 
