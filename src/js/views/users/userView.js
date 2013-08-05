@@ -54,7 +54,6 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/page', 'mo
         },
 		showError: function(view, attr, error){
 			// showing errors on UI
-			console.log(error);
 			var targetView = view.$el,
             targetSelector = targetView.find("[name="+attr+"]"),
             targetParent = targetSelector.closest(".control-group"),
