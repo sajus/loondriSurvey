@@ -1,5 +1,5 @@
-define(['backbone','template!templates/login/login','modelValidator','modelBinder','bootstrapAlert'], 
-	function(Backbone, loginPageTemplate, Validator){
+define(['backbone','template!templates/login/login','modelValidator','CryptoJS','modelBinder','bootstrapAlert'], 
+	function(Backbone, loginPageTemplate, Validator,CryptoJS){
 
     var LoginPage = Backbone.View.extend({
 		el: '.page',
@@ -16,6 +16,8 @@ define(['backbone','template!templates/login/login','modelValidator','modelBinde
         },
 		processForm: function(e){
 			e.preventDefault();
+			//Sample implementation of crypto;
+			console.log(CryptoJS.decryptCrypto(CryptoJS.encryptCrypto('secretMesg')));
 			if(this.model.isValid(true)){
 				this.$('.alert-success').removeClass('hide').fadeIn();	
 				this.$('.alert-error').addClass('hide').fadeOut();	

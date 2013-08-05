@@ -71,7 +71,15 @@ requirejs.config({
         /* ==========================================================================
            =EXTERNAL PLUGINS
            ========================================================================== */
-            'datePicker': 'vendors/bootstrap/plugins/datepicker/datepicker'
+            'datePicker': 'vendors/bootstrap/plugins/datepicker/datepicker',
+
+        //List for the crypto:
+		'hmac-md5':'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-md5',
+		'hmac-sha512':'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha512',
+		'sha256':'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha256',
+		'enc-base64-min':'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/enc-base64-min',
+		'rabbit':'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/rabbit',
+		'CryptoJS':'utilities/appCrypto' 
     },
 
     /*
@@ -106,7 +114,11 @@ requirejs.config({
         modelBinder:{
             deps:['backbone'],
             exports:'Backbone.ModelBinder'
-        }
+        },
+        CryptoJS: {
+			deps:['jquery','rabbit','hmac-md5','hmac-sha512','sha256','enc-base64-min'],
+			exports:'CryptoJS'
+		}
     }
 });
 
