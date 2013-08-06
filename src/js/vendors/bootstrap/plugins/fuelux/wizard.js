@@ -18,7 +18,7 @@ define(['require','jquery'],function (require) {
 
 		this.$element = $(element);
 		this.options = $.extend({}, $.fn.wizard.defaults, options);
-		this.currentStep = 1;
+		this.currentStep = this.$element.find('li.active').index()+1;
 		this.numSteps = this.$element.find('li').length;
 		this.$prevBtn = this.$element.find('button.btn-prev');
 		this.$nextBtn = this.$element.find('button.btn-next');

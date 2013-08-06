@@ -1,8 +1,8 @@
-define(['backbone', 'template!templates/survey/wizard/surveyDetails'],
+define(['backbone', 'template!templates/survey/wizard/optionDetails'],
     function(Backbone, surveyDetailsTemplate) {
 
     return Backbone.View.extend({
-        el: '#surveyDetails',
+        el: '#optionDetails',
         initialize: function() {
         },
         events: {

@@ -5,6 +5,8 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
             Events.on('page:navigate', this._navigatePage, this);
         },
         _navigatePage:function(navigationData){
+            console.log("in the navigate routeer function.");
+            console.log(navigationData);
             this.navigate(navigationData.path, navigationData.options);
         },
         routes: {
@@ -31,6 +33,7 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
 
         router.on('route:newSurvey', function(step) {
             require(['views/survey/newSurvey','models/survey/survey'], function(NewSurvey,SurveyModel) {
+                console.log(step);
                 surveyModel=new SurveyModel();
                 var newSurvey = Core.create(appView, 'NewSurvey', NewSurvey,{model:surveyModel,step:step});
                 newSurvey.render();

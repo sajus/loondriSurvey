@@ -94,7 +94,7 @@
 <div class="fuelux">
     <div id="surveyWizard" class="wizard">
         <ul class="steps">
-            <li data-target="#surveyDetails" class="active"><span class="badge badge-info">1</span>Step 1<span class="chevron"></span></li>
+            <li data-target="#surveyDetails"><span class="badge">1</span>Step 1<span class="chevron"></span></li>
             <li data-target="#questionDetails"><span class="badge">2</span>Step 2<span class="chevron"></span></li>
             <li data-target="#categoryDetails"><span class="badge">3</span>Step 3<span class="chevron"></span></li>
             <li data-target="#optionDetails"><span class="badge">4</span>Step 4<span class="chevron"></span></li>
@@ -105,90 +105,17 @@
         </div>
     </div>
     <div class="step-content well">
-        <div class="step-pane active" id="surveyDetails">
-            
+        <div class="step-pane" id="surveyDetails">
+            <!-- surveyDetails View -->
         </div>
         <div class="step-pane" id="questionDetails">
-            <form class="form-horizontal">
-                <fieldset>
-                    <legend>Question Details</legend>
-                     <div class="control-group">
-                        <label class="control-label" >Type Of Question</label>
-                        <div class="controls">
-                            <label class="radio inline">
-                               <input type="radio" value="single" name="surveyType"> Single Option
-                            </label>
-                            <label class="radio inline">
-                               <input type="radio" value="multi" name="surveyType"> Multiple Option
-                            </label>
-                            <span class="help-inline"></span>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="question">Question</label>
-                        <div class="controls">
-                            <textarea id="question" name="question">
-                            </textarea>
-                            <span class="help-inline"></span>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                        <button class="btn">Cancel</button>
-                    </div>
-                </fieldset>
-            </form>
+            <!-- questionDetails View -->
         </div>
         <div class="step-pane" id="categoryDetails">
-            <form class="form-horizontal">
-                <fieldset>
-                    <legend>Category Details</legend>
-                    <div class="control-group">
-                        <label class="control-label" for="multiSelect">Select Category</label>
-                        <div class="controls">
-                            <div>
-                                <select multiple="multiple" id="multiSelect">
-                                    <option>Category1</option>
-                                    <option>Category2</option>
-                                    <option>Category3</option>
-                                    <option>Category4</option>
-                                    <option>Category5</option>
-                                </select>
-                            </div>
-                            <br/>
-                            <div class="btn-group">
-                                <button class="btn" type="submit"><i class="icon-plus"></i>Create Category</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                        <button class="btn">Cancel</button>
-                    </div>
-                </fieldset>
-            </form>
+            <!-- categoryDetails View -->
         </div>
         <div class="step-pane" id="optionDetails">
-            <form class="form-horizontal">
-                <fieldset>
-                    <legend>Option Details</legend>
-                    <div class="control-group">
-                        <label class="control-label" for="option1">Option1</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="option1" data-name="option" name="option1">
-                            <div class="btn-group">
-                                <button class="btn addOption"><span class="icon-plus"></span></button>
-                            </div>
-                            <span class="help-inline"></span>
-                            <p class="help-block">Add your options for question here</p>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                        <button class="btn">Cancel</button>
-                    </div>
-                </fieldset>
-            </form>
+            <!-- optionDetails View -->
         </div>
     </div>
 </div>

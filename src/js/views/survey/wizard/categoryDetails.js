@@ -1,10 +1,9 @@
-define(['backbone', 'template!templates/survey/wizard/surveyDetails'],
+define(['backbone', 'template!templates/survey/wizard/categoryDetails'],
     function(Backbone, surveyDetailsTemplate) {
 
     return Backbone.View.extend({
-        el: '#surveyDetails',
-        initialize: function() {
-        },
+        el: '#categoryDetails',
+        initialize: function() {},
         events: {
 
         },
@@ -12,8 +11,6 @@ define(['backbone', 'template!templates/survey/wizard/surveyDetails'],
             this.$el.html(surveyDetailsTemplate);
             this.$el.addClass("active");
             return this;
-        },
-
+        }
     });
-
 });
