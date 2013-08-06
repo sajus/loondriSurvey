@@ -10,7 +10,7 @@ define(['backbone','modelValidator'], function(Backbone) {
                     msg: 'Please enter Email Id.'
                 },
                 {
-                    pattern: 'email',
+                    pattern: '^[a-z0-9_-]{3,15}$',
                     msg: 'Please enter valid Email id.'
                 }
             ],

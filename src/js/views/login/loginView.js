@@ -45,7 +45,6 @@ define(['backbone','template!templates/login/login','modelValidator','CryptoJS',
 				valid: this.hideError
 			});
 			return this;
-			//$('#userGrid').datagrid({dataSource: null, stretchHeight: true});
         },
 		showError: function(view, attr, error){
 			var targetView = view.$el,
