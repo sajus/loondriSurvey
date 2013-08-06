@@ -1,5 +1,5 @@
-define(['backbone','template!templates/login/login','modelValidator','CryptoJS','modelBinder','bootstrapAlert'], 
-	function(Backbone, loginPageTemplate, Validator,CryptoJS){
+define(['backbone','events','template!templates/login/login','modelValidator','CryptoJS','modelBinder','bootstrapAlert'], 
+	function(Backbone, Events, loginPageTemplate, Validator,CryptoJS){
 
     var LoginPage = Backbone.View.extend({
 		el: '.page',
@@ -19,13 +19,11 @@ define(['backbone','template!templates/login/login','modelValidator','CryptoJS',
 			//Sample implementation of crypto;
 			console.log(CryptoJS.decryptCrypto(CryptoJS.encryptCrypto('secretMesg')));
 			if(this.model.isValid(true)){
-				this.$('.alert-success').removeClass('hide').fadeIn();	
-				this.$('.alert-error').addClass('hide').fadeOut();	
+				 Events.trigger("alert:success",[{message:"You have successfully logged in!!"}]);	
 			}
 			else{
-				console.log('validation');
-				this.$('.alert-error').removeClass('hide').fadeIn();
-				this.$('.alert-success').addClass('hide').fadeOut();	
+				console.log('validation');	
+				Events.trigger("alert:error",[{message:"Please enter correct values."}]);
 			}
 		},
 		resetForm: function(e){
