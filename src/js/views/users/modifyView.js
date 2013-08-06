@@ -1,12 +1,26 @@
-define(['backbone', 'template!templates/users/page', 'fueluxDataSource', 'fueluxDataGrid','bootstrapDropdown','fueluxComboBox','fueluxSelectBox','fueluxSearchBox'],
-	function(Backbone, userPageTemplate, FuelUxDataSource){
+define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUsers', 'fueluxDataSource', 'fueluxDataGrid','bootstrapDropdown','fueluxComboBox','fueluxSelectBox','fueluxSearchBox'],
+	function($, _,Backbone, modifyUsersTemplate, FuelUxDataSource){
 		
 		var modifyUserPage = Backbone.View.extend({
-			el: '.page',
-			initialize: function(){},
+			el: '#modifyuser',
+			initialize: function(){
+			},
 			events: {},
 			render: function(){
-				this.$el.html(userPageTemplate);
+				this.$el.html(modifyUsersTemplate);
+				var self = this;
+				console.log(this.model);
+				this.model.fetch({
+						success: function(){
+							console.log('showing the service call');
+							console.log(self.model.toJSON());
+						},
+						error: function(){
+							console.log('check your service calls');
+						}
+			
+					});
+				
 				
 				var SampleData = [
 					 {

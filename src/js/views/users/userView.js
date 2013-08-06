@@ -13,7 +13,7 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/page', 'mo
 		events: {
 			//'submit .form-horizontal': 'processForm',
 			'click #addUser': 'processForm',
-			'blur input[type=text]':'processField',
+			'blur input[type=text], select, input[type=checkbox], input[type=radio]':'processField',
 			'click #resetForm': 'resetForm'
 		},
 		 processField:function(e){
@@ -25,6 +25,7 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/page', 'mo
 			if(this.model.isValid(true)){
 				this.$('.alert-success').removeClass('hide').fadeIn();	
 				this.$('.alert-error').addClass('hide').fadeOut();	
+				this.postData();
 			}
 			else{
 				this.$('.alert-error').removeClass('hide').fadeIn();
@@ -42,18 +43,28 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/page', 'mo
 			document.getElementById('userForm').reset();
 		},
         render: function () {
+			var self = this;
+			
             this.$el.html(userPageTemplate);
 			//binding modelbinder to el and model together
 			this.modelBinder.bind(this.model, this.el);
 			
+			var modifyView, ModifyView, modifyModel;
+			
+			ModifyView = require('views/users/modifyView'),
+            modifyView = new ModifyView({model: this.model});
+			
+			modifyView.render();
 			
 			// validation binding
 			Backbone.Validation.bind(this,{
 				invalid: this.showError,
 				valid: this.hideError
 			});
+	
 			return this;
 			//$('#userGrid').datagrid({dataSource: null, stretchHeight: true});
+			
         },
 		showError: function(view, attr, error){
 			// showing errors on UI
@@ -77,6 +88,9 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/page', 'mo
             targetParent = targetSelector.closest(".control-group");
 			targetParent.find('.help-inline').html('');
 			targetParent.removeClass('error');
+		},
+		postData: function(){
+			console.log(this.model.toJSON());
 		}
     });
 
