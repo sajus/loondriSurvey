@@ -26,13 +26,12 @@ define(function(require) {
         },
         beforeStepChange: function(e) {
             // e.preventDefault();
-            // console.log("in after stage change");
-            
+
+
         },
         afterStepChange: function(e) {
             var target$ = this.$(e.target),
                 targetURL = target$.find('.active').data("target");
-            console.log(targetURL);
             Events.trigger("view:navigate", {
                 path: "wizard/" + targetURL.slice(1),
                 options: {
@@ -64,10 +63,10 @@ define(function(require) {
                =Load Subview
                ========================================================================== */
             this.getSubView(this.options.step.toLowerCase()).render();
-            this.$el.find('[data-target=#'+this.options.step+']').addClass('active').prevAll().addClass('complete').find('.badge').addClass('badge-success');
+            this.$el.find('[data-target=#'+this.options.step+']').addClass('active').find('.badge').addClass('badge-info').end()
+                .prevAll().addClass('complete').find('.badge').addClass('badge-success');
 
-            // Initialize the datepicker
-            // $('.date').datepicker();
+            
             this._modelBinder.bind(this.model, this.el);
             Backbone.Validation.bind(this, {
                 invalid: this.showError,
@@ -76,11 +75,13 @@ define(function(require) {
             return this;
         },
         getSubView: function(step) {
-            var SubView, subView;
+            var SubView, subView,model;
             switch (step) {
                 case "surveydetails":
                     SubView = require('views/survey/wizard/surveyDetails'),
-                    subView = new SubView();
+                    Model=require('models/survey/wizard/surveyDetails');
+                    var targetModel=new Model();
+                    subView = new SubView({model:targetModel});
                     break;
                 case "questiondetails":
                     SubView = require('views/survey/wizard/questionDetails'),
