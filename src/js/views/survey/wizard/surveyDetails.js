@@ -1,5 +1,5 @@
-define(['backbone', 'template!templates/survey/wizard/surveyDetails','modelBinder','datePicker','bootstrapAlert'],
-    function(Backbone, surveyDetailsTemplate) {
+define(['backbone','events','template!templates/survey/wizard/surveyDetails','modelBinder','datePicker','bootstrapAlert'],
+    function(Backbone,Events,surveyDetailsTemplate) {
 
     return Backbone.View.extend({
         el: '#surveyDetails',
@@ -23,7 +23,7 @@ define(['backbone', 'template!templates/survey/wizard/surveyDetails','modelBinde
             if (this.model.isValid(true)) {
                 this.postData();
             } else {
-                // Error case
+                Events.trigger("alert:error",[{message:"Oops!! Did not pass the validation."}]);
             }
         },
         render: function() {
@@ -62,6 +62,7 @@ define(['backbone', 'template!templates/survey/wizard/surveyDetails','modelBinde
         postData: function() {
             console.log("In the post data function");
             console.log(this.model.toJSON());
+            Events.trigger("alert:success",[{message:"Survey details saved successfully !!"}]);
         }
     });
 });
