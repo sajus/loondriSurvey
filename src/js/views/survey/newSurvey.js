@@ -1,6 +1,15 @@
-define(['backbone', 'template!templates/survey/newSurvey','template!templates/survey/newOption', 'modelValidator', 'modelBinder','bootstrapAlert','datePicker','fueluxWizard'],
-    function(Backbone, newSurveyTemplate,newOptionTemplate, Validator) {
-
+define(function(require) {
+        // ['backbone', 'template!templates/survey/newSurvey','template!templates/survey/newOption','views/survey/wizard/surveyDetails','modelValidator', 'modelBinder','bootstrapAlert','datePicker','fueluxWizard']
+        // Backbone, newSurveyTemplate,newOptionTemplate,surveyDetailsView,Validator
+    var Backbone=require('backbone'),
+        newSurveyTemplate=require('template!templates/survey/newSurvey'),
+        newOptionTemplate=require('template!templates/survey/newOption'),
+        Validator=require('modelValidator'),
+        Router=require('router'),
+        Events=require('events');
+        /* Requires with no assignment */
+        require('modelBinder');
+        require('fueluxWizard');
     return Backbone.View.extend({
         el: '.page',
         initialize: function() {
@@ -11,6 +20,23 @@ define(['backbone', 'template!templates/survey/newSurvey','template!templates/su
             'blur input[type=text]':'processField',
             'click .addOption':'addOption',
             'click .removeOption':'removeOption',
+            /* Wizard events */
+            'change #surveyWizard':'beforeStepChange',
+            'changed #surveyWizard':'afterStepChange'
+        },
+        beforeStepChange:function(e){
+            // e.preventDefault();
+        },
+        afterStepChange:function(e){
+            var target$=this.$(e.target),
+            targetURL=target$.find('.active').data("target");
+            Events.trigger("view:navigate",{
+                path:"wizard/"+targetURL.slice(1),
+                options:{
+                    trigger:true
+                }
+            });
+            // e.preventDefault();
         },
         processField:function(e){
             var target$=$(e.target),fieldNameAttr=target$.attr('name');
@@ -29,14 +55,43 @@ define(['backbone', 'template!templates/survey/newSurvey','template!templates/su
         },
         render: function() {
             this.$el.html(newSurveyTemplate);
+            /* ==========================================================================
+               =Load Subview
+               ========================================================================== */
+            this.getSubView(this.options.step.toLowerCase()).render();
+
             // Initialize the datepicker
-            $('.date').datepicker();
+            // $('.date').datepicker();
             this._modelBinder.bind(this.model, this.el);
             Backbone.Validation.bind(this, {
                 invalid: this.showError,
                 valid:this.removeError
             });
             return this;
+        },
+        getSubView:function(step){
+            var SubView,subView;
+            switch(step){
+                case "surveydetails":
+                    SubView = require('views/survey/wizard/surveyDetails'),
+                    subView = new SubView();
+                    break;
+                case "questiondetails":
+                    SubView = require('views/survey/wizard/surveyDetails'),
+                    subView = new SubView();
+                    break;
+                case "categorydetails":
+                    SubView = require('views/survey/wizard/surveyDetails'),
+                    subView = new SubView();
+                    break;
+                case "optiondetails":
+                    SubView = require('views/survey/wizard/surveyDetails'),
+                    subView = new SubView();
+                    break;
+                default :
+                    console.log("Something went wrong in getSubView");
+            }
+            return subView;
         },
         showError:function(view, attr, error){
             var targetView$ = view.$el,

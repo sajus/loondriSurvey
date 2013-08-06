@@ -3,7 +3,8 @@ define(['backbone', 'template!templates/survey/listSurvey', 'fueluxDataSource', 
 
         return Backbone.View.extend({
             el: '.page',
-            initialize: function() {},
+            initialize: function() {
+            },
             events: {},
             render: function() {
                 this.$el.html(listSurveyTemplate);

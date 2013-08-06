@@ -12,8 +12,14 @@ define(['jquery', 'backbone', 'core', 'events', 'template!templates/layout'], fu
                 }
             });
             var nestedView1 = Core.create(this, 'Nested View 1', NestedView1);
+            /* ==========================================================================
+               Events
+               ========================================================================== */
+            Events.on("view:navigate",this.navigate,this);
         },
-
+        navigate:function(navigationData){
+            Events.trigger('page:navigate', navigationData);
+        },
         render: function () {
             var self = this;
 

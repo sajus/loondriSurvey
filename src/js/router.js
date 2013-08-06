@@ -1,6 +1,12 @@
-define(['jquery', 'underscore', 'backbone', 'core'], function ($, _, Backbone, Core) {
+define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Backbone, Core,Events) {
 
     var AppRouter = Backbone.Router.extend({
+        initialize:function(){
+            Events.on('page:navigate', this._navigatePage, this);
+        },
+        _navigatePage:function(navigationData){
+            this.navigate(navigationData.path, navigationData.options);
+        },
         routes: {
             // Pages
             'about': 'about',
@@ -8,7 +14,7 @@ define(['jquery', 'underscore', 'backbone', 'core'], function ($, _, Backbone, C
             'help': 'help',
 			'user': 'user',
             'login': 'login',
-            'newSurvey':'newSurvey',
+            'wizard/:step':'newSurvey',
             'listSurvey':'listSurvey',
 
             // Default - catch all
@@ -23,10 +29,10 @@ define(['jquery', 'underscore', 'backbone', 'core'], function ($, _, Backbone, C
            =Survey
            ========================================================================== */
 
-        router.on('route:newSurvey', function() {
+        router.on('route:newSurvey', function(step) {
             require(['views/survey/newSurvey','models/survey/survey'], function(NewSurvey,SurveyModel) {
                 surveyModel=new SurveyModel();
-                var newSurvey = Core.create(appView, 'NewSurvey', NewSurvey,{model:surveyModel});
+                var newSurvey = Core.create(appView, 'NewSurvey', NewSurvey,{model:surveyModel,step:step});
                 newSurvey.render();
             });
         });
@@ -91,7 +97,6 @@ define(['jquery', 'underscore', 'backbone', 'core'], function ($, _, Backbone, C
                 loginPage.render();
             });
         });
-        
         Backbone.history.start();
     };
 

@@ -92,12 +92,12 @@
     </fieldset>
 </form> -->
 <div class="fuelux">
-    <div id="MyWizard" class="wizard">
+    <div id="surveyWizard" class="wizard">
         <ul class="steps">
-            <li data-target="#step1" class="active"><span class="badge badge-info">1</span>Step 1<span class="chevron"></span></li>
-            <li data-target="#step2"><span class="badge">2</span>Step 2<span class="chevron"></span></li>
-            <li data-target="#step3"><span class="badge">3</span>Step 3<span class="chevron"></span></li>
-            <li data-target="#step4"><span class="badge">4</span>Step 4<span class="chevron"></span></li>
+            <li data-target="#surveyDetails" class="active"><span class="badge badge-info">1</span>Step 1<span class="chevron"></span></li>
+            <li data-target="#questionDetails"><span class="badge">2</span>Step 2<span class="chevron"></span></li>
+            <li data-target="#categoryDetails"><span class="badge">3</span>Step 3<span class="chevron"></span></li>
+            <li data-target="#optionDetails"><span class="badge">4</span>Step 4<span class="chevron"></span></li>
         </ul>
         <div class="actions">
             <button type="button" class="btn btn-mini btn-prev"> <i class="icon-arrow-left"></i>Prev</button>
@@ -105,56 +105,10 @@
         </div>
     </div>
     <div class="step-content well">
-        <div class="step-pane active" id="step1">
-            <form class="form-horizontal">
-                <fieldset>
-                    <legend>Survey Details</legend>
-                    <div class="control-group">
-                        <label class="control-label" for="title">Title</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge title" id="title" name="title">
-                            <span class="help-inline"></span>
-                            <p class="help-block">This is the title for survey</p>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="startDate">Start Date</label>
-                        <div class="controls">
-                            <div class="input-append date"   data-date-format="dd-mm-yyyy">
-                                <input type="text" class="input-xlarge" id="startDate" name="startDate">
-                                <span class="add-on"><i class="icon-th"></i></span>
-                            </div>
-                            <span class="help-inline"></span>
-                            <p class="help-block">This is the start date for survey</p>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="endDate">End Date</label>
-                        <div class="controls">
-                            <div class="input-append date"   data-date-format="dd-mm-yyyy">
-                                <input type="text" class="input-xlarge" id="endDate" name="endDate">
-                                <span class="add-on"><i class="icon-th"></i></span>
-                            </div>
-                            <span class="help-inline"></span>
-                            <p class="help-block">This is the end date for survey</p>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="description">Description</label>
-                        <div class="controls">
-                            <textarea id="description" name="description">
-                            </textarea>
-                            <span class="help-inline"></span>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                        <button class="btn">Cancel</button>
-                    </div>
-                </fieldset>
-            </form>
+        <div class="step-pane active" id="surveyDetails">
+            
         </div>
-        <div class="step-pane" id="step2">
+        <div class="step-pane" id="questionDetails">
             <form class="form-horizontal">
                 <fieldset>
                     <legend>Question Details</legend>
@@ -185,7 +139,7 @@
                 </fieldset>
             </form>
         </div>
-        <div class="step-pane" id="step3">
+        <div class="step-pane" id="categoryDetails">
             <form class="form-horizontal">
                 <fieldset>
                     <legend>Category Details</legend>
@@ -214,7 +168,7 @@
                 </fieldset>
             </form>
         </div>
-        <div class="step-pane" id="step4">
+        <div class="step-pane" id="optionDetails">
             <form class="form-horizontal">
                 <fieldset>
                     <legend>Option Details</legend>
