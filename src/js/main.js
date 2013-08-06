@@ -42,6 +42,7 @@ requirejs.config({
         /* List of [architecture based custom JavaScript] files to be loaded in this architecture. */
             'templates': '../templates',
             'template': 'utilities/handlebars-template-mapper',
+            'formHelpers': 'utilities/formHelpers',
 
         /* ==========================================================================
            =Backbone.js plugins

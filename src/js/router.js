@@ -3,10 +3,13 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
     var AppRouter = Backbone.Router.extend({
         initialize:function(){
             Events.on('page:navigate', this._navigatePage, this);
+            this.currentId=null;
         },
         _navigatePage:function(navigationData){
             console.log("in the navigate routeer function.");
             console.log(navigationData);
+            this.idHash = (navigationData.options.idHash!==undefined)?navigationData.options.idHash:[null,null,null,null];
+            console.log(this.idHash);
             this.navigate(navigationData.path, navigationData.options);
         },
         routes: {
@@ -35,7 +38,7 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
             require(['views/survey/newSurvey','models/survey/survey'], function(NewSurvey,SurveyModel) {
                 console.log(step);
                 surveyModel=new SurveyModel();
-                var newSurvey = Core.create(appView, 'NewSurvey', NewSurvey,{model:surveyModel,step:step});
+                var newSurvey = Core.create(appView, 'NewSurvey', NewSurvey,{model:surveyModel,step:step,idHash:router.idHash});
                 newSurvey.render();
             });
         });

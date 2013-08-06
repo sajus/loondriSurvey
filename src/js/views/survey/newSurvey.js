@@ -14,6 +14,10 @@ define(function(require) {
         el: '.page',
         initialize: function() {
             this._modelBinder = new Backbone.ModelBinder();
+            this.wizardStates=[false,false,false,false];
+            this.idHash = (this.options.idHash!==undefined)?this.options.idHash:[null,null,null,null];
+            console.log(this.idHash);
+            Events.on("change:wizardState",this.changeWizardState,this);
         },
         events: {
             'submit .form-horizontal': 'processForm',
@@ -22,22 +26,47 @@ define(function(require) {
             'click .removeOption': 'removeOption',
             /* Wizard events */
             'change #surveyWizard': 'beforeStepChange',
-            'changed #surveyWizard': 'afterStepChange'
+            'changed #surveyWizard': 'afterStepChange',
+            'stepclick #surveyWizard': 'preventAction'
+        },
+        preventAction:function(e){
+            e.preventDefault();
         },
         beforeStepChange: function(e) {
-            // e.preventDefault();
-
-
+            var target$ = this.$(e.target),
+                selectedStep=target$.wizard('selectedItem').step;
+            if(!this.isValidForNext(selectedStep)){
+                console.log("Not good to go ahead");
+                Events.trigger('alert:error',[{message:"Please complete current step to go ahead"}])
+                e.preventDefault();
+            }
+        },
+        isValidForNext:function(selectedStep){
+            return this.wizardStates[selectedStep-1] && this.wizardStates[selectedStep-1]!==null;
         },
         afterStepChange: function(e) {
             var target$ = this.$(e.target),
-                targetURL = target$.find('.active').data("target");
+                targetURL = target$.find('.active').data("target"),
+                index=target$.wizard('selectedItem').step-2;
+
             Events.trigger("view:navigate", {
                 path: "wizard/" + targetURL.slice(1),
                 options: {
-                    trigger: true
+                    trigger: true,
+                    idHash:this.idHash
                 }
             });
+        },
+        changeWizardState:function(options){
+            console.log("in change wizard state");
+            console.log(options);
+            var wizard$=this.$("#surveyWizard"),
+                index=wizard$.wizard('selectedItem').step-1;
+            this.idHash[index]=options.id;
+            this.wizardStates[index]=true;
+            console.log(this.wizardStates);
+            console.log(this.idHash);
+            wizard$.wizard('next');
         },
         processField: function(e) {
             var target$ = $(e.target),
@@ -66,7 +95,7 @@ define(function(require) {
             this.$el.find('[data-target=#'+this.options.step+']').addClass('active').find('.badge').addClass('badge-info').end()
                 .prevAll().addClass('complete').find('.badge').addClass('badge-success');
 
-            
+
             this._modelBinder.bind(this.model, this.el);
             Backbone.Validation.bind(this, {
                 invalid: this.showError,
@@ -75,17 +104,19 @@ define(function(require) {
             return this;
         },
         getSubView: function(step) {
-            var SubView, subView,model;
+            var SubView, subView,Model,targetModel;
             switch (step) {
                 case "surveydetails":
                     SubView = require('views/survey/wizard/surveyDetails'),
-                    Model=require('models/survey/wizard/surveyDetails');
-                    var targetModel=new Model();
+                    Model=require('models/survey/wizard/surveyDetails'),
+                    targetModel=new Model();
                     subView = new SubView({model:targetModel});
                     break;
                 case "questiondetails":
                     SubView = require('views/survey/wizard/questionDetails'),
-                    subView = new SubView();
+                    Model=require('models/survey/wizard/questionDetails'),
+                    targetModel=new Model();
+                    subView = new SubView({model:targetModel,surveyId:this.idHash[0]});
                     break;
                 case "categorydetails":
                     SubView = require('views/survey/wizard/categoryDetails'),
