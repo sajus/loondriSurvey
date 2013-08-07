@@ -746,6 +746,7 @@
 	};
 
 	$.fn.datepicker = function ( option ) {
+		console.log(option);
 		var args = Array.apply(null, arguments);
 		args.shift();
 		return this.each(function () {

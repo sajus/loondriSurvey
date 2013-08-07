@@ -16,7 +16,14 @@ define(['backbone','events','views/BaseView','template!templates/survey/wizard/s
             this.$el.addClass("active");
             var self=this;
             /*Initialize the datepicker*/
-            $('.date').datepicker();
+            var nowTemp = new Date(),
+                now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+            $('.date').datepicker({
+                onRender: function(date) {
+                    console.log("in on render");
+                    return date.valueOf() < now.valueOf() ? 'disabled' : '';
+                }
+            });
             this._modelBinder.bind(this.model, this.el);
             Backbone.Validation.bind(this, {
                 invalid: this.showError,
