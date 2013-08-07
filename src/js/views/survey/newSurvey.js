@@ -3,7 +3,6 @@ define(function(require) {
     // Backbone, newSurveyTemplate,newOptionTemplate,surveyDetailsView,Validator
     var Backbone = require('backbone'),
         newSurveyTemplate = require('template!templates/survey/newSurvey'),
-        newOptionTemplate = require('template!templates/survey/newOption'),
         Validator = require('modelValidator'),
         Router = require('router'),
         Events = require('events');
@@ -22,27 +21,49 @@ define(function(require) {
         events: {
             'submit .form-horizontal': 'processForm',
             'blur input[type=text]': 'processField',
-            'click .addOption': 'addOption',
-            'click .removeOption': 'removeOption',
             /* Wizard events */
             'change #surveyWizard': 'beforeStepChange',
             'changed #surveyWizard': 'afterStepChange',
-            'stepclick #surveyWizard': 'preventAction'
+            'stepclick #surveyWizard': 'preventAction',
+            'finished #surveyWizard': 'finishWizard'
         },
         preventAction:function(e){
             e.preventDefault();
         },
         beforeStepChange: function(e) {
             var target$ = this.$(e.target),
-                selectedStep=target$.wizard('selectedItem').step;
+                selectedStep=target$.wizard('selectedItem').step-1;
+            console.log(selectedStep);
+            console.log(this.wizardStates[selectedStep]);
+            console.log(this.successMessage);
             if(!this.isValidForNext(selectedStep)){
-                console.log("Not good to go ahead");
-                Events.trigger('alert:error',[{message:"Please complete current step to go ahead"}])
                 e.preventDefault();
+                console.log("Not good to go ahead");
+                Events.trigger('alert:error',[{message:"Please complete current step to go ahead"}]);
+            }else{
+                Events.trigger('alert:success',[{message:this.successMessage}]);
+            }
+        },
+        finishWizard:function(e){
+            var target$ = this.$(e.target),
+                selectedStep=target$.wizard('selectedItem').step-1;
+            if(!this.isValidForNext(selectedStep)){
+                e.preventDefault();
+                Events.trigger('alert:error',[{message:"Please complete current step to finish wizard"}]);
+            }else{
+                Events.trigger('alert:success',[{message:this.successMessage}]);
+                Events.trigger("view:navigate", {
+                    path: "listSurvey",
+                    options: {
+                        trigger: true,
+                    }
+                });
             }
         },
         isValidForNext:function(selectedStep){
-            return this.wizardStates[selectedStep-1] && this.wizardStates[selectedStep-1]!==null;
+            console.log(this.wizardStates[selectedStep]);
+            console.log(this.idHash[selectedStep]);
+            return this.wizardStates[selectedStep] && this.idHash[selectedStep]!==null;
         },
         afterStepChange: function(e) {
             var target$ = this.$(e.target),
@@ -64,6 +85,7 @@ define(function(require) {
                 index=wizard$.wizard('selectedItem').step-1;
             this.idHash[index]=options.id;
             this.wizardStates[index]=true;
+            this.successMessage=options.message;
             console.log(this.wizardStates);
             console.log(this.idHash);
             wizard$.wizard('next');
@@ -120,11 +142,15 @@ define(function(require) {
                     break;
                 case "categorydetails":
                     SubView = require('views/survey/wizard/categoryDetails'),
-                    subView = new SubView();
+                    Model=require('models/survey/wizard/categoryDetails'),
+                    targetModel=new Model();
+                    subView = new SubView({model:targetModel});
                     break;
                 case "optiondetails":
                     SubView = require('views/survey/wizard/optionDetails'),
-                    subView = new SubView();
+                    Model=require('models/survey/wizard/optionDetails'),
+                    targetModel=new Model();
+                    subView = new SubView({model:targetModel});
                     break;
                 default:
                     console.log("Something went wrong in getSubView");
@@ -149,33 +175,6 @@ define(function(require) {
                 targetParent$ = targetSelector$.closest(".control-group");
             targetParent$.find(".help-inline").html("");
             targetParent$.removeClass("error");
-        },
-        addOption: function(e) {
-            e.preventDefault();
-            this.$('.form-actions').before(newOptionTemplate({
-                id: this.$('[data-name=option]').size() + 1
-            }));
-            console.log("in add option");
-        },
-        removeOption: function(e) {
-            e.preventDefault();
-            var target = $(e.target);
-            target.closest('.control-group').remove();
-            this.updateOptionSequence();
-        },
-        updateOptionSequence: function() {
-            this.$('[data-name=option]').each(function(index) {
-                var targetParent$ = $(this).closest('.control-group'),
-                    targetIndex = index + 1,
-                    label = "Option" + targetIndex,
-                    value = "option" + targetIndex;
-                targetParent$.find(".control-label").attr("for", value).text(label).end()
-                    .find("[data-name=option]").attr({
-                        id: value,
-                        name: value
-                    });
-
-            });
         },
         postData: function() {
             console.log("In the post data function");

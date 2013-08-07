@@ -90,7 +90,7 @@ define(function (require) {
                 this.scrollSpy();
             }
 
-            if(type === 'success' || type === 'warning'){
+            if(type === 'success' || type === 'warning' || type === 'error'){
                 var $alert = this.$('.alert').alert();
                 setTimeout(function() {
                     $el.addClass('fade');

@@ -25,8 +25,7 @@ define(['backbone','events','views/BaseView','template!templates/survey/wizard/q
         postData: function() {
             console.log("In the post data function");
             console.log(this.model.toJSON());
-            Events.trigger("alert:success",[{message:"Survey details saved successfully !!"}]);
-            Events.trigger("change:wizardState",{id:100});
+            Events.trigger("change:wizardState",{id:101,message:"Question details saved successfully !!"});
         }
     });
 });

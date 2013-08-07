@@ -3,10 +3,14 @@ define(['backbone','modelValidator'], function(Backbone) {
     	initialize:function(){
     	},
     	validation: {
-    		option: {
+    		option1: {
 		      required: true,
-		      msg: 'Please enter an option'
-		    }
+		      msg: 'Please enter option1'
+		    },
+            option2: {
+              required: true,
+              msg: 'Please enter option2'
+            }
     	}
     });
 
