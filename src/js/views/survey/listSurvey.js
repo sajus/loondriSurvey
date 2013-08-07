@@ -1,11 +1,14 @@
-define(['backbone', 'template!templates/survey/listSurvey', 'fueluxDataSource', 'fueluxDataGrid','bootstrapDropdown','fueluxComboBox','fueluxSelectBox','fueluxSearchBox'],
-    function(Backbone, listSurveyTemplate, FuelUxDataSource) {
+define(['backbone', 'template!templates/survey/listSurvey', 'fueluxDataSource', 'events', 'fueluxDataGrid','bootstrapDropdown','fueluxComboBox','fueluxSelectBox','fueluxSearchBox' ],
+    function(Backbone, listSurveyTemplate, FuelUxDataSource, Events) {
 
         return Backbone.View.extend({
             el: '.page',
             initialize: function() {
             },
-            events: {},
+            events: {
+                "click tbody tr td" : "surveyDetail"
+            },
+
             render: function() {
                 this.$el.html(listSurveyTemplate);
                 var sampleData = [{
@@ -95,6 +98,19 @@ define(['backbone', 'template!templates/survey/listSurvey', 'fueluxDataSource', 
                     stretchHeight: false
                 });
                 return this;
+            },
+
+            surveyDetail: function(e) {
+                var target$=this.$(e.target),
+                    targetRow$=target$.closest('tr'),
+                    id=targetRow$.find('td').first().text();
+                console.log("id " + id);
+                Events.trigger("view:navigate", {
+                    path: "surveyDetailed/"+id,
+                    options: {
+                        trigger: true,
+                    }
+                });
             }
         });
 
