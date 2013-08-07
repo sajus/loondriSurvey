@@ -15,21 +15,6 @@
             <fieldset>
                 <legend>Create New Question</legend>
                 <div class="control-group">
-                    <label class="control-label" >Type of question</label>
-                    <div class="controls">
-                        <label class="radio inline">
-                           <input type="radio" value="single" name="surveyType"> Single Option
-                        </label>
-                        <label class="radio inline">
-                           <input type="radio" value="multi" name="surveyType"> Multiple Option
-                        </label>
-                        <label class="radio inline">
-                           <input type="radio" value="other" name="surveyType"> Other
-                        </label>
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-                <div class="control-group">
                     <label class="control-label" for="question">Question</label>
                     <div class="controls">
                         <textarea id="question" name="question">
@@ -38,10 +23,37 @@
                     </div>
                 </div>
                 <div class="control-group">
+                    <label class="control-label" >Type Of Question</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                           <input type="radio" value="category" name="questionType"> Category
+                        </label>
+                        <label class="radio inline">
+                           <input type="radio" value="non-category" name="questionType"> Non-Category
+                        </label>
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" >Type of response</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                           <input type="radio" value="single" name="responseType"> Single choice
+                        </label>
+                        <label class="radio inline">
+                           <input type="radio" value="multi" name="responseType"> Multiple choice
+                        </label>
+                        <label class="radio inline">
+                           <input type="radio" value="other" name="responseType"> Other
+                        </label>
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                <div class="control-group categoryGroup" style="display:none">
                     <label class="control-label" for="multiSelect">Select Category</label>
                     <div class="controls">
                         <div>
-                            <select multiple="multiple" id="multiSelect" name="category">
+                            <select id="multiSelect" name="category" size="3">
                                 <option value="Category1">Category1</option>
                                 <option value="Category2">Category2</option>
                                 <option value="Category3">Category3</option>
@@ -50,15 +62,22 @@
                             </select>
                             <span class="help-inline"></span>
                         </div>
+                        <br/>
+                        <div class="btn-group">
+                            <button class="btn" type="submit"><i class="icon-plus"></i>Create Category</button>
+                        </div>
                     </div>
                 </div>
-                <div class="control-group">
+                <div class="control-group optionGroup">
                     <label class="control-label" for="option1">Option1</label>
                     <div class="controls">
                         <input type="text" class="input-xlarge" id="option1" data-name="option" name="option1">
                         <div class="btn-group">
                             <button class="btn addOption"><span class="icon-plus"></span></button>
                         </div>
+                        <label class="checkbox">Correct
+                           <input type="checkbox">
+                        </label>
                         <span class="help-inline"></span>
                         <p class="help-block">Add your options for question here</p>
                     </div>
