@@ -6,8 +6,12 @@ define(['backbone','modelValidator'], function(Backbone) {
     		category: {
 		      required: true,
 		      msg: 'Please enter a category'
-		    }
-    	}
+		    },
+            responseType: {
+              required: true,
+              msg: 'Please check type of response'
+            }
+        }
     });
 
 });

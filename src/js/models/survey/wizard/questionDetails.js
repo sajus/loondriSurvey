@@ -3,9 +3,9 @@ define(['backbone','modelValidator'], function(Backbone) {
     	initialize:function(){
     	},
     	validation: {
-    		surveyType: {
+    		questionType: {
 		      required: true,
-		      msg: 'Please check the surveyType'
+		      msg: 'Please check the type of question'
 		    },
             question:{
                 required:true,

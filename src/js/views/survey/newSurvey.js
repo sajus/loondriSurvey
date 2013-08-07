@@ -53,7 +53,7 @@ define(function(require) {
             }else{
                 Events.trigger('alert:success',[{message:this.successMessage}]);
                 Events.trigger("view:navigate", {
-                    path: "listSurvey",
+                    path: "surveyDetailed",
                     options: {
                         trigger: true,
                     }
