@@ -1,17 +1,11 @@
 define(['backbone','modelValidator'], function(Backbone) {
 
     var LoginModel = Backbone.Model.extend({
-        defaults: {
-            title: 'users'
-        },
-        url: function() {
-            return 'http://ygaikwad-w2k8:8080/UiPiggy/checkAuthorization'
-        },
-        parse: function(response) {
-            console.log(response);
 
-            return response; 
+        url: function() {
+            return 'http://ygaikwad-w2k8:8080/UiPiggy/checkAuthorization?email=anuragsh&password=adminpass'
         },
+
         validation:{
             inputEmail: [{
                     required: true,
@@ -29,20 +23,5 @@ define(['backbone','modelValidator'], function(Backbone) {
         }
     });
 
-    var loginService = new LoginModel();
-    console.log(loginService);
-
-    loginService.fetch({
-        success: function() {
-            console.log("fetch success");
-            console.log(loginService.toJSON());
-        },
-        error: function() {
-            console.log("Some error triggered");
-        }
-    });
-
-
     return LoginModel;
-
 });
