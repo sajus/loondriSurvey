@@ -11,11 +11,8 @@ return Backbone.View.extend({
 
     },
     events: {
-        'click .controls a':'addNewQuestion'
-        // 'change [name=questionType]':'toggleCategory',
-        // 'change [name=responseType]':'toggleOptions',
-        // 'click .addOption': 'addOption',
-        // 'click .removeOption': 'removeOption'
+        'click .controls a':'addNewQuestion',
+        'click .newCategory':'addNewCategory'
     },
     addNewQuestion:function(e){
         e.preventDefault();
@@ -24,7 +21,18 @@ return Backbone.View.extend({
         var surveyDetailedModel=new SurveyDetailedModel(),
             surveyDetailedModalView=new SurveyDetailedModalView({model:surveyDetailedModel});
 
-        this.$('.modalContainer').html(surveyDetailedModalView.render().el);
+        this.$('.modalContainer').html(surveyDetailedModalView.render({category:false}).el);
+        this.$('#surveyDetailedModal').modal();
+    },
+    addNewCategory:function(e){
+        e.preventDefault();
+        /* Modal Loading */
+        var surveyDetailedModel=new SurveyDetailedModel();
+            surveyDetailedModel.set('categoryView',true);
+            console.log(surveyDetailedModel);
+        var surveyDetailedModalView=new SurveyDetailedModalView({model:surveyDetailedModel});
+
+        this.$('.modalContainer').html(surveyDetailedModalView.render({category:true}).el);
         this.$('#surveyDetailedModal').modal();
     },
     render: function() {

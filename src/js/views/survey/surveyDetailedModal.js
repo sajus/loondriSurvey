@@ -45,16 +45,22 @@ return BaseView.extend({
     toggleOptions:function(e){
         var target$=$(e.target);
         if(target$.val().toLowerCase()==='other'){
-            this.$('.optionGroup').fadeOut();
+            this.$('.optionGroup').attr("disabled",true);
         }else{
-            this.$('.optionGroup').fadeIn();
+            this.$('.optionGroup').attr("disabled",false);
         }
         this.model.set(target$.attr('name'), target$.val(), {
             validate: true
         });
     },
-    render: function() {
-        this.$el.html(surveyDetailedModalTemplate);
+    render: function(options) {
+        if(options.category){
+            console.log("in the category modal rendering");
+            this.$el.html(surveyDetailedModalTemplate({category:true}));
+        }else{
+            console.log("in regular modal rendering");
+            this.$el.html(surveyDetailedModalTemplate({category:false}));
+        }
         this._modelBinder.bind(this.model, this.el);
         console.log(Backbone.Validation);
         Backbone.Validation.bind(this, {
@@ -93,7 +99,9 @@ return BaseView.extend({
     addCategory:function(e){
         var target$=this.$(e.target),
             targetInput$=target$.prev();
-        if($.trim(targetInput$.val())===''){
+        if(this.$('input[name=questionType]:radio:checked').val().toLowerCase()==='non-category'){
+            return;
+        }else if($.trim(targetInput$.val())===''){
             targetInput$.css('border','1px solid #b94a48');
             return;
         }else{

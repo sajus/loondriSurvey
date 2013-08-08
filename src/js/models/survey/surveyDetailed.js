@@ -3,10 +3,7 @@ define(['backbone','modelValidator'], function(Backbone) {
     	initialize:function(){
     	},
     	validation: {
-    		question:{
-                required:true,
-                msg:"Question is required"
-            },
+    		question:'validateQuestion',
             questionType:{
                 required:true,
                 msg:"Question type is required"
@@ -26,6 +23,17 @@ define(['backbone','modelValidator'], function(Backbone) {
             option2:{
                 required:true,
                 msg:"Option2 is required"
+            }
+        },
+        validateQuestion:function(value,attr,computedState){
+            console.log(value);
+            console.log(computedState);
+            if(computedState.categoryView){
+                // return true;
+            }else{
+                if(value===undefined){
+                    return "Question is required";
+                }
             }
         }
     });
