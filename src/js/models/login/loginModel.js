@@ -5,7 +5,6 @@ define(['backbone','modelValidator'], function(Backbone) {
         url: function() {
             return 'http://ygaikwad-w2k8:8080/UiPiggy/checkAuthorization?email=anuragsh&password=adminpass'
         },
-
         validation:{
             inputEmail: [{
                     required: true,
@@ -16,10 +15,15 @@ define(['backbone','modelValidator'], function(Backbone) {
                     msg: 'Please enter valid Email id.'
                 }
             ],
-            inputPassword: {
+            inputPassword: [{
                 required:true,
                 msg:'Please enter password'
-            }
+                },
+                {
+                    pattern: '^[a-z0-9_-]{3,15}$',
+                    msg: 'Password should contain min 3 and max 15 characters.'
+                }
+            ]
         }
     });
 

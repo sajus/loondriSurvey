@@ -21,6 +21,7 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
             'login': 'login',
             'wizard/:step':'newSurvey',
             'surveyDetailed':'surveyDetailed',
+            'surveyUserDetailed':'surveyUserDetailed',
             'listSurvey':'listSurvey',
 
             // Default - catch all
@@ -49,6 +50,14 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
                 surveyModel=new SurveyModel();
                 var surveyDetailed = Core.create(appView, 'SurveyDetailed', SurveyDetailed,{model:surveyModel});
                 surveyDetailed.render();
+            });
+        });
+
+        router.on('route:surveyUserDetailed', function() {
+            require(['views/survey/surveyUserDetailed','models/survey/survey'], function(SurveyUserDetailed,SurveyModel) {
+                surveyUserModel=new SurveyModel();
+                var surveyUserDetailed = Core.create(appView, 'SurveyUserDetailed', SurveyUserDetailed,{model:surveyUserModel});
+                surveyUserDetailed.render();
             });
         });
 
