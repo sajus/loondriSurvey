@@ -14,6 +14,7 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
         },
         routes: {
             // Pages
+            '':'login',
             'about': 'about',
             'contact': 'contact',
             'help': 'help',
