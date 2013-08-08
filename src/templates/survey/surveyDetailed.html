@@ -1,94 +1,8 @@
 <div class="well menubar">
     <div class="controls clearfix">
-        <a href="#" class="btn pull-right"><i class="icon-plus"></i>Add Question</a>
+        <a class="btn pull-right" href="#"><i class="icon-plus"></i>Add Question</a>
     </div>
-    <div class="formContainer" style="display:none">
-        <form class="form-horizontal">
-            <div class="alert alert-error" style="display: none;">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                <strong>Ooops!</strong> You did not pass the validation.
-            </div>
-            <div class="alert alert-success" style="display: none;">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                <strong>Success!</strong> You passed the validation.
-            </div>
-            <fieldset>
-                <legend>Create New Question</legend>
-                <div class="control-group">
-                    <label class="control-label" for="question">Question</label>
-                    <div class="controls">
-                        <textarea id="question" name="question">
-                        </textarea>
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" >Type Of Question</label>
-                    <div class="controls">
-                        <label class="radio inline">
-                           <input type="radio" value="category" name="questionType"> Category
-                        </label>
-                        <label class="radio inline">
-                           <input type="radio" value="non-category" name="questionType"> Non-Category
-                        </label>
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" >Type of response</label>
-                    <div class="controls">
-                        <label class="radio inline">
-                           <input type="radio" value="single" name="responseType"> Single choice
-                        </label>
-                        <label class="radio inline">
-                           <input type="radio" value="multi" name="responseType"> Multiple choice
-                        </label>
-                        <label class="radio inline">
-                           <input type="radio" value="other" name="responseType"> Other
-                        </label>
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-                <div class="control-group categoryGroup" style="display:none">
-                    <label class="control-label" for="multiSelect">Select Category</label>
-                    <div class="controls">
-                        <div>
-                            <select id="multiSelect" name="category" size="3">
-                                <option value="Category1">Category1</option>
-                                <option value="Category2">Category2</option>
-                                <option value="Category3">Category3</option>
-                                <option value="Category4">Category4</option>
-                                <option value="Category5">Category5</option>
-                            </select>
-                            <span class="help-inline"></span>
-                        </div>
-                        <br/>
-                        <div class="btn-group">
-                            <button class="btn" type="submit"><i class="icon-plus"></i>Create Category</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="control-group optionGroup">
-                    <label class="control-label" for="option1">Option1</label>
-                    <div class="controls">
-                        <input type="text" class="input-xlarge" id="option1" data-name="option" name="option1">
-                        <div class="btn-group">
-                            <button class="btn addOption"><span class="icon-plus"></span></button>
-                        </div>
-                        <label class="checkbox">Correct
-                           <input type="checkbox">
-                        </label>
-                        <span class="help-inline"></span>
-                        <p class="help-block">Add your options for question here</p>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                    <button class="btn">Cancel</button>
-                </div>
-            </fieldset>
-        </form>
-    </div>
+
 </div>
 <div class="questionList well well-mini">
     <h2>Survey Title</h2>
@@ -97,43 +11,48 @@
     </p>
     <h4>Questions:</h4>
     <div class="accordion" id="accordion">
-         <div class="accordion-group">
-             <div class="accordion-heading">
-                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                     Collapsible Group Item #1
-                 </a>
-             </div>
-             <div id="collapseOne" class="accordion-body collapse in">
-                 <div class="accordion-inner">
-                     Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                 </div>
-             </div>
-         </div>
-         <div class="accordion-group">
-             <div class="accordion-heading">
-                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                     Collapsible Group Item #2
-                 </a>
-             </div>
-             <div id="collapseTwo" class="accordion-body collapse">
-                 <div class="accordion-inner">
-                     Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                 </div>
-             </div>
-         </div>
-         <div class="accordion-group">
-             <div class="accordion-heading">
-                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-                     Collapsible Group Item #3
-                 </a>
-             </div>
-             <div id="collapseThree" class="accordion-body collapse">
-                 <div class="accordion-inner">
-                     Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                 </div>
-             </div>
-         </div>
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                    Question value #1
+                </a>
+            </div>
+            <div id="collapseOne" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+               </div>
+            </div>
+        </div>
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                    Question value #2
+                </a>
+            </div>
+            <div id="collapseTwo" class="accordion-body collapse">
+                <div class="accordion-inner">
+
+                </div>
+            </div>
+        </div>
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                   Question value #3
+                </a>
+            </div>
+            <div id="collapseThree" class="accordion-body collapse">
+                <div class="accordion-inner">
+
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+
+<!-- <a class="btn" data-toggle="modal" href="#surveyDetailedModal">Launch Modal</a>-->
+<div class="modalContainer">
+    <!-- Modal goes here -->
 </div>
 
 

@@ -1,16 +1,16 @@
 define(function(require) {
 var Backbone = require('backbone'),
-    surveyDetailedTemplate = require('template!templates/survey/surveyDetailed'),
+    surveyDetailedModalTemplate = require('template!templates/survey/surveyDetailedModal'),
     newOptionTemplate=require('template!templates/survey/newOption');
-    SurveyDetailedModalView=require('views/survey/surveyDetailedModal');
 /* Requires with no assignment */
 return Backbone.View.extend({
-    el: '.page',
+    className:"modal hide fade",
+    id:"surveyDetailedModal",
     initialize: function() {
 
     },
     events: {
-        'click .controls a':'addNewQuestion',
+        // 'click .controls a':'addNewQuestion',
         'change [name=questionType]':'toggleCategory',
         'change [name=responseType]':'toggleOptions',
         'click .addOption': 'addOption',
@@ -32,21 +32,13 @@ return Backbone.View.extend({
             this.$('.optionGroup').fadeIn();
         }
     },
-    addNewQuestion:function(e){
-        e.preventDefault();
-        
-        /* Modal Loading */
-        var surveyDetailedModalView=new SurveyDetailedModalView();
-        this.$('.modalContainer').html(surveyDetailedModalView.render().el);
-        this.$('#surveyDetailedModal').modal();
-    },
     render: function() {
-        this.$el.html(surveyDetailedTemplate);
+        this.$el.html(surveyDetailedModalTemplate);
         return this;
     },
     addOption: function(e) {
         e.preventDefault();
-        this.$('.form-actions').before(newOptionTemplate({
+        this.$('.form-horizontal').append(newOptionTemplate({
             id: this.$('[data-name=option]').size() + 1
         }));
         console.log("in add option");
