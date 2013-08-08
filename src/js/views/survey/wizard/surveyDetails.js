@@ -9,7 +9,7 @@ define(['backbone','events','views/BaseView','template!templates/survey/wizard/s
         },
         events: {
             'submit .form-horizontal': 'processForm',
-            'change input[type=text], blur input[type=text]': 'processField'
+            'change :input': 'processField'
         },
         render: function() {
             this.$el.html(surveyDetailsTemplate);

@@ -25,18 +25,13 @@ define(function(require){
             }
         },
         showError:function(view, attr, error) {
-            console.log(error);
             var targetView$ = view.$el,
                 targetSelector$ = targetView$.find("[name=" + attr + "]"),
                 targetParent$ = targetSelector$.closest(".control-group"),
                 inlineSpan = targetParent$.find('.help-inline');
             if ($.trim(inlineSpan.html()) === '') {
-                console.log("in first error case");
                 inlineSpan.append(error);
-            } else if (inlineSpan.html().toLowerCase() !== error.toLowerCase()) {
-                inlineSpan.append(", " + error);
-                console.log("in second error case");
-            }
+            } 
             targetParent$.addClass("error");
         },
         removeError :function(view, attr, error) {

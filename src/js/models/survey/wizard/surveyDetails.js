@@ -10,19 +10,50 @@ define(['backbone', 'modelValidator'], function(Backbone) {
                 required: true,
                 msg: 'Please enter a title'
             },
-            startDate: {
-                required: true,
-                msg: 'Please enter start date'
-            },
-            startDate:'validateDate',
-            startDate:'validatePastDate',
-            endDate: {
-                required: true,
-                msg: 'Please enter end date'
-            },
-            endDate:'validateDate'
+            // startDate: {
+            //     required: true,
+            //     msg: 'Please enter start date'
+            // },
+            startDate:'validateStartDate',
+            endDate:'validateEndDate',
+            // endDate: {
+            //     required: true,
+            //     msg: 'Please enter end date'
+            // },
+            // endDate:'validateDate',
+            description:{
+                required:true,
+                msg:"Please enter description"
+            }
         },
-        validateDate:function(value,attr,computedState){
+        validateStartDate:function(value,attr,computedState){
+            var finalValidationMessage="";
+            if(value===undefined){
+                return "Start date is required";
+            }
+            if(computedState.startDate!==undefined && computedState.endDate!==undefined){
+                var sArray=computedState.startDate.split("-"),
+                    eArray=computedState.endDate.split("-"),
+                    sDate=new Date(sArray[0],sArray[1]-1,sArray[2]),
+                    eDate=new Date(eArray[0],eArray[1]-1,eArray[2]),
+                    today=new Date();
+                if(sDate>eDate){
+                    finalValidationMessage+="Start date must be less than End date";
+                }
+            }else if(computedState.startDate!==undefined){
+                var sArray=computedState.startDate.split("-"),
+                sDate=new Date(sArray[0],sArray[1]-1,sArray[2]),
+                today=new Date();
+                if(sDate<today){
+                    finalValidationMessage+="Please enter date in the present";
+                }
+            }
+            return finalValidationMessage;
+        },
+        validateEndDate:function(value,attr,computedState){
+            if(value===undefined){
+                return "End date is required";
+            }
             if(computedState.startDate!==undefined && computedState.endDate!==undefined){
                 console.log("in the check state");
                 var sArray=computedState.startDate.split("-"),
@@ -34,17 +65,32 @@ define(['backbone', 'modelValidator'], function(Backbone) {
                     return "Start date must be less than End date";
                 }
             }
-        },
-        validatePastDate:function(value,attr,computedState){
-            if(computedState.startDate!==undefined){
-                var sArray=computedState.startDate.split("-"),
-                sDate=new Date(sArray[0],sArray[1]-1,sArray[2]),
-                today=new Date();
-                if(sDate<today){
-                    return "Please enter date in the present";
-                }
-            }
         }
+        // validateDate:function(value,attr,computedState){
+        //     console.log("in validate Date");
+        //     if(computedState.startDate!==undefined && computedState.endDate!==undefined){
+        //         console.log("in the check state");
+        //         var sArray=computedState.startDate.split("-"),
+        //             eArray=computedState.endDate.split("-"),
+        //             sDate=new Date(sArray[0],sArray[1]-1,sArray[2]),
+        //             eDate=new Date(eArray[0],eArray[1]-1,eArray[2]),
+        //             today=new Date();
+        //         if(sDate>eDate){
+        //             return "Start date must be less than End date";
+        //         }
+        //     }
+        // },
+        // validatePastDate:function(value,attr,computedState){
+        //     console.log("in validate past date");
+        //     if(computedState.startDate!==undefined){
+        //         var sArray=computedState.startDate.split("-"),
+        //         sDate=new Date(sArray[0],sArray[1]-1,sArray[2]),
+        //         today=new Date();
+        //         if(sDate<today){
+        //             return "Please enter date in the present";
+        //         }
+        //     }
+        // }
     });
 
 });
