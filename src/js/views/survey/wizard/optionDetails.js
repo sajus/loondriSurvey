@@ -51,12 +51,6 @@ define(['backbone', 'events','views/BaseView','template!templates/survey/wizard/
             });
         },
         postData: function() {
-            this.$('[data-name=option]').each(function(index){
-                var targetParent$ = $(this).closest('.control-group')
-                if($.trim($(this).val())==='') {
-                    targetParent$.remove();
-                }
-            });
             console.log("In the post data function");
             console.log(this.model.toJSON());
             Events.trigger("change:wizardState",{id:200,message:"Option details & wizard completed successfully !!"});

@@ -1,28 +1,46 @@
 define(function(require) {
 var Backbone = require('backbone'),
     surveyDetailedModalTemplate = require('template!templates/survey/surveyDetailedModal'),
-    newOptionTemplate=require('template!templates/survey/newOption');
-/* Requires with no assignment */
-return Backbone.View.extend({
+    newOptionTemplate=require('template!templates/survey/newOption'),
+    BaseView=require('views/BaseView');
+    /* Requires with no assignment */
+    require('modelBinder');
+return BaseView.extend({
     className:"modal hide fade",
     id:"surveyDetailedModal",
     initialize: function() {
-
+        this._modelBinder = new Backbone.ModelBinder();
+        console.log(this);
     },
     events: {
         // 'click .controls a':'addNewQuestion',
         'change [name=questionType]':'toggleCategory',
         'change [name=responseType]':'toggleOptions',
         'click .addOption': 'addOption',
-        'click .removeOption': 'removeOption'
+        'click .removeOption': 'removeOption',
+        /* Category */
+        'click .addCategory':'addCategory',
+        'keypress [name=categoryInput]':'toggleBorder',
+        /* Save */
+        'change input[type=text],textarea,select':'processField',
+        'click .save':'processForm'
     },
     toggleCategory:function(e){
-        var target$=$(e.target);
+        var target$=$(e.target),
+            targetSelect$=this.$('.categoryGroup').find('select');
         if(target$.val().toLowerCase()==='category'){
-            this.$('.categoryGroup').fadeIn();
+            targetSelect$.attr("disabled",false);
+            targetSelect$.html("");
+            this.model.unset(targetSelect$.attr('name'));
         }else{
-            this.$('.categoryGroup').fadeOut();
+            targetSelect$.html($("<option>",{text:"NA",value:"NA"})).attr("disabled",false);
+            this.model.set(targetSelect$.attr('name'), "NA", {
+                validate: true
+            });
         }
+        this.model.set(target$.attr('name'), target$.val(), {
+            validate: true
+        });
     },
     toggleOptions:function(e){
         var target$=$(e.target);
@@ -31,9 +49,18 @@ return Backbone.View.extend({
         }else{
             this.$('.optionGroup').fadeIn();
         }
+        this.model.set(target$.attr('name'), target$.val(), {
+            validate: true
+        });
     },
     render: function() {
         this.$el.html(surveyDetailedModalTemplate);
+        this._modelBinder.bind(this.model, this.el);
+        console.log(Backbone.Validation);
+        Backbone.Validation.bind(this, {
+            invalid: this.showError,
+            valid: this.removeError
+        });
         return this;
     },
     addOption: function(e) {
@@ -62,8 +89,40 @@ return Backbone.View.extend({
                 });
 
         });
+    },
+    addCategory:function(e){
+        var target$=this.$(e.target),
+            targetInput$=target$.prev();
+        if($.trim(targetInput$.val())===''){
+            targetInput$.css('border','1px solid #b94a48');
+            return;
+        }else{
+            targetInput$.css('border','1px solid #ccc');
+            // Add to select control
+            var select$=this.$("[name=category]"),
+                option$=$("<option>",{
+                    text:targetInput$.val(),
+                    value:targetInput$.val()
+                });
+            select$.append(option$);
+            targetInput$.val("");
+        }
+    },
+    toggleBorder:function(e){
+        console.log("in toggle Border");
+        var target$=this.$(e.target);
+        console.log(target$.text());
+        if($.trim(target$.val())===''){
+            target$.css('border','1px solid #b94a48');
+        }else{
+            target$.css('border','1px solid #ccc');
+        }
+    },
+    postData: function() {
+        console.log("In the post data function");
+        console.log(this.model.toJSON());
+        // Events.trigger("change:wizardState",{id:100,message:"Survey details saved successfully !!"});
     }
-
 });
 
 });

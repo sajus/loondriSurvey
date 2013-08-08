@@ -17,3 +17,6 @@ textarea{
 .menubar a{
 	color: #000;
 }
+.addCategory{
+	cursor: pointer;
+}

@@ -3,6 +3,8 @@
         <h3>Create New Question</h3>
 </div>
 <div class="modal-body">
+    <div class="alert-container">
+    </div>
     <div class="formContainer">
         <form class="form-horizontal">
                 <div class="control-group">
@@ -25,6 +27,22 @@
                         <span class="help-inline"></span>
                     </div>
                 </div>
+                <div class="control-group categoryGroup">
+                    <label class="control-label" for="multiSelect">Select Category</label>
+                    <div class="controls">
+                        <div>
+                            <select id="multiSelect" name="category" size="2" disabled>
+
+                            </select>
+                            <span class="help-inline"></span>
+                        </div>
+                        <br/>
+                        <div class="input-append">
+                            <input class="span2" name="categoryInput" type="text">
+                            <span class="add-on addCategory"><i class="icon-plus"></i>Create Category</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="control-group">
                     <label class="control-label" >Type of response</label>
                     <div class="controls">
@@ -40,32 +58,10 @@
                         <span class="help-inline"></span>
                     </div>
                 </div>
-                <div class="control-group categoryGroup" style="display:none">
-                    <label class="control-label" for="multiSelect">Select Category</label>
-                    <div class="controls">
-                        <div>
-                            <select id="multiSelect" name="category" size="3">
-                                <option value="Category1">Category1</option>
-                                <option value="Category2">Category2</option>
-                                <option value="Category3">Category3</option>
-                                <option value="Category4">Category4</option>
-                                <option value="Category5">Category5</option>
-                            </select>
-                            <span class="help-inline"></span>
-                        </div>
-                        <br/>
-                        <div class="btn-group">
-                            <button class="btn" type="submit"><i class="icon-plus"></i>Create Category</button>
-                        </div>
-                    </div>
-                </div>
                 <div class="control-group optionGroup">
                     <label class="control-label" for="option1">Option1</label>
                     <div class="controls">
                         <input type="text" class="input-xlarge" id="option1" data-name="option" name="option1">
-                        <div class="btn-group">
-                            <button class="btn addOption"><span class="icon-plus"></span></button>
-                        </div>
                         <label class="checkbox">Correct
                            <input type="checkbox">
                         </label>
@@ -73,10 +69,23 @@
                         <p class="help-block">Add your options for question here</p>
                     </div>
                 </div>
+                <div class="control-group optionGroup">
+                    <label class="control-label" for="option1">Option2</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" id="option2" data-name="option" name="option2">
+                        <div class="btn-group">
+                            <button class="btn addOption"><span class="icon-plus"></span></button>
+                        </div>
+                        <label class="checkbox">Correct
+                           <input type="checkbox">
+                        </label>
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
         </form>
     </div>
 </div>
 <div class="modal-footer">
-    <a href="#" class="btn btn-primary">Save changes</a>
+    <a href="#" class="btn btn-primary save">Save changes</a>
     <a href="#" class="btn">Close</a>
 </div>

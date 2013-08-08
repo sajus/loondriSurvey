@@ -12,6 +12,12 @@ define(function(require){
         },
         processForm: function(e) {
             e.preventDefault();
+            this.$('[data-name=option]').slice(2).each(function(index){
+                var targetParent$ = $(this).closest('.control-group')
+                if($.trim($(this).val())==='') {
+                    targetParent$.remove();
+                }
+            });
             if (this.model.isValid(true)) {
                 this.postData();
             } else {

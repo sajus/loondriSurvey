@@ -30,7 +30,11 @@ define(['jquery', 'backbone', 'core', 'events', 'template!templates/layout','uti
             this.alert(alerts.render({type: 'error', messages: messages}));
         },
         alert: function(alertModel) {
-            this.alertView = new AlertView({ el: '.alert-container' });
+            if($(".modal").size()!==0){
+                this.alertView = new AlertView({ el: '.modal .alert-container' });
+            }else{
+                this.alertView = new AlertView({ el: '.alert-container' });
+            }
             this.alertView.model = alertModel;
             this.alertView.render();
         },
