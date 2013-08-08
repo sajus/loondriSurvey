@@ -1,71 +1,112 @@
-define(['jquery', 'underscore', 'backbone', 'template!templates/users/page', 'modelValidator','modelBinder','bootstrap','fuelux'], function($, _, Backbone, userPageTemplate,Validator){
-	
-	//var User = require();
+define(['jquery', 'underscore', 'backbone', 'events','template!templates/users/page', 'modelValidator', 'models/user/modifyModel', 'modelBinder','bootstrap','fuelux'], function($, _, Backbone,Events, userPageTemplate, Validator, ModifyModel){
 
-    var userPage = Backbone.View.extend({
+    var UserPage = Backbone.View.extend({
+
 		initialize: function(){
-			//instance of new modelBinder
-			
 			this.modelBinder = new Backbone.ModelBinder();
 			this.on("reset", this.updateView);
 		},
+
         el: '.page',
+
 		events: {
-			//'submit .form-horizontal': 'processForm',
 			'click #addUser': 'processForm',
-			'blur input[type=text], select, input[type=checkbox], input[type=radio]':'processField',
+			'blur input[type=text], select, input[type=checkbox], input[type=radio], change :input': 'processField',
+			'click .keygen': 'keygen',
 			'click #resetForm': 'resetForm'
 		},
-		 processField:function(e){
+
+		keygen: function() {
+			var specials = '!@#$%^&*()_+{}:"<>?\|[];\',./`~';
+			var lowercase = 'abcdefghijklmnopqrstuvwxyz';
+			var uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			var numbers = '0123456789';
+
+			var all = specials + lowercase + uppercase + numbers;
+
+			String.prototype.pick = function(min, max) {
+			    var n, chars = '';
+
+			    if (typeof max === 'undefined') {
+			        n = min;
+			    } else {
+			        n = min + Math.floor(Math.random() * (max - min));
+			    }
+
+			    for (var i = 0; i < n; i++) {
+			        chars += this.charAt(Math.floor(Math.random() * this.length));
+			    }
+
+			    return chars;
+			};
+
+			String.prototype.shuffle = function() {
+			    var array = this.split('');
+			    var tmp, current, top = array.length;
+
+			    if (top) while (--top) {
+			        current = Math.floor(Math.random() * (top + 1));
+			        tmp = array[current];
+			        array[current] = array[top];
+			        array[top] = tmp;
+			    }
+
+			    return array.join('');
+			};
+
+			var password = (specials.pick(1) + lowercase.pick(1) + uppercase.pick(1) + all.pick(3, 10)).shuffle();
+			$('#password').val(password);
+		},
+
+		processField:function(e){
             var target=$(e.target),fieldNameAttr=target.attr('name');
             this.model.set(fieldNameAttr,target.val(),{validate:true});
         },
+
 		processForm: function(e){
 			e.preventDefault();
 			if(this.model.isValid(true)){
-				this.$('.alert-success').removeClass('hide').fadeIn();	
-				this.$('.alert-error').addClass('hide').fadeOut();	
 				this.postData();
 			}
 			else{
-				this.$('.alert-error').removeClass('hide').fadeIn();
-				this.$('.alert-success').addClass('hide').fadeOut();	
+			 	Events.trigger("alert:error",[{message:"Oops!! Did not pass the validation."}]);
 			}
 		},
+
 		resetForm: function(e){
-		e.preventDefault();
+			e.preventDefault();
 			this.trigger('reset');
 		},
+
 		updateView: function(){
 			this.render();
-			//to clear all validation stored in model
 			this.model.clear();
 			document.getElementById('userForm').reset();
 		},
+
         render: function () {
 			var self = this;
-			
-            this.$el.html(userPageTemplate);
-			//binding modelbinder to el and model together
+
 			this.modelBinder.bind(this.model, this.el);
-			
-			var modifyView, ModifyView, modifyModel;
-			
-			ModifyView = require('views/users/modifyView'),
-            modifyView = new ModifyView({model: this.model});
-			
-			modifyView.render();
-			
-			// validation binding
+
+			this.model.fetch({
+				success: function() {
+					self.$el.html(userPageTemplate({designations:self.model.toJSON()}));
+					var ModifyView = require('views/users/modifyView');
+					self.modifyModel = new ModifyModel();
+		            var modifyView = new ModifyView({model: self.modifyModel});
+					modifyView.render();
+				}
+			});
+
 			Backbone.Validation.bind(this,{
 				invalid: this.showError,
 				valid: this.hideError
 			});
-	
+
 			return this;
-			//$('#userGrid').datagrid({dataSource: null, stretchHeight: true});
-			
         },
+
 		showError: function(view, attr, error){
 			// showing errors on UI
 			var targetView = view.$el,
@@ -75,12 +116,13 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/page', 'mo
 			//adding error message to errorspan
 			if($.trim(errorSpan.html())===''){
 				errorSpan.append(error);
-			}else if(errorSpan.html().toLowerCase()!==error.toLowerCase()){
+			} else if(errorSpan.html().toLowerCase()!==error.toLowerCase()){
                 errorSpan.html(error);
             }
-			
+
 			targetParent.addClass('error');
 		},
+
 		hideError: function(view, attr, error){
 			// hiding errors on UI
 			var targetView = view.$el,
@@ -89,10 +131,12 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/page', 'mo
 			targetParent.find('.help-inline').html('');
 			targetParent.removeClass('error');
 		},
+
 		postData: function(){
+			console.log("Data:");
 			console.log(this.model.toJSON());
 		}
     });
 
-    return userPage;
+    return UserPage;
 });

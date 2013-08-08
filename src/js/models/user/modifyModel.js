@@ -1,23 +1,16 @@
-define(['backbone','modelValidator'], function(Backbone) {
+define(['backbone', 'globals', 'modelValidator'], function(Backbone, globals) {
 
-    var UserModel = Backbone.Model.extend({
-		defaults: {
-			title: 'users'
-		},
+    var ModifyModel = Backbone.Model.extend({
+
 		url: function(){
-			return "http://ygaikwad-w2k8:8080/UiPiggy/getAllUsers";
-			//return "http://maps.googleapis.com/maps/api/directions/json?origin=Pune&destination=Mumbai&sensor=false";
+			return globals.gateWayUrl + "/getAllUsers";
 		},
-		parse: function(response) {
 
-			return response;
-			
-		},
-		initialize: function(){
-			console.log('model initalized');
+		parse: function(response){
+			return response.rows;
 		}
     });
 
-    return UserModel;
+    return ModifyModel;
 
 });
