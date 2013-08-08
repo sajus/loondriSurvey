@@ -53,8 +53,9 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
         });
 
         router.on('route:listSurvey', function() {
-            require(['views/survey/listSurvey'], function(ListSurvey) {
-                var listSurvey = Core.create(appView, 'ListSurvey', ListSurvey);
+            require(['views/survey/listSurvey', 'collections/survey/survey'], function(ListSurvey, SurveyCollection) {
+                var surveyCollection=new SurveyCollection();
+                var listSurvey = Core.create(appView, 'ListSurvey', ListSurvey, {collection:surveyCollection});
                 listSurvey.render();
             });
         });
@@ -87,7 +88,7 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
                 userPage.render();
             });
         });
-		
+
         router.on('route:help', function () {
             require(['views/help/helpView'], function (HelpPage) {
                 var helpPage = Core.create(appView, 'HelpPage', HelpPage);
@@ -96,7 +97,7 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
         });
 
         router.on('route:login', function () {
-            require(['views/login/loginView','models/login/login'], function (LoginPage, LoginModel) {
+            require(['views/login/loginView','models/login/loginModel'], function (LoginPage, LoginModel) {
                 var loginModel=new LoginModel();
                 var loginPage = Core.create(appView, 'LoginPage', LoginPage,{model:loginModel});
                 loginPage.render();

@@ -1,89 +1,51 @@
-define(['backbone', 'template!templates/survey/listSurvey', 'fueluxDataSource', 'events', 'fueluxDataGrid','bootstrapDropdown','fueluxComboBox','fueluxSelectBox','fueluxSearchBox' ],
+define(['backbone', 'template!templates/survey/listSurvey', 'fueluxDataSource','events', 'fueluxDataGrid','bootstrapDropdown','fueluxComboBox','fueluxSelectBox','fueluxSearchBox','moment'],
     function(Backbone, listSurveyTemplate, FuelUxDataSource, Events) {
 
         return Backbone.View.extend({
             el: '.page',
+
             initialize: function() {
             },
+
             events: {
                 "click tbody tr td" : "surveyDetail"
             },
 
             render: function() {
                 this.$el.html(listSurveyTemplate);
-                var sampleData = [{
-                    "memberid": 103,
-                    "name": "Laurens  Natzijl",
-                    "age": "25"
-                }, {
-                    "memberid": 104,
-                    "name": "Sandra Snoek",
-                    "age": "21"
-                }, {
-                    "memberid": 105,
-                    "name": "Jacob Kort",
-                    "age": "31"
-                }, {
-                    "memberid": 106,
-                    "name": "Erik  Blokker",
-                    "age": "40"
-                }, {
-                    "memberid": 107,
-                    "name": "Jacco  Ruigewaard",
-                    "age": "37"
-                }, {
-                    "memberid": 103,
-                    "name": "Laurens  Natzijl",
-                    "age": "25"
-                }, {
-                    "memberid": 104,
-                    "name": "Sandra Snoek",
-                    "age": "21"
-                }, {
-                    "memberid": 105,
-                    "name": "Jacob Kort",
-                    "age": "31"
-                }, {
-                    "memberid": 106,
-                    "name": "Erik  Blokker",
-                    "age": "40"
-                }, {
-                    "memberid": 107,
-                    "name": "Jacco  Ruigewaard",
-                    "age": "37"
-                }, {
-                    "memberid": 103,
-                    "name": "Laurens  Natzijl",
-                    "age": "25"
-                }, {
-                    "memberid": 104,
-                    "name": "Sandra Snoek",
-                    "age": "21"
-                }, {
-                    "memberid": 105,
-                    "name": "Jacob Kort",
-                    "age": "31"
-                }, {
-                    "memberid": 106,
-                    "name": "Erik  Blokker",
-                    "age": "40"
-                }, {
-                    "memberid": 107,
-                    "name": "Jacco  Ruigewaard",
-                    "age": "37"
-                }];
+                var self = this;
+                var sampleData;
+                this.collection.fetch({
+                    async:false,
+                    success:function(){
+                        sampleData = self.collection.toJSON()[0].SurveyList;
+                        sampleData = _.map(sampleData,function(surveyObj){
+                            surveyObj.startDate = moment(surveyObj.startDate).format('MMMM Do YYYY, h:mm:ss a');
+                            surveyObj.endDate = moment(surveyObj.endDate).format('MMMM Do YYYY, h:mm:ss a');
+                            return surveyObj;
+                        });
+                    }
+                });
                 var dataSource = new FuelUxDataSource({
                     columns: [{
-                        property: "memberid",
-                        label: "LidId",
+                        property: "id",
+                        label: "SurveyID",
                         sortable: true
                     }, {
-                        property: "name",
-                        label: "Naam",
+                        property: "title",
+                        label: "Title",
                         sortable: true
                     }, {
-                        property: "age",
-                        label: "Leeftijd",
+                        property: "description",
+                        label: "Description",
+                        sortable: true
+                    },{
+                        property: "startDate",
+                        label: "StartDate",
+                        sortable: true
+                    },{
+                        property: "endDate",
+                        label: "EndDate",
                         sortable: true
                     }],
                     data: sampleData,
