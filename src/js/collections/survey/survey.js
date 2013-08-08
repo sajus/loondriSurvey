@@ -6,7 +6,7 @@ define(['backbone'], function(Backbone) {
 		},
 
 		url: function() {
-			return 'http://ygaikwad-w2k8:8080/UiPiggy/getAllSurvey';
+			return this.model.gateWayUrl+ '/getAllSurvey';
 		}
 	});
 

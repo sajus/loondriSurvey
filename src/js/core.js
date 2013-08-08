@@ -1,4 +1,8 @@
-define(['backbone', 'events'], function(Backbone, Events){
+define(['backbone', 'events', 'globals','underscore'], function(Backbone, Events, Globals){
+
+    _.extend(Backbone.Model , {
+        gateWayUrl:Globals.gateWayUrl
+    });
 
     var views = {};
 
@@ -32,4 +36,6 @@ define(['backbone', 'events'], function(Backbone, Events){
     return {
         create: create
     };
+
+
 });
