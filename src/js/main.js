@@ -73,6 +73,7 @@ requirejs.config({
            =EXTERNAL PLUGINS
            ========================================================================== */
             'datePicker': 'vendors/bootstrap/plugins/datepicker/datepicker',
+            'jqueryCookie': 'vendors/jquery/plugins/jquery.cookie',
 
         //List for the crypto:
 		'hmac-md5':'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-md5',
@@ -80,7 +81,7 @@ requirejs.config({
 		'sha256':'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha256',
 		'enc-base64-min':'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/enc-base64-min',
 		'rabbit':'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/rabbit',
-		'CryptoJS':'utilities/appCrypto' 
+		'CryptoJS':'utilities/appCrypto'
     },
 
     /*
