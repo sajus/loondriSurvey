@@ -9,12 +9,13 @@ define(function(require) {
     /* Requires with no assignment */
     require('modelBinder');
     require('fueluxWizard');
+    require('jqueryCookie');
     return Backbone.View.extend({
         el: '.page',
         initialize: function() {
             this._modelBinder = new Backbone.ModelBinder();
             this.wizardStates=[false,false,false,false];
-            this.idHash = (this.options.idHash!==undefined)?this.options.idHash:[null,null,null,null];
+            this.idHash = this.getIdHashCookie();
             console.log(this.idHash);
             Events.on("change:wizardState",this.changeWizardState,this);
         },
@@ -74,7 +75,6 @@ define(function(require) {
                 path: "wizard/" + targetURL.slice(1),
                 options: {
                     trigger: true,
-                    idHash:this.idHash
                 }
             });
         },
@@ -85,6 +85,7 @@ define(function(require) {
                 index=wizard$.wizard('selectedItem').step-1;
             this.idHash[index]=options.id;
             this.wizardStates[index]=true;
+            this.setIdHashCookies(this.idHash.toString());
             this.successMessage=options.message;
             console.log(this.wizardStates);
             console.log(this.idHash);
@@ -138,7 +139,7 @@ define(function(require) {
                     SubView = require('views/survey/wizard/questionDetails'),
                     Model=require('models/survey/wizard/questionDetails'),
                     targetModel=new Model();
-                    subView = new SubView({model:targetModel,surveyId:this.idHash[0]});
+                    subView = new SubView({model:targetModel});
                     break;
                 case "categorydetails":
                     SubView = require('views/survey/wizard/categoryDetails'),
@@ -179,6 +180,16 @@ define(function(require) {
         postData: function() {
             console.log("In the post data function");
             console.log(this.model.toJSON());
+        },
+        setIdHashCookies:function(idHashStr){
+            $.cookie('isHash',idHashStr)
+        },
+        getIdHashCookie:function(){
+            if($.cookie('isHash')!==undefined){
+                return $.cookie('isHash').split(',');
+            }else{
+                return [null,null,null,null];
+            }
         }
     });
 

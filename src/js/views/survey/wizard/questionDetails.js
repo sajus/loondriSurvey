@@ -5,7 +5,7 @@ define(['backbone','events','views/BaseView','template!templates/survey/wizard/q
         el: '#questionDetails',
         initialize: function() {
             this._modelBinder = new Backbone.ModelBinder();
-            console.log(this.options);
+            this.idHash = this.getIdHashCookie();
         },
         events: {
             'submit .form-horizontal': 'processForm',
@@ -24,6 +24,8 @@ define(['backbone','events','views/BaseView','template!templates/survey/wizard/q
         },
         postData: function() {
             console.log("In the post data function");
+            console.log("Survey ID is");
+            console.log(this.idHash[0]);
             console.log(this.model.toJSON());
             Events.trigger("change:wizardState",{id:101,message:"Question details saved successfully !!"});
         }

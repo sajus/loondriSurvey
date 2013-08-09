@@ -8,9 +8,6 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
         },
         _navigatePage:function(navigationData){
             console.log("in the navigate routeer function.");
-            console.log(navigationData);
-            this.idHash = (navigationData.options.idHash!==undefined)?navigationData.options.idHash:[null,null,null,null];
-            console.log(this.idHash);
             this.navigate(navigationData.path, navigationData.options);
         },
         _navigateHome:function(options){
@@ -55,7 +52,7 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
             require(['views/survey/newSurvey','models/survey/survey'], function(NewSurvey,SurveyModel) {
                 console.log(step);
                 surveyModel=new SurveyModel();
-                var newSurvey = Core.create(appView, 'NewSurvey', NewSurvey,{model:surveyModel,step:step,idHash:router.idHash});
+                var newSurvey = Core.create(appView, 'NewSurvey', NewSurvey,{model:surveyModel,step:step});
                 newSurvey.render();
             });
         });

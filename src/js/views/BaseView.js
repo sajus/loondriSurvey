@@ -1,6 +1,7 @@
 define(function(require){
     var Backbone = require('backbone');
     var Events = require('events');
+    require('jqueryCookie');
     return Backbone.View.extend({
         processField: function(e) {
             var target$ = $(e.target),
@@ -40,6 +41,13 @@ define(function(require){
                 targetParent$ = targetSelector$.closest(".control-group");
             targetParent$.find(".help-inline").html("");
             targetParent$.removeClass("error");
+        },
+        getIdHashCookie:function(){
+            if($.cookie('isHash')!==undefined){
+                return $.cookie('isHash').split(',');
+            }else{
+                return [null,null,null,null];
+            }
         }
     });
 });
