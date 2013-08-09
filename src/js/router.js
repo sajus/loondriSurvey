@@ -16,17 +16,15 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
             if(options!==undefined && options.targetView!==undefined){
                 // var targetView=new options.targetView(options.targetOptions);
                 // targetView.render();
-                this.navigate("listSurvey",{trigger:true});
+                this.navigate("dashboard",{trigger:true});
             }else{
-                this.navigate("listSurvey",{trigger:true});
+                this.navigate("dashboard",{trigger:true});
             }
         },
         routes: {
             // Pages
             '':'login',
-            'about': 'about',
-            'contact': 'contact',
-            'help': 'help',
+            'dashboard':'dashboard',
             'user': 'user',
             'login': 'login',
             'wizard/:step':'newSurvey',
@@ -47,6 +45,13 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
         /* ==========================================================================
            =Survey
            ========================================================================== */
+
+       router.on('route:dashboard', function () {
+            require(['views/dashboard/dashboardView'], function (DashboardPage) {
+                var dashboardPage = Core.create(appView, 'DashboardPage', DashboardPage);
+                dashboardPage.render();
+            });
+        });
 
         router.on('route:newSurvey', function(step) {
             require(['views/survey/newSurvey','models/survey/survey'], function(NewSurvey,SurveyModel) {
@@ -89,32 +94,11 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
             });
         });
 
-        router.on('route:about', function () {
-            require(['views/about/aboutView'], function (AboutPage) {
-                var aboutPage = Core.create(appView, 'AboutPage', AboutPage);
-                aboutPage.render();
-            });
-        });
-
-        router.on('route:contact', function () {
-            require(['views/contact/contactView'], function (ContactPage) {
-                var contactPage = Core.create(appView, 'ContactPage', ContactPage);
-                contactPage.render();
-            });
-        });
-
         router.on('route:user', function () {
             require(['views/users/userView','views/users/modifyView','models/user/userModel'], function (userPage, modifyUserPage, UserModel) {
                 var userModel = new UserModel();
                 var userPage = Core.create(appView, 'userPage', userPage, {model: userModel });
                 userPage.render();
-            });
-        });
-
-        router.on('route:help', function () {
-            require(['views/help/helpView'], function (HelpPage) {
-                var helpPage = Core.create(appView, 'HelpPage', HelpPage);
-                helpPage.render();
             });
         });
 

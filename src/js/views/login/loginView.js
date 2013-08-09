@@ -5,11 +5,11 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
 
             el: '.page',
             initialize: function() {
-            	console.log(this.options);
+                console.log(this.options);
                 this._modelBinder = new Backbone.ModelBinder();
                 if ($.cookie('isAuthenticated')) {
                     Events.trigger("view:navigate", {
-                        path: "listSurvey",
+                        path: "dashboard",
                         options: {
                             trigger: true
                         }
@@ -51,7 +51,7 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
                 });
                 console.log(this.options.authorizationFailed);
                 if(this.options.authorizationFailed===true){
-                	Events.trigger("alert:error", [{
+                    Events.trigger("alert:error", [{
                         message: "You are not authorized to view this page."
                     }]);
                 }
@@ -61,7 +61,7 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
                 this.isAuthorized(this.model.toJSON());
             },
             redirectToHome: function() {
-            	Events.trigger('redirectHome',this.options);
+                Events.trigger('redirectHome',this.options);
             },
         });
     });
