@@ -1,8 +1,9 @@
-define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Backbone, Core,Events) {
+define(['jquery', 'underscore','views/app', 'backbone', 'core','events'], function ($, _,AppView, Backbone, Core,Events) {
 
     var AppRouter = Backbone.Router.extend({
         initialize:function(){
             Events.on('page:navigate', this._navigatePage, this);
+            Events.on('redirectHome', this._navigateHome, this);
             this.currentId=null;
         },
         _navigatePage:function(navigationData){
@@ -12,13 +13,18 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
             console.log(this.idHash);
             this.navigate(navigationData.path, navigationData.options);
         },
+        _navigateHome:function(){
+            var appView = Core.create({}, 'AppView', AppView,{skipAuthCheck:true});
+            appView.render();
+            this.navigate("listSurvey",{trigger:true});
+        },
         routes: {
             // Pages
             '':'login',
             'about': 'about',
             'contact': 'contact',
             'help': 'help',
-			'user': 'user',
+            'user': 'user',
             'login': 'login',
             'wizard/:step':'newSurvey',
             'surveyDetailed':'surveyDetailed',
@@ -33,6 +39,7 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
     var initialize = function(options) {
         var appView = options.appView;
         var router = new AppRouter(options);
+
         /* ==========================================================================
            =Survey
            ========================================================================== */
@@ -63,6 +70,7 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
         });
 
         router.on('route:listSurvey', function() {
+            console.log("in listSurvey");
             require(['views/survey/listSurvey', 'collections/survey/survey'], function(ListSurvey, SurveyCollection) {
                 var surveyCollection=new SurveyCollection();
                 var listSurvey = Core.create(appView, 'ListSurvey', ListSurvey, {collection:surveyCollection});
@@ -91,10 +99,10 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
             });
         });
 
-		router.on('route:user', function () {
+        router.on('route:user', function () {
             require(['views/users/userView','views/users/modifyView','models/user/userModel'], function (userPage, modifyUserPage, UserModel) {
                 var userModel = new UserModel();
-				var userPage = Core.create(appView, 'userPage', userPage, {model: userModel });
+                var userPage = Core.create(appView, 'userPage', userPage, {model: userModel });
                 userPage.render();
             });
         });
@@ -109,7 +117,7 @@ define(['jquery', 'underscore', 'backbone', 'core','events'], function ($, _, Ba
         router.on('route:login', function () {
             require(['views/login/loginView','models/login/loginModel'], function (LoginPage, LoginModel) {
                 var loginModel=new LoginModel();
-                var loginPage = Core.create(appView, 'LoginPage', LoginPage,{model:loginModel});
+                var loginPage = Core.create(appView, 'LoginPage', LoginPage,{model:loginModel,skipAuthCheck:true});
                 loginPage.render();
             });
         });

@@ -1,9 +1,23 @@
 define(['backbone', 'modelValidator'], function(Backbone) {
 
     return Backbone.Model.extend({
-
+        setParams: function(params) {
+            this.email = params.email;
+            this.password = params.password;
+        },
         url: function() {
-            return 'http://ygaikwad-w2k8:8080/UiPiggy/checkAuthorization?email=anuragsh&password=adminpass'
+            return Backbone.Model.gateWayUrl + 'checkAuthorization?email='+this.email+'&password='+this.password;
+        },
+        isAuthorized: function() {
+            return true;
+            var returnValue=false;
+            this.fetch({
+                async:false,
+                success:function(model,response){
+                    returnValue=response;
+                }
+            });
+            return returnValue;
         },
         validation: {
             email: [{

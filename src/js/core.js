@@ -1,4 +1,5 @@
-define(['backbone', 'events', 'globals','underscore'], function(Backbone, Events, Globals){
+define(['backbone', 'events', 'globals','views/login/loginView','models/login/loginModel','underscore','jqueryCookie'],
+    function(Backbone, Events, Globals,LoginView,LoginModel){
 
     _.extend(Backbone.Model , {
         gateWayUrl:Globals.gateWayUrl
@@ -18,8 +19,17 @@ define(['backbone', 'events', 'globals','underscore'], function(Backbone, Events
                 views[name].clean();
             }
         }
+        var skipAuthCheck=true;
+        if(options===undefined || options.skipAuthCheck===undefined){
+            skipAuthCheck=false;
+        }
+        if(!$.cookie('isAuthenticated') && !skipAuthCheck){
+            var loginModel=new LoginModel(),
+            view = new LoginView({model:loginModel});
+        }else{
+            var view = new View(options);
+        }
 
-        var view = new View(options);
         views[name] = view;
 
         if(typeof context.children === 'undefined'){
