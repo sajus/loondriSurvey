@@ -5,6 +5,6 @@ define(function() {
         userName: '',
         userRole: '',
         authType:'',
-        gateWayUrl:'http://localhost:8080/loondriSurvey/'
+        gateWayUrl:'http://localhost:8080/loondriSurvey'
     };
 });

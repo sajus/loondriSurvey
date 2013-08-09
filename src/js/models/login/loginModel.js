@@ -6,7 +6,7 @@ define(['backbone', 'modelValidator'], function(Backbone) {
             this.password = params.password;
         },
         url: function() {
-            return Backbone.Model.gateWayUrl + 'checkAuthorization?email='+this.email+'&password='+this.password;
+            return Backbone.Model.gateWayUrl + '/checkAuthorization?email='+this.email+'&password='+this.password;
         },
         isAuthorized: function() {
             return true;
