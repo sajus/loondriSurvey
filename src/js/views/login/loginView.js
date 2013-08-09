@@ -26,7 +26,8 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
             },
             isAuthorized: function(params) {
                 var userData=this.model.isAuthorized();
-                if (userData.isAuthenticated) {
+                // if (userData.isAuthenticated) {
+                if (true) {
                     // Call setSessionCookies globally
                     $.cookie('isAuthenticated', true);
                     Events.trigger("alert:success", [{
