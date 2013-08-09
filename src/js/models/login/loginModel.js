@@ -1,17 +1,12 @@
 define(['backbone', 'modelValidator'], function(Backbone) {
 
     return Backbone.Model.extend({
-        setParams: function(params) {
-            this.email = params.email;
-            this.password = params.password;
-        },
         url: function() {
-            return Backbone.Model.gateWayUrl + '/checkAuthorization?email='+this.email+'&password='+this.password;
+            return Backbone.Model.gateWayUrl + '/checkAuthorization';
         },
         isAuthorized: function() {
-            return true;
-            var returnValue=false;
-            this.fetch({
+            var returnValue={};
+            this.save(this.toJSON(),{
                 async:false,
                 success:function(model,response){
                     returnValue=response;

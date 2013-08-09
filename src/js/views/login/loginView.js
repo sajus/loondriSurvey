@@ -25,8 +25,9 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
                 'change :input,blue :input': 'processField'
             },
             isAuthorized: function(params) {
-                this.model.setParams(params);
-                if (this.model.isAuthorized()) {
+                var userData=this.model.isAuthorized();
+                if (userData.isAuthenticated) {
+                    // Call setSessionCookies globally
                     $.cookie('isAuthenticated', true);
                     Events.trigger("alert:success", [{
                         message: "Authentication successful. Redirecting ...."
@@ -60,7 +61,6 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
             },
             redirectToHome: function() {
             	Events.trigger('redirectHome',this.options);
-            }
-
+            },
         });
     });
