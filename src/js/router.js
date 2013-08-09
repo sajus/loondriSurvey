@@ -1,4 +1,4 @@
-define(['jquery', 'underscore','views/app', 'backbone', 'core','events'], function ($, _,AppView, Backbone, Core,Events) {
+define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryCookie'], function ($, _,AppView, Backbone, Core,Events) {
 
     var AppRouter = Backbone.Router.extend({
         initialize:function(){
@@ -30,6 +30,7 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events'], functi
             'surveyDetailed':'surveyDetailed',
             'surveyUserDetailed':'surveyUserDetailed',
             'listSurvey':'listSurvey',
+            'logout':'logout',
 
             // Default - catch all
             '*actions': 'defaultAction'
@@ -119,6 +120,17 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events'], functi
                 var loginModel=new LoginModel();
                 var loginPage = Core.create(appView, 'LoginPage', LoginPage,{model:loginModel,skipAuthCheck:true});
                 loginPage.render();
+            });
+        });
+
+        router.on('route:logout', function () {
+            $.removeCookie('isAuthenticated');
+            Events.trigger("view:navigate", {
+                path: "login",
+                options: {
+                    trigger: true,
+                    skipAuthCheck:true
+                }
             });
         });
         Backbone.history.start();
