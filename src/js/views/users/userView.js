@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'events','template!templates/users/page', 'modelValidator', 'models/user/modifyModel', 'modelBinder','bootstrap','fuelux'], function($, _, Backbone,Events, userPageTemplate, Validator, ModifyModel){
+define(['jquery', 'underscore', 'backbone', 'events','template!templates/users/page', 'modelValidator', 'collections/users/usersCollection', 'modelBinder','bootstrap','fuelux'], function($, _, Backbone,Events, userPageTemplate, Validator, ModifyCollection){
 
     var UserPage = Backbone.View.extend({
 
@@ -93,8 +93,8 @@ define(['jquery', 'underscore', 'backbone', 'events','template!templates/users/p
 				success: function() {
 					self.$el.html(userPageTemplate({designations:self.model.toJSON()}));
 					var ModifyView = require('views/users/modifyView');
-					self.modifyModel = new ModifyModel();
-		            var modifyView = new ModifyView({model: self.modifyModel});
+					self.modifyCollection = new ModifyCollection();
+		            var modifyView = new ModifyView({collection: self.modifyCollection});
 					modifyView.render();
 				}
 			});

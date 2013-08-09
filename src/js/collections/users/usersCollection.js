@@ -1,6 +1,6 @@
 define(['backbone', 'globals', 'modelValidator'], function(Backbone, globals) {
 
-    var ModifyModel = Backbone.Model.extend({
+    var ModifyCollection = Backbone.Collection.extend({
 
 		url: function(){
 			return globals.gateWayUrl + "/getAllUsers";
@@ -11,6 +11,6 @@ define(['backbone', 'globals', 'modelValidator'], function(Backbone, globals) {
 		}
     });
 
-    return ModifyModel;
+    return ModifyCollection;
 
 });

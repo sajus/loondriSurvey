@@ -7,18 +7,15 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 
 			render: function(){
 				var self = this;
-				this.$el.html(modifyUsersTemplate);
-
-				this.model.fetch({
+				this.collection.fetch({
 					success: function(){
-						console.log('showing the service call');
-						var sampleData = self.model.toJSON();
-						self.createDataGrid(sampleData);
+						self.$el.html(modifyUsersTemplate({totalUsers: self.collection.length}));
+						self.createDataGrid(self.collection.toJSON());
 					}
 				});
 			},
 
-			createDataGrid: function(sampleData){
+			createDataGrid: function(userlist){
 				var DataSource = new FuelUxDataSource({
 					columns: [
 						{
@@ -62,7 +59,7 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 							sortable: true
 						}
 					],
-					data: sampleData,
+					data: userlist,
 					delay: 250
 				});
 
