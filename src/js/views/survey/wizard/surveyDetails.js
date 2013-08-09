@@ -4,6 +4,9 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizar
         el: '#surveyDetails',
         initialize: function() {
             this._modelBinder = new Backbone.ModelBinder();
+            if(parseInt(this.getIdHashCookie()[0],10)){
+                console.log("in the fetch survey Model");
+            }
             console.log(this);
         },
         events: {

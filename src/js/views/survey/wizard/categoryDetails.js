@@ -1,4 +1,4 @@
-define(['backbone','events','views/BaseView','template!templates/survey/wizard/categoryDetails','modelBinder','bootstrapAlert'],
+define(['backbone','events','views/BaseView','template!templates/survey/wizard/categoryDetails','modelBinder','bootstrapAlert','jqueryCookie'],
     function(Backbone,Events,BaseView,categoryDetailsTemplate) {
 
     return BaseView.extend({
@@ -11,7 +11,13 @@ define(['backbone','events','views/BaseView','template!templates/survey/wizard/c
             'change :input': 'processField'
         },
         render: function() {
-            this.$el.html(categoryDetailsTemplate);
+            console.log(this.options);
+            var isNoCategory=$.cookie("qType"),
+                isNoCategoryBoolean=false;
+            if(isNoCategory.toLowerCase()==="non-category"){
+                isNoCategoryBoolean=true;
+            }
+            this.$el.html(categoryDetailsTemplate({noCategory:isNoCategoryBoolean}));
             this.$el.addClass("active");
             this._modelBinder.bind(this.model, this.el);
             Backbone.Validation.bind(this, {

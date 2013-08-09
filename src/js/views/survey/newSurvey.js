@@ -145,6 +145,7 @@ define(function(require) {
                     SubView = require('views/survey/wizard/categoryDetails'),
                     Model=require('models/survey/wizard/categoryDetails'),
                     targetModel=new Model();
+                    console.log(this.questionType);
                     subView = new SubView({model:targetModel});
                     break;
                 case "optiondetails":

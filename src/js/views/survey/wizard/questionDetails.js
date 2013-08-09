@@ -4,6 +4,7 @@ define(['backbone','events','views/BaseView','template!templates/survey/wizard/q
     return BaseView.extend({
         el: '#questionDetails',
         initialize: function() {
+            console.log("in questionDetails");
             this._modelBinder = new Backbone.ModelBinder();
             this.idHash = this.getIdHashCookie();
         },
@@ -27,6 +28,8 @@ define(['backbone','events','views/BaseView','template!templates/survey/wizard/q
             console.log("Survey ID is");
             console.log(this.idHash[0]);
             console.log(this.model.toJSON());
+            var qType=(this.model.toJSON().questionType!==undefined)?this.model.toJSON().questionType:"category";
+            $.cookie("qType",qType);
             Events.trigger("change:wizardState",{id:101,message:"Question details saved successfully !!"});
         }
     });

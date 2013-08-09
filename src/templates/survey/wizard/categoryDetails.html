@@ -21,11 +21,11 @@
             <div class="controls">
                 <div>
                     <select id="multiSelect" name="category" size="3">
-                        <option value="Category1">Category1</option>
-                        <option value="Category2">Category2</option>
-                        <option value="Category3">Category3</option>
-                        <option value="Category4">Category4</option>
-                        <option value="Category5">Category5</option>
+                        {{#if noCategory}}
+                            <option value="NA" selected="selected" disabled>NA</option>
+                        {{else}}
+                            <!-- Render option template -->
+                        {{/if}}
                     </select>
                     <span class="help-inline"></span>
                 </div>
