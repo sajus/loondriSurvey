@@ -126,7 +126,9 @@ requirejs.config({
 
 /* Load app.js to initialize your application module. */
 require(['views/app', 'router', 'core', 'i18n'], function(AppView, Router, Core, i18n) {
+    console.log("calling core in main.js");
     var appView = Core.create({}, 'AppView', AppView,{skipAuthCheck:true});
+    console.log("after core creation main.js");
     appView.render();
 
     /*

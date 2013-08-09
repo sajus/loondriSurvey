@@ -5,6 +5,7 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
 
             el: '.page',
             initialize: function() {
+            	console.log(this.options);
                 this._modelBinder = new Backbone.ModelBinder();
                 if ($.cookie('isAuthenticated')) {
                     Events.trigger("view:navigate", {
@@ -46,13 +47,19 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
                     invalid: this.showError,
                     valid: this.removeError
                 });
+                console.log(this.options.authorizationFailed);
+                if(this.options.authorizationFailed===true){
+                	Events.trigger("alert:error", [{
+                        message: "You are not authorized to view this page."
+                    }]);
+                }
                 return this;
             },
             postData: function() {
                 this.isAuthorized(this.model.toJSON());
             },
             redirectToHome: function() {
-                Events.trigger('redirectHome');
+            	Events.trigger('redirectHome',this.options);
             }
 
         });

@@ -8,7 +8,8 @@ define(['backbone', 'events', 'globals','views/login/loginView','models/login/lo
     var views = {};
 
     var create = function (context, name, View, options) {
-
+        console.log("in core create");
+        console.log(options);
         /*
             View clean up isn't actually implemented yet,
             but will simply call .clean, .remove and .unbind
@@ -19,13 +20,18 @@ define(['backbone', 'events', 'globals','views/login/loginView','models/login/lo
                 views[name].clean();
             }
         }
-        var skipAuthCheck=true;
-        if(options===undefined || options.skipAuthCheck===undefined){
-            skipAuthCheck=false;
+        var skipAuthCheck=false;
+        if(options!==undefined){
+            console.log("in condition ");
+            if(options.skipAuthCheck){
+                console.log("in false");
+                skipAuthCheck=true;
+            }
         }
+        console.log("in core: "+ skipAuthCheck);
         if(!$.cookie('isAuthenticated') && !skipAuthCheck){
             var loginModel=new LoginModel(),
-            view = new LoginView({model:loginModel});
+            view = new LoginView({model:loginModel,authorizationFailed:!skipAuthCheck,targetView:View,targetOptions:options});
         }else{
             var view = new View(options);
         }

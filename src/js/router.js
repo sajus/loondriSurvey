@@ -13,10 +13,16 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
             console.log(this.idHash);
             this.navigate(navigationData.path, navigationData.options);
         },
-        _navigateHome:function(){
+        _navigateHome:function(options){
             var appView = Core.create({}, 'AppView', AppView,{skipAuthCheck:true});
             appView.render();
-            this.navigate("listSurvey",{trigger:true});
+            if(options!==undefined && options.targetView!==undefined){
+                // var targetView=new options.targetView(options.targetOptions);
+                // targetView.render();
+                this.navigate("listSurvey",{trigger:true});
+            }else{
+                this.navigate("listSurvey",{trigger:true});
+            }
         },
         routes: {
             // Pages

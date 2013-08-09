@@ -5,13 +5,6 @@ define(['jquery', 'backbone', 'core', 'events', 'template!templates/layout','uti
         el: '.container',
 
         initialize: function () {
-            var NestedView2 = Backbone.View.extend({});
-            var NestedView1 = Backbone.View.extend({
-                initialize: function () {
-                    var nestedView2 = Core.create(this, 'Nested View 2', NestedView2);
-                }
-            });
-            var nestedView1 = Core.create(this, 'Nested View 1', NestedView1);
             /* ==========================================================================
                Events
                ========================================================================== */
@@ -40,11 +33,11 @@ define(['jquery', 'backbone', 'core', 'events', 'template!templates/layout','uti
         },
         render: function () {
             var self = this;
-
+            console.log("in app render");
             this.$el.html(layoutTemplate);
 
             require(['views/header/menuView'], function (HeaderMenuView) {
-                var headerMenuView = Core.create(self, 'HeaderMenuView', HeaderMenuView);
+                var headerMenuView = Core.create(self, 'HeaderMenuView', HeaderMenuView,{skipAuthCheck:true});
                 headerMenuView.render();
             });
 
@@ -52,7 +45,7 @@ define(['jquery', 'backbone', 'core', 'events', 'template!templates/layout','uti
                 /*
                     Pass the appView down into the footer so we can render the visualisation
                 */
-                var footerView = Core.create(self, 'FooterView', FooterView, {appView: self});
+                var footerView = Core.create(self, 'FooterView', FooterView, {appView: self,skipAuthCheck:true});
                 footerView.render();
             });
         }
