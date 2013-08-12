@@ -6,24 +6,27 @@ define(['backbone', 'globals', 'modelValidator'], function(Backbone, globals) {
 		},
 
 		validation:{
-			// username:{
-			// 	required: true,
-			// 	msg: 'Please enter username.'
-			// },
-			// empid: {
-			// 	required: true,
-			// 	pattern: 'number',
-			// 	msg: 'Please enter valid userid.'
-			// },
-			// email:[{
-			// 		pattern: '^[a-z0-9_-]{3,15}$',
-			// 		msg: 'Email is not correct.'
-			// 	},
-			// 	{
-			// 		required: true,
-			// 		msg: 'Please enter email.'
-			// 	}
-			// ]
+			empid: {
+				required: true,
+				pattern: 'number',
+				msg: 'Employee ID can\'t be empty'
+			},
+			firstname: {
+				required: true,
+				msg: 'First name can\'t be emply'
+			},
+			lastname: {
+				required: true,
+				msg: 'Last name can\'t be emply'
+			},
+			email: {
+				required: true,
+				msg: 'Email can\'t be emply'
+			},
+			password: {
+				required: true,
+				msg: 'Password can\'t be emply'
+			}
 		}
     });
 
