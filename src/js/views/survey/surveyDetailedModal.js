@@ -98,8 +98,9 @@ return BaseView.extend({
     },
     addCategory:function(e){
         var target$=this.$(e.target),
-            targetInput$=target$.prev();
-        if(this.$('input[name=questionType]:radio:checked').val().toLowerCase()==='non-category'){
+            targetInput$=target$.prev(),
+            select$=this.$("[name=category]");
+        if(this.$('input[name=questionType]:radio:checked').val().toLowerCase()==='non-category' || select$.find('option').size()===1){
             return;
         }else if($.trim(targetInput$.val())===''){
             targetInput$.css('border','1px solid #b94a48');
@@ -107,8 +108,7 @@ return BaseView.extend({
         }else{
             targetInput$.css('border','1px solid #ccc');
             // Add to select control
-            var select$=this.$("[name=category]"),
-                option$=$("<option>",{
+            var option$=$("<option>",{
                     text:targetInput$.val(),
                     value:targetInput$.val()
                 });

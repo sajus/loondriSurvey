@@ -8,16 +8,13 @@ define(['backbone','events','views/BaseView','template!templates/survey/wizard/c
         },
         events: {
             'submit .form-horizontal': 'processForm',
-            'change :input': 'processField'
+            'change :input': 'processField',
+            /* Category */
+            'click .addCategory':'addCategory',
+            'keypress [name=categoryInput]':'toggleBorder'
         },
         render: function() {
-            console.log(this.options);
-            var isNoCategory=$.cookie("qType"),
-                isNoCategoryBoolean=false;
-            if(isNoCategory.toLowerCase()==="non-category"){
-                isNoCategoryBoolean=true;
-            }
-            this.$el.html(categoryDetailsTemplate({noCategory:isNoCategoryBoolean}));
+            this.$el.html(categoryDetailsTemplate({noCategory:($.cookie("isNoCategory")==="true")?true:false}));
             this.$el.addClass("active");
             this._modelBinder.bind(this.model, this.el);
             Backbone.Validation.bind(this, {
@@ -26,6 +23,36 @@ define(['backbone','events','views/BaseView','template!templates/survey/wizard/c
                 forceUpdate:true
             });
             return this;
+        },
+        addCategory:function(e){
+            var target$=this.$(e.target),
+                targetInput$=target$.prev(),
+                select$=this.$("[name=category]");
+            if($.cookie("isNoCategory")==="true" || select$.find('option').size()===1){
+                return;
+            }else if($.trim(targetInput$.val())===''){
+                targetInput$.css('border','1px solid #b94a48');
+                return;
+            }else{
+                targetInput$.css('border','1px solid #ccc');
+                // Add to select control
+                var option$=$("<option>",{
+                        text:targetInput$.val(),
+                        value:targetInput$.val()
+                    });
+                select$.append(option$);
+                targetInput$.val("");
+            }
+        },
+        toggleBorder:function(e){
+            console.log("in toggle Border");
+            var target$=this.$(e.target);
+            console.log(target$.text());
+            if($.trim(target$.val())===''){
+                target$.css('border','1px solid #b94a48');
+            }else{
+                target$.css('border','1px solid #ccc');
+            }
         },
         postData: function() {
             console.log("In the post data function");
