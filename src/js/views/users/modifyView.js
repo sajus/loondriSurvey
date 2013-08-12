@@ -19,7 +19,7 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 				var DataSource = new FuelUxDataSource({
 					columns: [
 						{
-							property: "id",
+							property: "empid",
 							label: "Employee Id",
 							sortable: true
 						},
@@ -39,13 +39,13 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 							sortable: true
 						},
 						{
-							property: "designationid",
-							label: "Designation",
+							property: "gender",
+							label: "Gender",
 							sortable: true
 						},
 						{
-							property: "gender",
-							label: "Gender",
+							property: "designationid",
+							label: "Designation",
 							sortable: true
 						},
 						{
@@ -56,6 +56,11 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 						{
 							property: "status",
 							label: "User Status",
+							sortable: true
+						},
+						{
+							property: "operations",
+							label: "Operations",
 							sortable: true
 						}
 					],

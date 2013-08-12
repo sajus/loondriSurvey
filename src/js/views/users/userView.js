@@ -1,9 +1,11 @@
-define(['jquery', 'underscore', 'backbone', 'events','template!templates/users/page', 'modelValidator', 'collections/users/usersCollection', 'modelBinder','bootstrap','fuelux'], function($, _, Backbone,Events, userPageTemplate, Validator, ModifyCollection){
+define(['jquery', 'underscore', 'views/BaseView', 'backbone', 'events','template!templates/users/page', 'modelValidator', 'models/user/getDesignationModel' , 'collections/users/usersCollection', 'modelBinder','bootstrap','fuelux'], 
+	function($, _, BaseView, Backbone,Events, userPageTemplate, Validator, DesignationModel, ModifyCollection){
 
-    var UserPage = Backbone.View.extend({
+    return BaseView.extend({
 
 		initialize: function(){
 			this.modelBinder = new Backbone.ModelBinder();
+			this.designationModel = new DesignationModel();
 			this.on("reset", this.updateView);
 		},
 
@@ -58,21 +60,6 @@ define(['jquery', 'underscore', 'backbone', 'events','template!templates/users/p
 			$('#password').val(password);
 		},
 
-		processField:function(e){
-            var target=$(e.target),fieldNameAttr=target.attr('name');
-            this.model.set(fieldNameAttr,target.val(),{validate:true});
-        },
-
-		processForm: function(e){
-			e.preventDefault();
-			if(this.model.isValid(true)){
-				this.postData();
-			}
-			else{
-			 	Events.trigger("alert:error",[{message:"Oops!! Did not pass the validation."}]);
-			}
-		},
-
 		resetForm: function(e){
 			e.preventDefault();
 			this.trigger('reset');
@@ -89,9 +76,9 @@ define(['jquery', 'underscore', 'backbone', 'events','template!templates/users/p
 
 			this.modelBinder.bind(this.model, this.el);
 
-			this.model.fetch({
+			this.designationModel.fetch({
 				success: function() {
-					self.$el.html(userPageTemplate({designations:self.model.toJSON()}));
+					self.$el.html(userPageTemplate({designations:self.designationModel.toJSON()}));
 					var ModifyView = require('views/users/modifyView');
 					self.modifyCollection = new ModifyCollection();
 		            var modifyView = new ModifyView({collection: self.modifyCollection});
@@ -107,36 +94,16 @@ define(['jquery', 'underscore', 'backbone', 'events','template!templates/users/p
 			return this;
         },
 
-		showError: function(view, attr, error){
-			// showing errors on UI
-			var targetView = view.$el,
-            targetSelector = targetView.find("[name="+attr+"]"),
-            targetParent = targetSelector.closest(".control-group"),
-			errorSpan = targetParent.find('.help-inline');
-			//adding error message to errorspan
-			if($.trim(errorSpan.html())===''){
-				errorSpan.append(error);
-			} else if(errorSpan.html().toLowerCase()!==error.toLowerCase()){
-                errorSpan.html(error);
-            }
-
-			targetParent.addClass('error');
-		},
-
-		hideError: function(view, attr, error){
-			// hiding errors on UI
-			var targetView = view.$el,
-            targetSelector = targetView.find("[name="+attr+"]"),
-            targetParent = targetSelector.closest(".control-group");
-			targetParent.find('.help-inline').html('');
-			targetParent.removeClass('error');
-		},
-
 		postData: function(){
-			console.log("Data:");
-			console.log(this.model.toJSON());
+			this.model.save({
+				success: function() {
+					console.log("Created User on Server");
+				},
+				error: function() {
+					console.log("Create User Services Error");
+				}
+			});
 		}
     });
 
-    return UserPage;
 });

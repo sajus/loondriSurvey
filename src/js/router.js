@@ -95,9 +95,9 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
         });
 
         router.on('route:user', function () {
-            require(['views/users/userView','views/users/modifyView','models/user/userModel'], function (userPage, modifyUserPage, UserModel) {
-                var userModel = new UserModel();
-                var userPage = Core.create(appView, 'userPage', userPage, {model: userModel });
+            require(['views/users/userView','views/users/modifyView','models/user/createUserModel'], function (userPage, modifyUserPage, CreateUserModel) {
+                var createUserModel = new CreateUserModel();
+                var userPage = Core.create(appView, 'userPage', userPage, { model: createUserModel });
                 userPage.render();
             });
         });
