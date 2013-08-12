@@ -9,9 +9,14 @@
             <a class="brand" href="#">Loondri Survey</a>
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li><a href="#dashboard">Dashboard</a></li>
-                    <li><a href="#listSurvey">Survey</a></li>
-                    <li><a href="#user">User</a></li>
+                    {{#if admin}}
+                        <li><a href="#dashboard">Dashboard</a></li>
+                        <li><a href="#userAssesment">User Assesment</a></li>
+                        <li><a href="#listSurvey">Survey</a></li>
+                    {{/if}}
+                    {{#if superAdmin}}
+                        <li><a href="#user">User</a></li>
+                    {{/if}}
                     <li><a href="#logout">Logout</a></li>
                 </ul>
             </div>

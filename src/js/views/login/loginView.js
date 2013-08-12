@@ -5,11 +5,17 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
 
             el: '.page',
             initialize: function() {
-                console.log(this.options);
                 this._modelBinder = new Backbone.ModelBinder();
-                if ($.cookie('isAuthenticated')) {
+                if ($.cookie('isAuthenticated') && ($.cookie('accesslevel') === "admin" || $.cookie('accesslevel') === "super admin")) {
                     Events.trigger("view:navigate", {
                         path: "dashboard",
+                        options: {
+                            trigger: true
+                        }
+                    });
+                } else if ($.cookie('isAuthenticated') && $.cookie('accesslevel') === "user") {
+                    Events.trigger("view:navigate", {
+                        path: "listSurvey",
                         options: {
                             trigger: true
                         }
@@ -25,15 +31,28 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
                 'change :input,blue :input': 'processField'
             },
             isAuthorized: function(params) {
-                var userData=this.model.isAuthorized();
-                // if (userData.isAuthenticated) {
-                if (true) {
+                var accesslevel = this.model.isAuthorized().accesslevel;
+                if(this.model.isAuthorized().accesslevel === undefined) {
+                    Events.trigger("alert:error", [{
+                        message: "Authentication Failed.Check username/password."
+                    }]);
+                } else if (accesslevel.toLowerCase() === "admin" || accesslevel.toLowerCase() === "super admin") {
+                // if (true) {
                     // Call setSessionCookies globally
                     $.cookie('isAuthenticated', true);
+                    $.cookie('accesslevel', accesslevel.toLowerCase());
                     Events.trigger("alert:success", [{
                         message: "Authentication successful. Redirecting ...."
                     }]);
-                    setTimeout(this.redirectToHome, 1000);
+                    setTimeout(this.redirectToAdmin, 1000);
+                } else if (accesslevel.toLowerCase() === "user") {
+                    // Call setSessionCookies globally
+                    $.cookie('isAuthenticated', true);
+                    $.cookie('accesslevel', accesslevel.toLowerCase());
+                    Events.trigger("alert:success", [{
+                        message: "Authentication successful. Redirecting ...."
+                    }]);
+                    setTimeout(this.redirectToUser, 1000);
                 } else {
                     Events.trigger("alert:error", [{
                         message: "Authentication Failed.Check username/password."
@@ -49,7 +68,6 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
                     invalid: this.showError,
                     valid: this.removeError
                 });
-                console.log(this.options.authorizationFailed);
                 if(this.options.authorizationFailed===true){
                     Events.trigger("alert:error", [{
                         message: "You are not authorized to view this page."
@@ -60,8 +78,11 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
             postData: function() {
                 this.isAuthorized(this.model.toJSON());
             },
-            redirectToHome: function() {
-                Events.trigger('redirectHome',this.options);
+            redirectToAdmin: function() {
+                Events.trigger('redirectAdmin',this.options);
             },
+            redirectToUser: function() {
+                Events.trigger('redirectUser',this.options);
+            }
         });
     });

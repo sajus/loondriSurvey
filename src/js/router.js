@@ -3,14 +3,15 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
     var AppRouter = Backbone.Router.extend({
         initialize:function(){
             Events.on('page:navigate', this._navigatePage, this);
-            Events.on('redirectHome', this._navigateHome, this);
+            Events.on('redirectAdmin', this._navigateAdmin, this);
+            Events.on('redirectUser', this._navigateUser, this);
             this.currentId=null;
         },
         _navigatePage:function(navigationData){
             console.log("in the navigate routeer function.");
             this.navigate(navigationData.path, navigationData.options);
         },
-        _navigateHome:function(options){
+        _navigateAdmin:function(options){
             var appView = Core.create({}, 'AppView', AppView,{skipAuthCheck:true});
             appView.render();
             if(options!==undefined && options.targetView!==undefined){
@@ -21,10 +22,22 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
                 this.navigate("dashboard",{trigger:true});
             }
         },
+        _navigateUser:function(options){
+            var appView = Core.create({}, 'AppView', AppView,{skipAuthCheck:true});
+            appView.render();
+            if(options!==undefined && options.targetView!==undefined){
+                // var targetView=new options.targetView(options.targetOptions);
+                // targetView.render();
+                this.navigate("listSurvey",{trigger:true});
+            }else{
+                this.navigate("listSurvey",{trigger:true});
+            }
+        },
         routes: {
             // Pages
             '':'login',
             'dashboard':'dashboard',
+            'userAssesment':'userAssesment',
             'user': 'user',
             'login': 'login',
             'wizard/:step':'newSurvey',
@@ -45,6 +58,13 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
         /* ==========================================================================
            =Survey
            ========================================================================== */
+
+       router.on('route:userAssesment', function () {
+            require(['views/userAssesment/userAssesmentView'], function (UserAssesmentPage) {
+                var userAssesmentPage = Core.create(appView, 'UserAssesmentPage', UserAssesmentPage);
+                userAssesmentPage.render();
+            });
+        });
 
        router.on('route:dashboard', function () {
             require(['views/dashboard/dashboardView'], function (DashboardPage) {
@@ -112,6 +132,7 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
 
         router.on('route:logout', function () {
             $.removeCookie('isAuthenticated');
+            $.removeCookie('accesslevel')
             Events.trigger("view:navigate", {
                 path: "login",
                 options: {
