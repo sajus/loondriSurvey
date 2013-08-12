@@ -1,0 +1,101 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="editModal" aria-hidden="true">&times;</button>
+    <h3>Update users details empid email</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" id="userForm">
+        <fieldset>
+            <legend> Edit existing user</legend>
+
+            <!-- First Name -->
+            <div class="control-group">
+                <label class="control-label" for="firstname">First Name</label>
+                <div class="controls">
+                    <input type="text" id="firstname" name="firstname" class="input-xlarge" placeholder="eg. Abc" />
+                    <span class="help-inline"></span>
+                </div>
+            </div>
+
+            <!-- Last Name -->
+            <div class="control-group">
+                <label class="control-label" for="lastname">Last Name</label>
+                <div class="controls">
+                    <input type="text" id="lastname" name="lastname" class="input-xlarge" placeholder="eg. Xyz" />
+                    <span class="help-inline"></span>
+                </div>
+            </div>
+
+            <!-- Password -->
+            <!-- <div class="control-group">
+                <label class="control-label" for="password">Password</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <input class="span2 input-xlarge" id="password" name="password" type="password">
+                        <button class="btn keygen" type="button">Generate Password</button>
+                    </div>
+                    <span class="help-inline"></span>
+                </div>
+            </div> -->
+
+            <!-- Gender -->
+            <div class="control-group">
+                <label class="control-label" for="gender">Gender</label>
+                <div class="controls">
+                    <label class="radio inline">
+                      <input type="radio" id="female" value="f" name="gender" checked="true"> Female
+                    </label>
+                    <label class="radio inline">
+                      <input type="radio" id="male" value="m" name="gender"> Male
+                    </label>
+                </div>
+            </div>
+
+            <!-- Designation -->
+            <div class="control-group">
+                <label class="control-label" for="designation">Designation</label>
+                <div class="controls">
+                    <select id="designation" name="designation" class="input-xlarge">
+                        {{#each designations}}
+                            <option value="{{id}}">{{name}}</option>
+                        {{/each}}
+                    </select>
+                    <span class="help-inline"></span>
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div class="control-group">
+                <label class="control-label" for="status">User status</label>
+                <div class="controls">
+                    <label class="radio inline">
+                      <input type="radio" id="active" value="active" name="status" checked="true"> Active
+                    </label>
+                    <label class="radio inline">
+                      <input type="radio" id="inactive" value="inactive" name="status"> In Active
+                    </label>
+                </div>
+            </div>
+
+            <!-- Access Level -->
+            <div class="control-group">
+                <label class="control-label" for="accesslevel">Access Level</label>
+                <div class="controls">
+                    <label class="radio inline">
+                      <input type="radio" id="accessSuperAdmin" value="accessSuperAdmin" name="accesslevel"> Super Admin
+                    </label>
+                    <label class="radio inline">
+                      <input type="radio" id="accessAdmin" value="accessAdmin" name="accesslevel"> Admin
+                    </label>
+                    <label class="radio inline">
+                      <input type="radio" id="accessUser" value="accessUser" name="accesslevel" checked="true"> User
+                    </label>
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+</div>
+<div class="modal-footer">
+    <a href="#" class="btn">Cancel</a>
+    <a href="#" class="btn btn-success">Update</a>
+</div>

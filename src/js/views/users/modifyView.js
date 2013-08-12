@@ -1,5 +1,5 @@
-define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUsers', 'fueluxDataSource', 'fueluxDataGrid','bootstrapDropdown','fueluxComboBox','fueluxSelectBox','fueluxSearchBox'],
-	function($, _,Backbone, modifyUsersTemplate, FuelUxDataSource){
+define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUsers', 'views/users/editUserModalView', 'views/users/deleteUserModalView', 'fueluxDataSource', 'fueluxDataGrid','bootstrapDropdown','fueluxComboBox','fueluxSelectBox','fueluxSearchBox'],
+	function($, _,Backbone, modifyUsersTemplate, UserEditView, UserDeleteView, FuelUxDataSource){
 
 		var modifyUserPage = Backbone.View.extend({
 
@@ -13,6 +13,11 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 						self.createDataGrid(self.collection.toJSON());
 					}
 				});
+			},
+
+			events: {
+				'click .userEdit': 'userEdit',
+				'click .userDelete': 'userDelete'
 			},
 
 			createDataGrid: function(userlist){
@@ -76,6 +81,22 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 					},
 					stretchHeight: false
 				});
+			},
+
+			userEdit: function() {
+				console.log("User Edit Mode Activate");
+				var userEdit = new UserEditView();
+
+				this.$('.modal').html(userEdit.render().el);
+        		this.$('#editModal').modal();
+			},
+
+			userDelete: function() {
+				console.log("User Delete Model Activate");
+				var userDelete = new UserDeleteView();
+
+				this.$('.modal').html(userDelete.render().el);
+        		this.$('#deleteModal').modal();
 			}
 		});
 
