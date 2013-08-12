@@ -13,7 +13,7 @@ define(['backbone', 'events','views/BaseView','template!templates/survey/wizard/
             'click .removeOption': 'removeOption',
         },
         render: function() {
-            this.$el.html(optionDetailsTemplate);
+            this.$el.html(optionDetailsTemplate({isCustomResponse:$.cookie("isCustomResponse")==="true"?true:false}));
             this.$el.addClass("active");
             this._modelBinder.bind(this.model, this.el);
             Backbone.Validation.bind(this, {

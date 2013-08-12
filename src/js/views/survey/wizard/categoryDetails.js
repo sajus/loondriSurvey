@@ -57,6 +57,8 @@ define(['backbone','events','views/BaseView','template!templates/survey/wizard/c
         postData: function() {
             console.log("In the post data function");
             console.log(this.model.toJSON());
+            var isCustomResponse=(this.model.toJSON().responseType.toLowerCase()==="other")?true:false;
+            $.cookie("isCustomResponse",isCustomResponse);
             Events.trigger("change:wizardState",{id:200,message:"Category details saved successfully !!"});
         }
     });

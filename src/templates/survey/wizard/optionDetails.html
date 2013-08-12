@@ -4,10 +4,13 @@
         <div class="control-group optionGroup">
             <label class="control-label" for="option1">Option1</label>
             <div class="controls">
-                <input type="text" class="input-xlarge" id="option1" data-name="option" name="option1">
+                <input type="text" class="input-xlarge" id="option1" data-name="option" name="option1" 
+                {{#if isCustomResponse}}
+                placeholder="NA" disabled
+                {{/if}}>
                 <span class="help-inline"></span>
                 <label class="checkbox">Correct
-                   <input type="checkbox">
+                   <input type="checkbox" {{#if isCustomResponse}}disabled{{/if}}>
                 </label>
                 <p class="help-block">Add your options for question here</p>
             </div>
@@ -15,18 +18,21 @@
         <div class="control-group optionGroup">
             <label class="control-label" for="option1">Option2</label>
             <div class="controls">
-                <input type="text" class="input-xlarge" id="option2" data-name="option" name="option2">
+                <input type="text" class="input-xlarge" id="option2" data-name="option" name="option2" 
+                {{#if isCustomResponse}}
+                placeholder="NA" disabled
+                {{/if}}>
                 <div class="btn-group">
-                    <button class="btn addOption"><span class="icon-plus"></span></button>
+                    <button class="btn addOption" {{#if isCustomResponse}}disabled{{/if}}><span class="icon-plus"></span></button>
                 </div>
                 <label class="checkbox">Correct
-                   <input type="checkbox">
+                   <input type="checkbox" {{#if isCustomResponse}}disabled{{/if}}>
                 </label>
                 <span class="help-inline"></span>
             </div>
         </div>
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary">Finish Wizard</button>
             <!-- <button class="btn">Cancel</button> -->
         </div>
     </fieldset>
