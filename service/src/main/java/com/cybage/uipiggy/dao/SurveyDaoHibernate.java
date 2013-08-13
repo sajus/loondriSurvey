@@ -14,7 +14,7 @@ public class SurveyDaoHibernate extends HibernateDaoSupport implements SurveyDao
 
 	private Log logger = LogFactory.getLog(this.getClass());
 	
-	public Long createOrUpdateSurvey(Survey s) throws Exception
+	public Long createSurvey(Survey s) throws Exception
 	{
 		logger.info("in survey DAO");
 		getHibernateTemplate().saveOrUpdate(s); 
@@ -36,4 +36,8 @@ public class SurveyDaoHibernate extends HibernateDaoSupport implements SurveyDao
 		
 	}
 	
+	public Boolean updateSurvey(String queryString) throws Exception{
+		getHibernateTemplate().bulkUpdate(queryString);
+		return true;
+	}
 }

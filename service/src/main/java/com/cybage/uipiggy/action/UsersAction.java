@@ -101,10 +101,10 @@ public class UsersAction implements Action, ServletRequestAware,ServletResponseA
 		String firstName = jsonObj.get("firstname").toString();
 		String lastName = jsonObj.get("lastname").toString();
 		String email = jsonObj.get("email").toString()+"@cybage.com";
-		String password = jsonObj.get("password").toString();
+		//String password = jsonObj.get("userpassword").toString();
 		String gender = jsonObj.get("gender").toString();
 		String status = jsonObj.get("status").toString();
-		Long empId=Long.parseLong( jsonObj.get("empId").toString());
+		Long empId=Long.parseLong( jsonObj.get("empid").toString());
 		Long designationId=Long.parseLong( jsonObj.get("designationid").toString());
 		String acessLevel = jsonObj.get("accesslevel").toString();
 		
@@ -117,7 +117,7 @@ public class UsersAction implements Action, ServletRequestAware,ServletResponseA
 		users.setLastname(lastName);
 		users.setStatus(status);
 		//String pass = CommonUtil.crypt(password);
-		users.setUserpassword(password);
+		users.setUserpassword(empId+"_"+firstName);
 		
 		users.setEmail(email);
 		users.setAccesslevel(acessLevel);
@@ -133,7 +133,7 @@ public class UsersAction implements Action, ServletRequestAware,ServletResponseA
 			String id = hm.get("empId");
 			getServletResponse().setContentType("application/json");
 			getServletResponse().setCharacterEncoding("UTF-8");
-			getServletResponse().getWriter().write("{empId:"+id+"}");
+			getServletResponse().getWriter().write("{empid:"+id+"}");
 			getServletResponse().getWriter().flush();
 			getServletResponse().getWriter().close();
 			
@@ -180,7 +180,7 @@ public class UsersAction implements Action, ServletRequestAware,ServletResponseA
 		{
 			String str = CommonUtil.getBody(getServletRequest());
 			JSONObject jsonObj = new JSONObject(str);
-			Long empId=Long.parseLong( jsonObj.get("empId").toString());
+			Long empId=Long.parseLong( jsonObj.get("empid").toString());
 		
 		
 			logger.info("getUsersByEmpId()");

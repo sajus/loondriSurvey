@@ -88,9 +88,9 @@ public class QuestionsAction implements Action, ServletRequestAware,ServletRespo
 		JSONObject jsonObj = new JSONObject(str);
 		
 		
-		String type=jsonObj.get("qtype").toString();
-		String value=jsonObj.get("qvalue").toString();
-		Long sid=Long.valueOf(jsonObj.get("sid").toString());
+		String type=jsonObj.get("questiontype").toString();
+		String value=jsonObj.get("questionvalue").toString();
+		Long sid=Long.valueOf(jsonObj.get("surveyid").toString());
 		
 		
 		
@@ -106,7 +106,7 @@ public class QuestionsAction implements Action, ServletRequestAware,ServletRespo
 			
 			getServletResponse().setContentType("application/json");
 			getServletResponse().setCharacterEncoding("UTF-8");
-			getServletResponse().getWriter().write(qid.toString());
+			getServletResponse().getWriter().write("{id:"+qid+"}");
 			getServletResponse().getWriter().flush();
 			getServletResponse().getWriter().close();
 			

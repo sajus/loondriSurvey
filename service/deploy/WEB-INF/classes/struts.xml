@@ -45,8 +45,12 @@
 			class="com.cybage.uipiggy.action.QuestionsAction" method="updateQuestions">	
 		</action>
 			
-		<action name="createOrUpdateUsers"
-			class="com.cybage.uipiggy.action.UsersAction" method="createOrUpdateUsers">
+		<action name="createUsers"
+			class="com.cybage.uipiggy.action.UsersAction" method="createUsers">
+		</action>
+		
+		<action name="updateUsers"
+			class="com.cybage.uipiggy.action.UsersAction" method="updateUsers">
 		</action>
 		
 		<action name="getAllUsers"
@@ -76,7 +80,7 @@
 		</action>
 		
 		<action name="updateDesignations"
-			class="com.cybage.uipiggy.action.DesignationsAction" method="updateDesignations">	
+			class="com.cybage.uipiggy.action.DesignationsAction" method="updateDesignation">	
 		</action>
 		
 		<action name="getAllDesignations"

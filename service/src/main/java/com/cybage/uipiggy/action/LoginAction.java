@@ -103,7 +103,7 @@ public class LoginAction implements Action, ServletRequestAware,ServletResponseA
 		try
 		{
 			String username = jsonObj.get("email").toString()+"@cybage.com";//(String) getServletRequest().getParameter("email")+"@cybage.com";
-			String password = jsonObj.get("password").toString();//(String) getServletRequest().getParameter("password");
+			String password = jsonObj.get("userpassword").toString();//(String) getServletRequest().getParameter("password");
 			String pass = CommonUtil.crypt(password);
 			Users users = loginService.CheckLoginUser(username, password);
 			getServletResponse().setCharacterEncoding("UTF-8");
@@ -142,7 +142,7 @@ public class LoginAction implements Action, ServletRequestAware,ServletResponseA
 		{
 			request.getSession().invalidate();
 			getServletResponse().setCharacterEncoding("UTF-8");
-			getServletResponse().getWriter().write("logout");
+			getServletResponse().getWriter().write("{isAuthenticated:false}");
 			getServletResponse().getWriter().flush();
 			getServletResponse().getWriter().close();
 		}catch(Exception e)

@@ -127,7 +127,7 @@ public class ResponseAction implements Action, ServletRequestAware,ServletRespon
 			logger.info("writing response from action");
 			getServletResponse().setContentType("application/json");
 			getServletResponse().setCharacterEncoding("UTF-8");
-			getServletResponse().getWriter().write(status);
+			getServletResponse().getWriter().write("{status:"+status+"}");
 			getServletResponse().getWriter().flush();
 			getServletResponse().getWriter().close();
 			

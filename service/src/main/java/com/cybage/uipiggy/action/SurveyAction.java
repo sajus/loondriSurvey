@@ -2,6 +2,7 @@ package com.cybage.uipiggy.action;
 
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,34 +79,14 @@ public class SurveyAction implements Action, ServletRequestAware,ServletResponse
 		return "success";
 	}
 	
-	public void createSurvey()
-	{
-		createOrUpdateSurvey(-1L);
-	}
-	
-	public void updateSurvey()
-	{
-		try{
-			String str = CommonUtil.getBody(getServletRequest());
-			JSONObject jsonObj = new JSONObject(str);
-				
-			Long id=Long.valueOf(getServletRequest().getParameter("id"));
-			createOrUpdateSurvey(id);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	public void createOrUpdateSurvey(Long id){
+	public void createSurvey(Long id){
 		
 		try
 		{
 			String str = CommonUtil.getBody(getServletRequest());
 			JSONObject jsonObj = new JSONObject(str);
 			
-			String description=jsonObj.getString("desc");
+			String description=jsonObj.getString("description");
 			String title=jsonObj.getString("title");
 			String sdate=jsonObj.getString("startdate");
 			String edate=jsonObj.getString("enddate");
@@ -116,24 +97,19 @@ public class SurveyAction implements Action, ServletRequestAware,ServletResponse
 						
 			survey=new Survey();
 			
-			if(id!=-1)
-			{
-				survey.setId(id);
-			}
-			
 			survey.setDescription(description);
 			survey.setTitle(title);
 			survey.setStartdate(startDate);
 			survey.setEnddate(endDate);
 			
 		
-				Long sid=surveyService.createOrUpdateSurvey(survey);
+				Long sid=surveyService.createSurvey(survey);
 				
 				logger.info("Survey action");
 				
 				getServletResponse().setContentType("application/json");
 				getServletResponse().setCharacterEncoding("UTF-8");
-				getServletResponse().getWriter().write(survey.getId().toString());
+				getServletResponse().getWriter().write("{id:"+sid+"}");
 				getServletResponse().getWriter().flush();
 				getServletResponse().getWriter().close();
 				
@@ -178,7 +154,7 @@ public class SurveyAction implements Action, ServletRequestAware,ServletResponse
 			String jsonresp = "{isValidSurvey:false}";
 			String str = CommonUtil.getBody(getServletRequest());
 			JSONObject jsonObj = new JSONObject(str);
-			Long surveyId=jsonObj.getLong("surveyid");
+			Long surveyId=jsonObj.getLong("id");
 			List<Survey> surveyListById=surveyService.getSurveyById(surveyId);
 			Date endDate = surveyListById.get(0).getEnddate();
 			Date currDate = new Date();
@@ -199,6 +175,51 @@ public class SurveyAction implements Action, ServletRequestAware,ServletResponse
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public void updateSurvey() throws Exception
+	{
+				String str = CommonUtil.getBody(getServletRequest());
+				JSONObject j = new JSONObject(str);
+				Boolean resp = false;
+				 Iterator<String> itr = j.keys();
+		                 
+		         String query = "Update Survey set ";
+		         String whereClause = " where";
+		         int counter =0; 
+		         while(itr.hasNext())
+		         {
+		               String key = itr.next();
+		               System.out.println(key);
+		               if(key.equalsIgnoreCase("id"))
+		               {
+		                      
+		                      whereClause+=(" id="+j.getInt(key));
+		               }
+		               else
+		               {
+		                      if(counter>=1)
+		                             query+=(" , "+key+"="+"'"+j.getString(key)+"'");
+		                      else
+		                             query+=(key+"="+"'"+j.getString(key)+"'");
+		                      
+		                      counter++;
+		               }
+		               
+		         }
+		         
+		         query+=whereClause;
+		         
+		         resp = surveyService.updateSurvey(query);
+		       
+		        getServletResponse().setContentType("application/json");
+				getServletResponse().setCharacterEncoding("UTF-8");
+				
+				 getServletResponse().getWriter().write("{isUpdated:"+resp+"}");
+				
+					
+				getServletResponse().getWriter().flush();
+				getServletResponse().getWriter().close();
 	}
 
 }

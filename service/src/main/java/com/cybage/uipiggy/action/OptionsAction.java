@@ -101,7 +101,7 @@ public class OptionsAction implements Action, ServletRequestAware,ServletRespons
 			
 			getServletResponse().setContentType("text/plain");
 			getServletResponse().setCharacterEncoding("UTF-8");
-			getServletResponse().getWriter().write(oid.toString());
+			getServletResponse().getWriter().write("{id:"+oid+"}");
 			getServletResponse().getWriter().flush();
 			getServletResponse().getWriter().close();
 			
@@ -123,7 +123,7 @@ public class OptionsAction implements Action, ServletRequestAware,ServletRespons
 		{
 			String str = CommonUtil.getBody(getServletRequest());
 			JSONObject jsonObj = new JSONObject(str);
-			Long cid=Long.valueOf(jsonObj.get("categoryid").toString());
+			Long cid=Long.valueOf(jsonObj.get("categoriesid").toString());
 			List<Options> optList=optionService.getOptionsByCategoryId(cid);
 			String jsonResp=JsonUtil.getOptionListJson(optList);
 			

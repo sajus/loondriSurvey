@@ -18,10 +18,10 @@ public class SurveyServiceImpl implements SurveyService{
 		this.surveyDao = surveyDao;
 	}
 
-	public Long createOrUpdateSurvey(Survey survey) throws Exception
+	public Long createSurvey(Survey survey) throws Exception
 	{
 		
-		Long id=surveyDao.createOrUpdateSurvey(survey);
+		Long id=surveyDao.createSurvey(survey);
 		
 		return id;
 	}
@@ -38,6 +38,11 @@ public class SurveyServiceImpl implements SurveyService{
 		List<Survey> surveyListById=surveyDao.getSurveyById(surveyId);
 		return surveyListById;
 		
+	}
+	
+	public Boolean updateSurvey(String queryString) throws Exception{
+		surveyDao.updateSurvey(queryString);
+		return true;
 	}
 
 }

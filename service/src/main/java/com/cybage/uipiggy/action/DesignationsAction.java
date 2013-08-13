@@ -83,7 +83,7 @@ public class DesignationsAction implements Action, ServletRequestAware,ServletRe
 		{	
 			String str = CommonUtil.getBody(getServletRequest());
 			JSONObject jsonObj = new JSONObject(str);
-			String dname=jsonObj.getString("dname");
+			String dname=jsonObj.getString("name");
 			
 			designations=new Designations();
 			designations.setName(dname);
@@ -94,7 +94,7 @@ public class DesignationsAction implements Action, ServletRequestAware,ServletRe
 			
 			getServletResponse().setContentType("application/json");
 			getServletResponse().setCharacterEncoding("UTF-8");
-			getServletResponse().getWriter().write(did.toString());
+			getServletResponse().getWriter().write("{id:"+did+"}");
 			getServletResponse().getWriter().flush();
 			getServletResponse().getWriter().close();
 			

@@ -106,7 +106,7 @@ public class CategoriesAction implements Action, ServletRequestAware,ServletResp
 			logger.info("writing response from action");
 			getServletResponse().setContentType("application/json");
 			getServletResponse().setCharacterEncoding("UTF-8");
-			getServletResponse().getWriter().write(cid.toString());
+			getServletResponse().getWriter().write("{id:"+cid+"}");
 			getServletResponse().getWriter().flush();
 			getServletResponse().getWriter().close();
 			
@@ -150,8 +150,7 @@ public class CategoriesAction implements Action, ServletRequestAware,ServletResp
 	
 	public void updateCategories() throws Exception
 	{
-		//String str = CommonUtil.getBody(getServletRequest());
-		String str = "{'id':1,'categoryname':'UI'}";
+		String str = CommonUtil.getBody(getServletRequest());
 		JSONObject j = new JSONObject(str);
 		Boolean resp = false;
 		 Iterator<String> itr = j.keys();
