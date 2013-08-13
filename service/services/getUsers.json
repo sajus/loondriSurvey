@@ -1,0 +1,61 @@
+{
+    "authorized-users": [
+        {
+            "firstName": "Super",
+            "lastName": "Administrator",
+            "userId": "100",
+            "email": "super@cybage.com",
+            "designation": "Department Head",
+            "accessLevel": "superadmin",
+            "permissions": {
+                "isC_Post": true,
+                "isR_Get": true,
+                "isU_Put": true,
+                "isD_Delete": true
+            },
+            "permissionOn": {
+                "canCrudAdmin": true,
+                "canCrudUsers": true,
+                "canCrudData": true
+            }
+        },
+        {
+            "firstName": "Normal",
+            "lastName": "Administrator",
+            "userId": "102",
+            "email": "admin@cybage.com",
+            "designation": "Manager",
+            "accessLevel": "admin",
+            "permissions": {
+                "isC_Post": true,
+                "isR_Get": true,
+                "isU_Put": true,
+                "isD_Delete": true
+            },
+            "permissionOn": {
+                "canCrudAdmin": false,
+                "canCrudUsers": true,
+                "canCrudData": true
+            }
+        },
+        {
+            "firstName": "Normal",
+            "lastName": "User 1",
+            "userId": "105",
+            "email": "user1@cybage.com",
+            "designation": "WebDev Analyst",
+            "accessLevel": "user",
+            "permissions": {
+                "isC_Post": false,
+                "isR_Get": true,
+                "isU_Put": true,
+                "isD_Delete": false
+            },
+            "permissionOn": {
+                "canCrudAdmin": false,
+                "canCrudUsers": true,
+                "canCrudData": true
+            }
+        }
+    ]
+}
