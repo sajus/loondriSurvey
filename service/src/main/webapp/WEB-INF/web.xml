@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>uipiggy</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  
+    <filter>
+        <filter-name>struts2</filter-name>
+        <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+        
+    </filter>
+    
+     <filter-mapping>
+        <filter-name>struts2</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+        	classpath:applicationContext.xml
+        </param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    
+    <listener>
+    	<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+	
+	<servlet>
+		<servlet-name>QuartzInitializationServlet</servlet-name>
+		<servlet-class>	com.cybage.edds.uipiggy.scheduler.QuartzInitializationServlet</servlet-class>
+		<init-param>
+			<param-name>configFile</param-name>
+			<param-value>quartz.properties</param-value>
+		</init-param>
+  		<load-on-startup>1</load-on-startup>
+  	</servlet>
+  	
+  	<servlet>
+	  	<servlet-name>ApplicationStartupServlet</servlet-name>
+		<servlet-class>com.cybage.edds.uipiggy.listener.ApplicationStartupServlet</servlet-class>
+		<init-param>
+			<param-name>applicationProperties</param-name>
+			<param-value>application.properties</param-value>
+		</init-param>
+  		<load-on-startup>2</load-on-startup>
+	</servlet> 
+  	
+    <welcome-file-list>
+    	<welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+ 
+</web-app>

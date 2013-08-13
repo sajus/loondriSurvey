@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<constant name="struts.devMode" value="true" />
+
+	<!-- Configuration for the default package. -->
+	<package name="default" namespace="/" extends="struts-default">
+	
+		<interceptors>
+        	<interceptor name="loginInterceptor" class="com.cybage.uipiggy.interceptor.LoginInterceptor" />
+		</interceptors>
+		
+		<action name="openSurvey"
+			class="com.cybage.uipiggy.action.SurveyAction"  method="test" >
+			<result name="success">/jsp/survey.jsp</result>
+		</action>
+		
+		
+		<action name="createSurvey"
+			class="com.cybage.uipiggy.action.SurveyAction" method="createSurvey">	
+		</action>
+		
+		<action name="updateSurvey"
+			class="com.cybage.uipiggy.action.SurveyAction" method="updateSurvey">	
+		</action>
+		
+		<action name="getAllSurvey"
+			class="com.cybage.uipiggy.action.SurveyAction" method="getAllSurvey">	
+		</action>
+		
+		<action name="getSurveyById"
+			class="com.cybage.uipiggy.action.SurveyAction" method="getSurveyById">	
+		</action>
+		
+		
+		<action name="createQuestions"
+			class="com.cybage.uipiggy.action.QuestionsAction" method="createQuestions">	
+		</action>
+		
+		<action name="updateQuestions"
+			class="com.cybage.uipiggy.action.QuestionsAction" method="updateQuestions">	
+		</action>
+			
+		<action name="createUsers"
+			class="com.cybage.uipiggy.action.UsersAction" method="createUsers">
+		</action>
+		
+		<action name="updateUsers"
+			class="com.cybage.uipiggy.action.UsersAction" method="updateUsers">
+		</action>
+		
+		<action name="getAllUsers"
+			class="com.cybage.uipiggy.action.UsersAction" method="findAll">
+		</action>
+		
+		<action name="checkAuthorization" class="com.cybage.uipiggy.action.LoginAction" method="doLogin">
+		</action>
+		
+		<action name="logoutAction" class="com.cybage.uipiggy.action.LoginAction" method="doLogout">
+		</action>
+		
+		<action name="createCategory"
+			class="com.cybage.uipiggy.action.CategoriesAction" method="createCategories">	
+		</action>
+		
+		<action name="updateCategory"
+			class="com.cybage.uipiggy.action.CategoriesAction" method="updateCategories">	
+		</action>
+		
+		<action name="getAllCategories"
+			class="com.cybage.uipiggy.action.CategoriesAction" method="getAllCategories">	
+		</action>
+		
+		<action name="createDesignations"
+			class="com.cybage.uipiggy.action.DesignationsAction" method="createDesignations">	
+		</action>
+		
+		<action name="updateDesignations"
+			class="com.cybage.uipiggy.action.DesignationsAction" method="updateDesignation">	
+		</action>
+		
+		<action name="getAllDesignations"
+			class="com.cybage.uipiggy.action.DesignationsAction" method="getAllDesignations">	
+		</action>
+		
+		<action name="createOptions"
+			class="com.cybage.uipiggy.action.OptionsAction" method="createOptions">	
+		</action>
+		
+		<action name="updateOptions"
+			class="com.cybage.uipiggy.action.OptionsAction" method="updateOptions">	
+		</action>
+		
+		<action name="getOptionsByCategoryId"
+			class="com.cybage.uipiggy.action.OptionsAction" method="getOptionsByCategoryId">	
+		</action>
+		
+		<action name="getOptionsByQuestionsId"
+			class="com.cybage.uipiggy.action.OptionsAction" method="getOptionsByQuestionsId">	
+		</action>
+		
+		<action name="response"
+			class="com.cybage.uipiggy.action.ResponseAction" method="setResponse">	
+		</action>
+		
+		<action name="getQuestionById"
+			class="com.cybage.uipiggy.action.QuestionsAction" method="getQuestionById">	
+		</action>
+		
+		<action name="sendEmailNotification" 
+			class="com.cybage.uipiggy.action.EmailAction" method="sendEmailNotification">
+		</action>
+		
+		<action name="getUserByEmpId"
+			class="com.cybage.uipiggy.action.UsersAction" method="getUsersByEmpId">
+		</action>
+		
+		<action name="getResponseByEmpAndSurvey"
+			class="com.cybage.uipiggy.action.ResponseAction" method="getResponseByEmpAndSurvey">
+		</action>
+		
+		
+	</package>
+	
+
+
+
+
+
+</struts>

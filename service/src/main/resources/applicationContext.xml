@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+            http://www.springframework.org/schema/jdbc
+            http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:database.properties</value>
+		</property>
+	</bean>
+	
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+		
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+	
+	<property name="annotatedClasses">
+			<list>
+				<value>com.cybage.uipiggy.model.Survey</value>
+				<value>com.cybage.uipiggy.model.Questions</value>
+				<value>com.cybage.uipiggy.model.Options</value>
+				<value>com.cybage.uipiggy.model.Users</value>
+				<value>com.cybage.uipiggy.model.Categories</value>
+				<value>com.cybage.uipiggy.model.Designations</value>
+				<value>com.cybage.uipiggy.model.Response</value>
+				<value>com.cybage.uipiggy.model.Participants</value>
+			</list>
+	</property>
+	
+	<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.max_fetch_depth">3</prop>
+				<prop key="hibernate.jdbc.fetch_size">50</prop>
+				<prop key="hibernate.jdbc.batch_size">10</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.c3p0.min_size">5</prop>
+				<prop key="hibernate.c3p0.max_size">200</prop>
+				<prop key="hibernate.c3p0.timeout">300</prop>
+				<prop key="hibernate.c3p0.max_statements">50</prop>
+				<prop key="hibernate.c3p0.idle_test_period">3000</prop>
+				<prop key="hibernate.connection.release_mode">after_transaction</prop>
+			</props>
+		</property>
+
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="surveyDao" class="com.cybage.uipiggy.dao.SurveyDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+
+	<bean name="surveyService"
+		class="com.cybage.uipiggy.service.SurveyServiceImpl">
+		<property name="surveyDao" ref="surveyDao" />
+	</bean>
+	
+	
+	<bean id="questionsDao" class="com.cybage.uipiggy.dao.QuestionsDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+
+	<bean name="questionsService"
+		class="com.cybage.uipiggy.service.QuestionsServiceImpl">
+		<property name="questionsDao" ref="questionsDao" />
+	</bean>
+	
+	
+	
+	<bean id="participantsDao" class="com.cybage.uipiggy.dao.ParticipantsDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+
+	<bean name="participantsService"
+		class="com.cybage.uipiggy.service.ParticipantsServiceImpl">
+		<property name="participantsDao" ref="participantsDao" />
+	</bean>
+	
+	
+	<bean id="optionsDao" class="com.cybage.uipiggy.dao.OptionsDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+
+	<bean name="optionService"
+		class="com.cybage.uipiggy.service.OptionServiceImpl">
+		<property name="optionsDao" ref="optionsDao" />
+	</bean>
+	
+	<bean id="usersDao" class="com.cybage.uipiggy.dao.UsersDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean name="usersService"
+		class="com.cybage.uipiggy.service.UsersServiceImpl">
+		<property name="usersDao" ref="usersDao" />
+	</bean>
+	
+	<bean id="loginDao" class="com.cybage.uipiggy.dao.LoginDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean name="loginService"
+		class="com.cybage.uipiggy.service.LoginServiceImpl">
+		<property name="loginDao" ref="loginDao" />
+	</bean>
+	
+	<bean id="categoryDao" class="com.cybage.uipiggy.dao.CategoryDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean name="categoryService"
+		class="com.cybage.uipiggy.service.CategoryserviceImpl">
+		<property name="categoryDao" ref="categoryDao" />
+	</bean>
+	
+	<bean id="designationsDao" class="com.cybage.uipiggy.dao.DesignationsDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean name="designationsService"
+		class="com.cybage.uipiggy.service.DesignationsServiceImpl">
+		<property name="designationsDao" ref="designationsDao" />
+	</bean>
+	
+	<bean id="responseDao" class="com.cybage.uipiggy.dao.ResponseDaoHibernate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean name="responseService"
+		class="com.cybage.uipiggy.service.ResponseServiceImpl">
+		<property name="responseDao" ref="responseDao" />
+	</bean>
+	
+	<bean
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	
+
+</beans>
