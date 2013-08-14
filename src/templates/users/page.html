@@ -7,14 +7,6 @@
 		<div class="tab-pane active" id="createUser">
 			<!--create user form start -->
 			<form class="form-horizontal" id="userForm">
-				<div class="alert alert-error  hide">
-					<button data-dismiss="alert" class="close" type="button">&times;</button>
-					Please fill all the fields.
-				</div>
-				<div class="alert alert-success hide">
-					<button data-dismiss="alert" class="close" type="button">&times;</button>
-					User Added Successfully.
-				</div>
 				<fieldset>
 					<legend> Create new user</legend>
 						<!-- Employee ID -->
@@ -49,8 +41,8 @@
 							<label class="control-label" for="email">Email</label>
 							<div class="controls">
 								<div class="input-append">
-								  <input class="span2 input-xlarge" id="email" name="email" type="text">
-								  <span class="add-on">@cybage.com</span>
+									<input class="span2 input-xlarge" id="email" name="email" type="text">
+									<span class="add-on">@cybage.com</span>
 								</div>
 								<span class="help-inline"></span>
 							</div>
@@ -61,20 +53,19 @@
 							<label class="control-label" for="gender">Gender</label>
 							<div class="controls">
 								<label class="radio inline">
-								  <input type="radio" id="female" value="f" name="gender" checked="true"> Female
+									<input type="radio" id="female" value="f" name="gender"> Female
 								</label>
 								<label class="radio inline">
-								  <input type="radio" id="male" value="m" name="gender"> Male
+									<input type="radio" id="male" value="m" name="gender"> Male
 								</label>
 							</div>
 						</div>
 
 						<!-- Designation -->
 						<div class="control-group">
-							<label class="control-label" for="designation">Designation</label>
+							<label class="control-label" for="designationid">Designation</label>
 							<div class="controls">
-								<select id="designation" name="designation" class="input-xlarge">
-									<option value="0">Select</option>
+								<select id="designationid" name="designationid" class="input-xlarge">
 									{{#each designations}}
 										<option value="{{id}}">{{name}}</option>
 									{{/each}}
@@ -88,10 +79,10 @@
 							<label class="control-label" for="status">User status</label>
 							<div class="controls">
 								<label class="radio inline">
-								  <input type="radio" id="active" value="active" name="status" checked="true"> Active
+							  		<input type="radio" id="active" value="active" name="status"> Active
 								</label>
 								<label class="radio inline">
-								  <input type="radio" id="inactive" value="inactive" name="status"> In Active
+							  		<input type="radio" id="inactive" value="inactive" name="status"> In Active
 								</label>
 							</div>
 						</div>
@@ -101,20 +92,20 @@
 							<label class="control-label" for="accesslevel">Access Level</label>
 							<div class="controls">
 								<label class="radio inline">
-								  <input type="radio" id="accessSuperAdmin" value="accessSuperAdmin" name="accesslevel"> Super Admin
+									<input type="radio" id="accessSuperAdmin" value="accessSuperAdmin" name="accesslevel"> Super Admin
 								</label>
 								<label class="radio inline">
-								  <input type="radio" id="accessAdmin" value="accessAdmin" name="accesslevel"> Admin
+									<input type="radio" id="accessAdmin" value="accessAdmin" name="accesslevel"> Admin
 								</label>
 								<label class="radio inline">
-								  <input type="radio" id="accessUser" value="accessUser" name="accesslevel" checked="true"> User
+									<input type="radio" id="accessUser" value="accessUser" name="accesslevel"> User
 								</label>
 							</div>
 						</div>
 
 						<div class="form-actions">
-							<button class="btn btn-primary" href="#" id="addUser">Create</button>
-							<button class="btn" href="#" id="resetForm" type="button">Reset</button>
+							<button type="submit" class="btn btn-primary" href="#" id="addUser">Create</button>
+							<button type="button" class="btn" href="#" id="resetForm">Reset</button>
 						</div>
 
 					</fieldset>
