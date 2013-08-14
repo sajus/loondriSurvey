@@ -87,16 +87,16 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 				console.log("User Edit Mode Activate");
 				var userEdit = new UserEditView();
 
-				this.$('.modal').html(userEdit.render().el);
-        		this.$('#editModal').modal();
+				this.$('.modal-container').html(userEdit.render().el);
+        		this.$('#editModal').modal({backdrop:'static'});
 			},
 
 			userDelete: function() {
 				console.log("User Delete Model Activate");
 				var userDelete = new UserDeleteView();
 
-				this.$('.modal').html(userDelete.render().el);
-        		this.$('#deleteModal').modal();
+				this.$('.modal-container').html(userDelete.render().el);
+        		this.$('#deleteModal').modal({backdrop:'static'});
 			}
 		});
 
