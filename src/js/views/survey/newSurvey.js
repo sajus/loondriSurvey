@@ -14,10 +14,10 @@ define(function(require) {
         el: '.page',
         initialize: function() {
             this._modelBinder = new Backbone.ModelBinder();
-            this.wizardStates=[false,false,false,false];
+            this.wizardStates = [false, false, false, false];
             this.idHash = this.getIdHashCookie();
             console.log(this.idHash);
-            Events.on("change:wizardState",this.changeWizardState,this);
+            Events.on("change:wizardState", this.changeWizardState, this);
         },
         events: {
             'submit .form-horizontal': 'processForm',
@@ -28,31 +28,39 @@ define(function(require) {
             'stepclick #surveyWizard': 'preventAction',
             'finished #surveyWizard': 'finishWizard'
         },
-        preventAction:function(e){
+        preventAction: function(e) {
             e.preventDefault();
         },
         beforeStepChange: function(e) {
             var target$ = this.$(e.target),
-                selectedStep=target$.wizard('selectedItem').step-1;
+                selectedStep = target$.wizard('selectedItem').step - 1;
             console.log(selectedStep);
             console.log(this.wizardStates[selectedStep]);
             console.log(this.successMessage);
-            if(!this.isValidForNext(selectedStep)){
+            if (!this.isValidForNext(selectedStep)) {
                 e.preventDefault();
                 console.log("Not good to go ahead");
-                Events.trigger('alert:error',[{message:"Please complete current step to go ahead"}]);
-            }else{
-                Events.trigger('alert:success',[{message:this.successMessage}]);
+                Events.trigger('alert:error', [{
+                    message: "Please complete current step to go ahead"
+                }]);
+            } else {
+                Events.trigger('alert:success', [{
+                    message: this.successMessage
+                }]);
             }
         },
-        finishWizard:function(e){
+        finishWizard: function(e) {
             var target$ = this.$(e.target),
-                selectedStep=target$.wizard('selectedItem').step-1;
-            if(!this.isValidForNext(selectedStep)){
+                selectedStep = target$.wizard('selectedItem').step - 1;
+            if (!this.isValidForNext(selectedStep)) {
                 e.preventDefault();
-                Events.trigger('alert:error',[{message:"Please complete current step to finish wizard"}]);
-            }else{
-                Events.trigger('alert:success',[{message:this.successMessage}]);
+                Events.trigger('alert:error', [{
+                    message: "Please complete current step to finish wizard"
+                }]);
+            } else {
+                Events.trigger('alert:success', [{
+                    message: this.successMessage
+                }]);
                 Events.trigger("view:navigate", {
                     path: "surveyDetailed",
                     options: {
@@ -61,15 +69,15 @@ define(function(require) {
                 });
             }
         },
-        isValidForNext:function(selectedStep){
+        isValidForNext: function(selectedStep) {
             console.log(this.wizardStates[selectedStep]);
             console.log(this.idHash[selectedStep]);
-            return this.wizardStates[selectedStep] && this.idHash[selectedStep]!==null;
+            return this.wizardStates[selectedStep] && this.idHash[selectedStep] !== null;
         },
         afterStepChange: function(e) {
             var target$ = this.$(e.target),
                 targetURL = target$.find('.active').data("target"),
-                index=target$.wizard('selectedItem').step-2;
+                index = target$.wizard('selectedItem').step - 2;
 
             Events.trigger("view:navigate", {
                 path: "wizard/" + targetURL.slice(1),
@@ -78,15 +86,15 @@ define(function(require) {
                 }
             });
         },
-        changeWizardState:function(options){
+        changeWizardState: function(options) {
             console.log("in change wizard state");
             console.log(options);
-            var wizard$=this.$("#surveyWizard"),
-                index=wizard$.wizard('selectedItem').step-1;
-            this.idHash[index]=options.id;
-            this.wizardStates[index]=true;
+            var wizard$ = this.$("#surveyWizard"),
+                index = wizard$.wizard('selectedItem').step - 1;
+            this.idHash[index] = options.id;
+            this.wizardStates[index] = true;
             this.setIdHashCookies(this.idHash.toString());
-            this.successMessage=options.message;
+            this.successMessage = options.message;
             console.log(this.wizardStates);
             console.log(this.idHash);
             wizard$.wizard('next');
@@ -115,7 +123,7 @@ define(function(require) {
                =Load Subview
                ========================================================================== */
             this.getSubView(this.options.step.toLowerCase()).render();
-            this.$el.find('[data-target=#'+this.options.step+']').addClass('active').find('.badge').addClass('badge-info').end()
+            this.$el.find('[data-target=#' + this.options.step + ']').addClass('active').find('.badge').addClass('badge-info').end()
                 .prevAll().addClass('complete').find('.badge').addClass('badge-success');
 
 
@@ -127,32 +135,40 @@ define(function(require) {
             return this;
         },
         getSubView: function(step) {
-            var SubView, subView,Model,targetModel;
+            var SubView, subView, Model, targetModel;
             switch (step) {
                 case "surveydetails":
                     SubView = require('views/survey/wizard/surveyDetails'),
-                    Model=require('models/survey/wizard/surveyDetails'),
-                    targetModel=new Model();
-                    subView = new SubView({model:targetModel});
+                    Model = require('models/survey/wizard/surveyDetails'),
+                    targetModel = new Model();
+                    subView = new SubView({
+                        model: targetModel
+                    });
                     break;
                 case "questiondetails":
                     SubView = require('views/survey/wizard/questionDetails'),
-                    Model=require('models/survey/wizard/questionDetails'),
-                    targetModel=new Model();
-                    subView = new SubView({model:targetModel});
+                    Model = require('models/survey/wizard/questionDetails'),
+                    targetModel = new Model();
+                    subView = new SubView({
+                        model: targetModel
+                    });
                     break;
                 case "categorydetails":
                     SubView = require('views/survey/wizard/categoryDetails'),
-                    Model=require('models/survey/wizard/categoryDetails'),
-                    targetModel=new Model();
+                    Model = require('models/survey/wizard/categoryDetails'),
+                    targetModel = new Model();
                     console.log(this.questionType);
-                    subView = new SubView({model:targetModel});
+                    subView = new SubView({
+                        model: targetModel
+                    });
                     break;
                 case "optiondetails":
                     SubView = require('views/survey/wizard/optionDetails'),
-                    Model=require('models/survey/wizard/optionDetails'),
-                    targetModel=new Model();
-                    subView = new SubView({model:targetModel});
+                    Model = require('models/survey/wizard/optionDetails'),
+                    targetModel = new Model();
+                    subView = new SubView({
+                        model: targetModel
+                    });
                     break;
                 default:
                     console.log("Something went wrong in getSubView");
@@ -182,14 +198,14 @@ define(function(require) {
             console.log("In the post data function");
             console.log(this.model.toJSON());
         },
-        setIdHashCookies:function(idHashStr){
-            $.cookie('isHash',idHashStr)
+        setIdHashCookies: function(idHashStr) {
+            $.cookie('isHash', idHashStr)
         },
-        getIdHashCookie:function(){
-            if($.cookie('isHash')!==undefined){
+        getIdHashCookie: function() {
+            if ($.cookie('isHash') !== undefined) {
                 return $.cookie('isHash').split(',');
-            }else{
-                return [null,null,null,null];
+            } else {
+                return [null, null, null, null];
             }
         }
     });
