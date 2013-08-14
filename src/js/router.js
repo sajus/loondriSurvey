@@ -45,7 +45,7 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
             'surveyUserDetailed':'surveyUserDetailed',
             'listSurvey':'listSurvey',
             'logout':'logout',
-            'home':'defaultAction',
+            'home':'userHome',
 
             // Default - catch all
             '*actions': 'defaultAction'
@@ -108,9 +108,16 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
             });
         });
 
-        router.on('route:defaultAction', function (actions) {
+        router.on('route:userHome', function (actions) {
             require(['views/home/homeView'], function (HomePage) {
                 var homePage = Core.create(appView, 'HomePage', HomePage);
+                homePage.render();
+            });
+        });
+
+        router.on('route:defaultAction', function (actions) {
+            require(['views/defaultAction/defaultAction'], function (HomePage) {
+                var homePage = Core.create(appView, 'DefaultPage', HomePage);
                 homePage.render();
             });
         });
