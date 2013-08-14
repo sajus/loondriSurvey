@@ -22,7 +22,7 @@ define(['backbone', 'modelValidator'], function(Backbone) {
                 pattern: '^[a-z0-9_-]{3,15}$',
                 msg: 'Please enter valid Email id.'
             }],
-            password: [{
+            userpassword: [{
                 required: true,
                 msg: 'Please enter password'
             }, {

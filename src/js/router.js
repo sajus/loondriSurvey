@@ -28,9 +28,9 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
             if(options!==undefined && options.targetView!==undefined){
                 // var targetView=new options.targetView(options.targetOptions);
                 // targetView.render();
-                this.navigate("listSurvey",{trigger:true});
+                this.navigate("home",{trigger:true});
             }else{
-                this.navigate("listSurvey",{trigger:true});
+                this.navigate("home",{trigger:true});
             }
         },
         routes: {
@@ -45,6 +45,7 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
             'surveyUserDetailed':'surveyUserDetailed',
             'listSurvey':'listSurvey',
             'logout':'logout',
+            'home':'defaultAction',
 
             // Default - catch all
             '*actions': 'defaultAction'

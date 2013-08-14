@@ -24,3 +24,10 @@ textarea{
 	margin: 200px auto;
 	width: 700px;
 }
+.loginLegend {
+	background-image: url('../../../../imgs/favicon.png');
+	background-repeat: no-repeat;
+	text-align: center;
+	background-position-x: 170px;
+	line-height: 53px;
+}

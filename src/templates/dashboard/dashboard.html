@@ -12,7 +12,11 @@
                 </div>
               </li>
               {{/if}}
-              <li class="span4">
+              {{#if superAdmin}}
+                <li class="span4">
+              {{else}}
+                <li class="span6">
+              {{/if}}
                 <div class="thumbnail">
                   <img data-src="holder.js/300x200" alt="300x200" style="width: 300px; height: 200px; margin-top: 10px;" src="./imgs/survey.jpg">
                   <div class="caption">
@@ -22,7 +26,11 @@
                   </div>
                 </div>
               </li>
-              <li class="span4">
+              {{#if superAdmin}}
+                <li class="span4">
+              {{else}}
+                <li class="span6">
+              {{/if}}
                 <div class="thumbnail">
                   <img data-src="holder.js/300x200" alt="300x200" style="width: 300px; height: 200px; margin-top: 10px;" src="./imgs/userAssesment.jpg">
                   <div class="caption">

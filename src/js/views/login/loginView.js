@@ -1,4 +1,4 @@
-define(['backbone', 'events', 'views/BaseView', 'template!templates/login/login', 'modelBinder', 'bootstrapAlert', 'jqueryCookie'],
+define(['backbone','events', 'views/BaseView', 'template!templates/login/login', 'modelBinder', 'bootstrapAlert', 'jqueryCookie'],
     function(Backbone, Events, BaseView, loginPageTemplate) {
 
         return BaseView.extend({
@@ -15,7 +15,7 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/login/login'
                     });
                 } else if ($.cookie('isAuthenticated') && $.cookie('accesslevel') === "user") {
                     Events.trigger("view:navigate", {
-                        path: "listSurvey",
+                        path: "home",
                         options: {
                             trigger: true
                         }
@@ -32,12 +32,12 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/login/login'
             },
             isAuthorized: function(params) {
                 var accesslevel = this.model.isAuthorized().accesslevel;
-                if (accesslevel === undefined) {
+                if(accesslevel === undefined) {
                     Events.trigger("alert:error", [{
                         message: "Authentication Failed.Check username/password."
                     }]);
                 } else if (accesslevel.toLowerCase() === "admin" || accesslevel.toLowerCase() === "super admin") {
-                    // if (true) {
+                // if (true) {
                     // Call setSessionCookies globally
                     $.cookie('isAuthenticated', true);
                     $.cookie('accesslevel', accesslevel.toLowerCase());
@@ -68,7 +68,7 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/login/login'
                     invalid: this.showError,
                     valid: this.removeError
                 });
-                if (this.options.authorizationFailed === true) {
+                if(this.options.authorizationFailed===true){
                     Events.trigger("alert:error", [{
                         message: "You are not authorized to view this page."
                     }]);
@@ -79,10 +79,10 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/login/login'
                 this.isAuthorized(this.model.toJSON());
             },
             redirectToAdmin: function() {
-                Events.trigger('redirectAdmin', this.options);
+                Events.trigger('redirectAdmin',this.options);
             },
             redirectToUser: function() {
-                Events.trigger('redirectUser', this.options);
+                Events.trigger('redirectUser',this.options);
             }
         });
     });
