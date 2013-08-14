@@ -5,18 +5,22 @@ define(['backbone', 'template!templates/header/menu','jqueryCookie'], function(B
         el: '.main-menu-container',
 
         initialize:function(){
+            this._accesslevel = $.cookie('accesslevel');
             this._admin = false;
             this._superAdmin = false;
-            if($.cookie('accesslevel') === "admin") {
+            this._user = false;
+            if(this._accesslevel === "admin") {
                 this._admin = true;
-            } else if($.cookie('accesslevel') === "super admin") {
+            } else if(this._accesslevel === "super admin") {
                 this._admin = true;
                 this._superAdmin = true;
+            } else {
+                this._user = true;
             }
         },
 
         render: function () {
-            this.$el.html(headerMenuTemplate({admin:this._admin, superAdmin:this._superAdmin}));
+            this.$el.html(headerMenuTemplate({admin:this._admin, superAdmin:this._superAdmin, user:this._user}));
         }
     })
 

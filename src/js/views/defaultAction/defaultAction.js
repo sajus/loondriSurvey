@@ -4,7 +4,7 @@ define(['backbone','template!templates/defaultAction/404'], function(Backbone, d
 
         el: '.page',
         render: function () {
-            this.$el.html(defaultTemplate);
+        	this.$el.html(defaultTemplate);
         }
     });
 

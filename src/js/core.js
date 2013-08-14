@@ -1,5 +1,5 @@
-define(['backbone', 'events', 'globals','views/login/loginView','models/login/loginModel','views/home/homeView','views/dashboard/dashboardView','underscore','jqueryCookie'],
-    function(Backbone, Events, Globals,LoginView,LoginModel,HomeView,DashboardView){
+define(['backbone', 'events', 'globals','views/login/loginView','models/login/loginModel','views/defaultAction/accessForbiden','underscore','jqueryCookie'],
+    function(Backbone, Events, Globals,LoginView,LoginModel,AccessForbidenView){
 
     _.extend(Backbone.Model , {
         gateWayUrl:Globals.gateWayUrl
@@ -29,24 +29,10 @@ define(['backbone', 'events', 'globals','views/login/loginView','models/login/lo
         if(!$.cookie('isAuthenticated') && !skipAuthCheck){
             var loginModel=new LoginModel(),
             view = new LoginView({model:loginModel,authorizationFailed:!skipAuthCheck,targetView:View,targetOptions:options});
-        } else if(accesslevel === "admin" && name === "userPage"){
-            Events.trigger("alert:error", [{
-                message: "User page access denied!!!"
-            }]);
-            view = new DashboardView();
+        } else if((accesslevel === "admin" && name === "userPage") || (accesslevel === "user" && _.contains(user, name))){
+            view = new AccessForbidenView();
             Events.trigger("view:navigate", {
-                path: "dashboard",
-                options: {
-                    trigger: true
-                }
-            });
-        } else if(accesslevel === "user" && _.contains(user, name)){
-            Events.trigger("alert:error", [{
-                message: name.toUpperCase() +" access denied"
-            }]);
-            view = new HomeView();
-            Events.trigger("view:navigate", {
-                path: "home",
+                path: "accessForbiden",
                 options: {
                     trigger: true
                 }

@@ -37,7 +37,7 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
             // Pages
             '':'login',
             'dashboard':'dashboard',
-            'userAssesment':'defaultAction',
+            'userAssesment':'workInProgress',
             'user': 'user',
             'login': 'login',
             'wizard/:step':'newSurvey',
@@ -46,6 +46,7 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
             'listSurvey':'listSurvey',
             'logout':'logout',
             'home':'userHome',
+            'accessForbiden':'accessForbiden',
 
             // Default - catch all
             '*actions': 'defaultAction'
@@ -116,9 +117,23 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
         });
 
         router.on('route:defaultAction', function (actions) {
-            require(['views/defaultAction/defaultAction'], function (HomePage) {
-                var homePage = Core.create(appView, 'DefaultPage', HomePage);
-                homePage.render();
+            require(['views/defaultAction/defaultAction'], function (DefaultAction) {
+                var defaultAction = Core.create(appView, 'DefaultPage', DefaultAction);
+                defaultAction.render();
+            });
+        });
+
+        router.on('route:workInProgress', function (actions) {
+            require(['views/defaultAction/workInProgress'], function (WorkInProgressPage) {
+                var workInProgress = Core.create(appView, 'WorkInProgressPage', WorkInProgressPage);
+                workInProgress.render();
+            });
+        });
+
+        router.on('route:accessForbiden', function (actions) {
+            require(['views/defaultAction/accessForbiden'], function (AccessForbidenPage) {
+                var accessForbiden = Core.create(appView, 'AccessForbidenPage', AccessForbidenPage);
+                accessForbiden.render();
             });
         });
 
