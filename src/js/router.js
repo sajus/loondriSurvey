@@ -37,7 +37,7 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
             // Pages
             '':'login',
             'dashboard':'dashboard',
-            'userAssesment':'userAssesment',
+            'userAssesment':'defaultAction',
             'user': 'user',
             'login': 'login',
             'wizard/:step':'newSurvey',
@@ -140,7 +140,7 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
 
         router.on('route:logout', function () {
             $.removeCookie('isAuthenticated');
-            $.removeCookie('accesslevel')
+            $.removeCookie('accesslevel');
             Events.trigger("view:navigate", {
                 path: "login",
                 options: {

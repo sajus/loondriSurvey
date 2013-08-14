@@ -6,10 +6,9 @@ define(['backbone', 'template!templates/dashboard/dashboard','jqueryCookie'],
         el: '.page',
 
         initialize:function(){
+            this._superAdmin = false;
             if($.cookie('accesslevel') === "super admin") {
                 this._superAdmin = true;
-            } else {
-                this._superAdmin = false;
             }
         },
 

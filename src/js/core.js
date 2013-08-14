@@ -25,10 +25,11 @@ define(['backbone', 'events', 'globals','views/login/loginView','models/login/lo
                 skipAuthCheck=true;
             }
         }
+        var accesslevel = $.cookie('accesslevel');
         if(!$.cookie('isAuthenticated') && !skipAuthCheck){
             var loginModel=new LoginModel(),
             view = new LoginView({model:loginModel,authorizationFailed:!skipAuthCheck,targetView:View,targetOptions:options});
-        } else if($.cookie('accesslevel') === "admin" && name === "userPage"){
+        } else if(accesslevel === "admin" && name === "userPage"){
             Events.trigger("alert:error", [{
                 message: "User page access denied!!!"
             }]);
@@ -39,7 +40,7 @@ define(['backbone', 'events', 'globals','views/login/loginView','models/login/lo
                     trigger: true
                 }
             });
-        } else if($.cookie('accesslevel') === "user" && _.contains(user, name)){
+        } else if(accesslevel === "user" && _.contains(user, name)){
             Events.trigger("alert:error", [{
                 message: name.toUpperCase() +" access denied"
             }]);

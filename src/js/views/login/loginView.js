@@ -6,14 +6,16 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
             el: '.page',
             initialize: function() {
                 this._modelBinder = new Backbone.ModelBinder();
-                if ($.cookie('isAuthenticated') && ($.cookie('accesslevel') === "admin" || $.cookie('accesslevel') === "super admin")) {
+                this._isAuthenticated = $.cookie('isAuthenticated');
+                this._accesslevel = $.cookie('accesslevel');
+                if (this._isAuthenticated && (this._accesslevel === "admin" || this._accesslevel === "super admin")) {
                     Events.trigger("view:navigate", {
                         path: "dashboard",
                         options: {
                             trigger: true
                         }
                     });
-                } else if ($.cookie('isAuthenticated') && $.cookie('accesslevel') === "user") {
+                } else if (this._isAuthenticated && this._accesslevel === "user") {
                     Events.trigger("view:navigate", {
                         path: "home",
                         options: {
@@ -37,15 +39,13 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
                         message: "Authentication Failed.Check username/password."
                     }]);
                 } else if (accesslevel.toLowerCase() === "admin" || accesslevel.toLowerCase() === "super admin") {
-                // if (true) {
-                    // Call setSessionCookies globally
                     $.cookie('isAuthenticated', true);
                     $.cookie('accesslevel', accesslevel.toLowerCase());
                     Events.trigger("alert:success", [{
                         message: "Authentication successful. Redirecting ...."
                     }]);
                     setTimeout(this.redirectToAdmin, 1000);
-                } else if (accesslevel.toLowerCase() === "user") {
+                } else {
                     // Call setSessionCookies globally
                     $.cookie('isAuthenticated', true);
                     $.cookie('accesslevel', accesslevel.toLowerCase());
@@ -53,10 +53,6 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
                         message: "Authentication successful. Redirecting ...."
                     }]);
                     setTimeout(this.redirectToUser, 1000);
-                } else {
-                    Events.trigger("alert:error", [{
-                        message: "Authentication Failed.Check username/password."
-                    }]);
                 }
             },
             render: function() {
