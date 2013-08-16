@@ -31,3 +31,10 @@ textarea{
 	background-position-x: 170px;
 	line-height: 53px;
 }
+.alignCenter {
+	text-align: center;
+}
+.footer {
+	position: fixed;
+	bottom: 0;
+}
