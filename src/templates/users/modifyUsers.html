@@ -3,7 +3,6 @@
 		<thead>
 			<tr>
 				<th>
-					<span class="datagrid-header-title">Search Survey</span>
 					<div class="datagrid-header-left">
 						<div class="input-append search datagrid-search">
 							<input type="text" class="input-medium" placeholder="Search">
@@ -11,9 +10,12 @@
 						</div>
 					</div>
 					<div class="rows pull-right">
-						<div>
-							<span class="datagrid-header-title">Total users: <span class="badge badge-inverse">{{totalUsers}}</span></span>
+						<div class="btn-group">
+							<button class="btn sendEmail disabled"><i class="icon-envelope"></i> Send Email</button>
+							<button class="btn btn-danger userDelete disabled"><i class="icon-trash icon-white"></i> Delete</button>
 						</div>
+						<button class="btn btn-inverse summary"><i class="icon-fullscreen icon-white"></i> Summary</button>
+						<!-- <span class="datagrid-header-title">Total users: <span class="badge badge-inverse">{{totalUsers}}</span></span> -->
 					</div>
 				</th>
 			</tr>
