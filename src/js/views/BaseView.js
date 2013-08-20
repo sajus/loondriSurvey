@@ -5,13 +5,21 @@ define(function(require) {
     return Backbone.View.extend({
         processField: function(e) {
             var target$ = $(e.target),
-                fieldNameAttr = target$.attr('name');
+                fieldNameAttr = target$.attr('name'),
+                errorText = target$.closest(".controls").find("span.help-inline");
+            if (errorText.text().length !== 0) {
+                errorText.text("");
+            }
+            console.log("in the process field Attr: "+fieldNameAttr);
             this.model.set(fieldNameAttr, target$.val(), {
                 validate: true
             });
         },
         processForm: function(e) {
             e.preventDefault();
+            if ($(".help-inline").text().length !== 0) {
+                $(".help-inline").text("");
+            }
             this.$('[data-name=option]').slice(2).each(function(index) {
                 var targetParent$ = $(this).closest('.control-group')
                 if ($.trim($(this).val()) === '') {
