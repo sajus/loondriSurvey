@@ -18,6 +18,8 @@ define(function(require) {
                 }),
                 success: function(data, response) {
                     self.model.set(data);
+                    /* Fetch the questions now. */
+                    self.model.fetchQuestions();
                     console.log(data);
                 },
                 error: function(data, error, options) {

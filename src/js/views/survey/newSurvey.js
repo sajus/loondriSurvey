@@ -60,7 +60,7 @@ define(function(require) {
                     message: this.successMessage
                 }]);
                 Events.trigger("view:navigate", {
-                    path: "surveyDetailed",
+                    path: "listSurvey",
                     options: {
                         trigger: true,
                     }

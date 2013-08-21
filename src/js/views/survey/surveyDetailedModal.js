@@ -2,15 +2,48 @@ define(function(require) {
     var Backbone = require('backbone'),
         surveyDetailedModalTemplate = require('template!templates/survey/surveyDetailedModal'),
         newOptionTemplate = require('template!templates/survey/newOption'),
-        BaseView = require('views/BaseView');
+        BaseView = require('views/BaseView'),
+        Events = require('events'),
+        CategoryModel = require('models/survey/wizard/categoryDetails');
     /* Requires with no assignment */
     require('modelBinder');
     return BaseView.extend({
         className: "modal hide fade",
         id: "surveyDetailedModal",
         initialize: function() {
+            var self = this;
+            if (this.options.categoryId !== undefined) {
+                $.ajax({
+                    async: false,
+                    url: Backbone.Model.gateWayUrl + "/getCategoryById",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({
+                        id: this.options.categoryId
+                    }),
+                    success: function(data, response) {
+                        self.model.set({
+                            category: data.categoryname,
+                            responseType: data.categorytype
+                        });
+                        self.model.set('categoryInput', data.categoryname);
+                        /* Fetch options for the category */
+                        self.categoryModel = new CategoryModel();
+                        self.categoryModel.set({
+                            categoriesid: self.options.categoryId,
+                            categorytype: data.categorytype
+                        });
+                        console.log(self.categoryModel);
+                        self.categoryModel.fetchOptions();
+                        console.log(self.categoryModel.optionsCollection.toJSON());
+                        self.model.set(self.reverseOptionData(self.categoryModel.optionsCollection.toJSON()));
+                    }
+                });
+                // fetch the options
+                // attach it to the model
+                // bind the model 
+            }
             this._modelBinder = new Backbone.ModelBinder();
-            console.log(this);
         },
         events: {
             // 'click .controls a':'addNewQuestion',
@@ -20,6 +53,7 @@ define(function(require) {
             'click .removeOption': 'removeOption',
             /* Category */
             'click .addCategory': 'addCategory',
+            'click .updateCategory': 'updateCategory',
             'keypress [name=categoryInput]': 'toggleBorder',
             /* Save */
             'change input[type=text],textarea,select': 'processField',
@@ -51,10 +85,14 @@ define(function(require) {
                     'option2': 'NA'
                 });
             } else {
-                this.model.set({
-                    'option1': (this.model.get('option1').toLowerCase() !== 'na') ? this.model.get('option1') : '',
-                    'option2': (this.model.get('option2').toLowerCase() !== 'na') ? this.model.get('option2') : ''
-                });
+                try {
+                    this.model.set({
+                        'option1': (this.model.get('option1').toLowerCase() !== 'na') ? this.model.get('option1') : '',
+                        'option2': (this.model.get('option2').toLowerCase() !== 'na') ? this.model.get('option2') : ''
+                    });
+                } catch (e) {
+                    console.log(e);
+                }
                 this.$('.optionGroup .controls').find(':input').attr("disabled", false);
             }
             this.model.set(target$.attr('name'), target$.val(), {
@@ -62,16 +100,13 @@ define(function(require) {
             });
         },
         render: function(options) {
-            if (options.category) {
-                console.log("in the category modal rendering");
-                this.$el.html(surveyDetailedModalTemplate({
-                    category: true
-                }));
-            } else {
-                console.log("in regular modal rendering");
-                this.$el.html(surveyDetailedModalTemplate({
-                    category: false
-                }));
+            var isCategory = (options.category) ? true : false;
+            this.$el.html(surveyDetailedModalTemplate({
+                isCategory: isCategory,
+                category: this.model.get('category')
+            }));
+            for (var i = 0, l = this.categoryModel.optionsCollection.toJSON().length - 2; i < l; i++) {
+                this.addNewOption();
             }
             this._modelBinder.bind(this.model, this.el);
             console.log(Backbone.Validation);
@@ -81,13 +116,15 @@ define(function(require) {
             });
             return this;
         },
-        addOption: function(e) {
-            e.preventDefault();
+        addNewOption: function() {
             this.$('.form-horizontal').append(newOptionTemplate({
                 id: this.$('[data-name=option]').size() + 1
             }));
             this._modelBinder.bind(this.model, this.el);
-            console.log("in add option");
+        },
+        addOption: function(e) {
+            e.preventDefault();
+            this.addNewOption();
         },
         removeOption: function(e) {
             e.preventDefault();
@@ -139,6 +176,27 @@ define(function(require) {
                 targetInput$.val("");
             }
         },
+        updateCategory: function(e) {
+            var target$ = this.$(e.target),
+                targetInput$ = target$.prev(),
+                select$ = this.$("[name=category]");
+            if ($.trim(targetInput$.val()) === '') {
+                targetInput$.css('border', '1px solid #b94a48');
+                return;
+            } else {
+                targetInput$.css('border', '1px solid #ccc');
+                // Add to select control
+                var option$ = $("<option>", {
+                    text: targetInput$.val(),
+                    value: targetInput$.val(),
+                    selected: 'selected'
+                });
+                select$.html(option$);
+                this.model.set('category', targetInput$.val(), {
+                    validate: true
+                });
+            }
+        },
         toggleBorder: function(e) {
             console.log("in toggle Border");
             var target$ = this.$(e.target);
@@ -153,36 +211,55 @@ define(function(require) {
             console.log("In the post data function changes");
             console.log(this.model.toJSON());
             console.log(this.options);
-            var self = this;
-            /* Create category */
-            $.ajax({
-                async: false,
-                url: Backbone.Model.gateWayUrl + "/createCategory",
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({
+            var self = this,
+                urlCategory = (this.options.categoryId !== undefined) ? Backbone.Model.gateWayUrl + "/updateCategory" : Backbone.Model.gateWayUrl + "/createCategory",
+                urlOptions = Backbone.Model.gateWayUrl + "/createOptions",
+                categoryPostData = {
                     questionid: self.options.questionid,
                     categoryname: self.model.get('category'),
-                    categorytype: self.model.get('responseType')
-                }),
+                    categorytype: self.model.get('responseType'),
+                };
+            if (this.options.categoryId !== undefined) {
+                categoryPostData.categoriesid = this.options.categoryId;
+            }
+            /* Create/Update category */
+            // categoriesid
+            $.ajax({
+                async: false,
+                url: urlCategory,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(categoryPostData),
                 success: function(data, response) {
                     console.log("in the success of createCategory");
                     console.log(data); //Use this category id to post options
-                    var postData = self.convertOptionData(self.model.toJSON(), [self.options.questionid, parseInt(data, 10)]);
-                    $.ajax({
-                        async: false,
-                        url: Backbone.Model.gateWayUrl + "/createOptions",
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(postData),
-                        success: function(data, response) {
-                            console.log("in the success of createOptions");
-                            console.log(response);
-                        },
-                        error: function(data) {
-                            console.log("in the error of create cat");
-                        }
-                    })
+                    if (self.options.categoryId === undefined) {
+                        var postData = self.convertOptionData(self.model.toJSON(), [self.options.questionid, parseInt(data, 10)]);
+                        $.ajax({
+                            async: false,
+                            url: urlOptions,
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(postData),
+                            success: function(data, response) {
+                                console.log("in the success of createOptions");
+                                if (response === 'success') {
+                                    $('#surveyDetailedModal').modal('hide');
+                                    Events.trigger("categoriesChanged");
+                                } else {
+                                    Events.trigger('alert:error', [{
+                                        message: "Error occured while creating options."
+                                    }]);
+                                }
+                            },
+                            error: function(data) {
+                                console.log("in the error of create cat");
+                            }
+                        })
+                    }else{
+                        /* Merge the options (update/delete options) */
+                        console.log("in the merging of options");
+                    }
                 },
                 error: function(data) {
                     console.log("in the error of create cat");
@@ -217,6 +294,16 @@ define(function(require) {
             returnValue.options = optionsArray;
             console.log(returnValue);
             return returnValue;
+        },
+        reverseOptionData: function(data) {
+            var options = {};
+            _.each(data, function(value, key) {
+                options['option' + (key + 1)] = value.optionvalue;
+                if (value.answer.toLowerCase() === "yes") {
+                    options['answer' + (key + 1)] = true;
+                }
+            })
+            return options;
         }
     });
 

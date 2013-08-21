@@ -61,9 +61,10 @@ define(function (require) {
             var type = this.model.get('type');
             var $el = this.$el;
             var activeModal = $('body > .modal').filter(':visible');
-
+            console.log("in the modal render");
+            console.log(activeModal);
             // If Modal is the active view then direct alerts to the modal.
-            if(activeModal.length) {
+            if(activeModal.length!==0) {
                 $el = activeModal.find('.modalAlertContainer');
             }
 
