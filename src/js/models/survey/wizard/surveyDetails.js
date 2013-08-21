@@ -1,4 +1,4 @@
-define(['backbone', 'modelValidator'], function(Backbone) {
+define(['backbone', 'collections/survey/questions', 'modelValidator'], function(Backbone, QuestionsCollection) {
     _.extend(Backbone.Validation.validators, {
         validateStartDate: function(value, attr, customValue, model) {
             if (value === undefined) {
@@ -37,8 +37,8 @@ define(['backbone', 'modelValidator'], function(Backbone) {
         }
     });
     return Backbone.Model.extend({
-        initialize:function(){
-            this.questionsCollection = new QuestionCollection();
+        initialize: function() {
+            this.questions = new QuestionsCollection();
         },
         validation: {
             title: {
@@ -62,6 +62,25 @@ define(['backbone', 'modelValidator'], function(Backbone) {
                 msg: "Please enter description"
             }
         },
+        fetchQuestions: function() {
+            var self = this;
+            $.ajax({
+                async:false,
+                url: Backbone.Model.gateWayUrl + "/getQuestionsBySurveyId",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    surveyid: this.get('id')
+                }),
+                success: function(data, response) {
+                    self.questions.reset(data.questionsListBySurveyId);
+                    console.log(self.questions.toJSON());
+                },
+                error: function(data, error, options) {
+                   console.log("some error occured while fetching question collection.");
+                }
+            })
+        }
     });
 
 });
