@@ -41,7 +41,7 @@ define(function(require) {
                 });
                 // fetch the options
                 // attach it to the model
-                // bind the model 
+                // bind the model
             }
             this._modelBinder = new Backbone.ModelBinder();
         },
@@ -105,8 +105,10 @@ define(function(require) {
                 isCategory: isCategory,
                 category: this.model.get('category')
             }));
-            for (var i = 0, l = this.categoryModel.optionsCollection.toJSON().length - 2; i < l; i++) {
-                this.addNewOption();
+            if (this.options.categoryId !== undefined) {
+                for (var i = 0, l = this.categoryModel.optionsCollection.toJSON().length - 2; i < l; i++) {
+                    this.addNewOption();
+                }
             }
             this._modelBinder.bind(this.model, this.el);
             console.log(Backbone.Validation);
@@ -220,7 +222,7 @@ define(function(require) {
                     categorytype: self.model.get('responseType'),
                 };
             if (this.options.categoryId !== undefined) {
-                categoryPostData.categoriesid = this.options.categoryId;
+                categoryPostData.id = this.options.categoryId;
             }
             /* Create/Update category */
             // categoriesid
@@ -256,9 +258,58 @@ define(function(require) {
                                 console.log("in the error of create cat");
                             }
                         })
-                    }else{
+                    } else {
                         /* Merge the options (update/delete options) */
+                        var collection = self.categoryModel.optionsCollection,
+                            collectionJSON = collection.toJSON(),
+                            collectionLength = collection.toJSON().length,
+                            optionsObject = self.convertOptionData(self.model.toJSON(), [self.options.questionid, parseInt(data, 10)]),
+                            optionsHash = optionsObject.options,
+                            optionsHashLength = optionsHash.length,
+                            objArr = [],
+                            index = 0;
                         console.log("in the merging of options");
+                        console.log(collectionLength);
+                        console.log(optionsHashLength);
+                        if (optionsHashLength >= collectionLength) {
+                            _.each(collectionJSON, function(originalOption, key) {
+                                // console.log(originalOption);
+                                var obj = _.extend({}, originalOption, optionsHash[key]);
+                                if (optionsHash[key].answer !== originalOption.answer ||
+                                    optionsHash[key].optionvalue !== originalOption.optionvalue) {
+                                    objArr.push(obj);
+                                }
+                                index++;
+                            });
+                            // updateOptions
+                            self.updateOptions(objArr);
+                            // Create rest options
+                            if (optionsHash[index] !== undefined) {
+                                for (; index < optionsHashLength; index++) {
+                                    // Create the option
+                                    self.createOption(optionsHash[index]);
+                                }
+                            }
+                        } else if (optionsHashLength < collectionLength) {
+                            _.each(optionsHash, function(originalOption, key) {
+                                // console.log(originalOption);
+                                var obj = _.extend({}, collectionJSON[key], originalOption);
+                                if (collectionJSON[key].answer !== originalOption.answer ||
+                                    collectionJSON[key].optionvalue !== originalOption.optionvalue) {
+                                    objArr.push(obj);
+                                }
+                                index++;
+                            });
+                            // Update options
+                            self.updateOptions(objArr);
+                            //delete rest
+                            if (collectionJSON[index] !== undefined) {
+                                for (; index < collectionLength; index++) {
+                                    // Delete the option
+                                    self.deleteOption(collectionJSON[index]);
+                                }
+                            }
+                        }
                     }
                 },
                 error: function(data) {
@@ -266,6 +317,56 @@ define(function(require) {
                 }
             })
             /* Create options */
+        },
+        updateOptions: function(options) {
+            console.log("in the updateOptions");
+            _.each(options, function(option) {
+                $.ajax({
+                    async: false,
+                    url: Backbone.Model.gateWayUrl + '/updateOptions',
+                    type: "POST",
+                    contentType: "json; charset=utf-8",
+                    data: JSON.stringify(
+                        option
+                    ),
+                    success: function(data, response) {
+                        console.log("option updated successfully");
+                    }
+                });
+            });
+        },
+        deleteOption: function(option) {
+            console.log("in the delete option");
+            $.ajax({
+                async: false,
+                url: Backbone.Model.gateWayUrl + '/deleteOptions',
+                type: "POST",
+                contentType: "json; charset=utf-8",
+                data: JSON.stringify({
+                    id: option.id
+                }),
+                success: function(data, response) {
+                    console.log("option deleted successfully");
+                    console.log(response);
+                }
+            });
+        },
+        createOption: function(option) {
+            var finalOption = {};
+            finalOption.categoriesid = this.options.categoryId;
+            finalOption.questionid = this.options.questionid;
+            finalOption.options = [option];
+            $.ajax({
+                async: false,
+                url: Backbone.Model.gateWayUrl + '/createOptions',
+                type: "POST",
+                contentType: "json; charset=utf-8",
+                data: JSON.stringify(finalOption),
+                success: function(data, response) {
+                    console.log("option created successfully");
+                    console.log(response);
+                }
+            });
         },
         convertOptionData: function(data, idHash) {
             var correctOptions = [],

@@ -96,7 +96,7 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizar
                         console.log("in the error");
                         console.log(model);
                     }
-                })
+                });
             },
             convertOptionData: function(data) {
                 var correctOptions = [],
