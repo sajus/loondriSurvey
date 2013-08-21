@@ -85,7 +85,7 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
         });
 
         router.on('route:surveyDetailed', function(surveyId) {
-            require(['views/survey/surveyDetailed','models/survey/survey'], function(SurveyDetailed,SurveyModel) {
+            require(['views/survey/surveyDetailed','models/survey/wizard/surveyDetails'], function(SurveyDetailed,SurveyModel) {
                 surveyModel=new SurveyModel();
                 var surveyDetailed = Core.create(appView, 'SurveyDetailed', SurveyDetailed,{model:surveyModel.set('id',surveyId)});
                 surveyDetailed.render();
