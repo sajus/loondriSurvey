@@ -6,7 +6,7 @@ define(['backbone', 'events', 'globals','views/login/loginView','models/login/lo
     });
 
     var views = {},
-        user = ['UserAssesmentPage', 'DashboardPage', 'NewSurvey', 'SurveyDetailed', 'SurveyUserDetailed', 'ListSurvey', 'userPage'];
+        user = ['UserAssesmentPage', 'DashboardPage', 'userPage'];
 
     var create = function (context, name, View, options) {
         /*

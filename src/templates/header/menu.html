@@ -12,11 +12,14 @@
                     {{#if admin}}
                         <li><a href="#dashboard">Dashboard</a></li>
                         <li><a href="#userAssesment">User Assesment</a></li>
-                        <li><a href="#listSurvey">Survey</a></li>
                     {{/if}}
                     {{#if superAdmin}}
                         <li><a href="#user">User</a></li>
                     {{/if}}
+                    {{#if user}}
+                        <li><a href="#home">Home</a></li>
+                    {{/if}}
+                    <li><a href="#listSurvey">Survey</a></li>
                     <li><a href="#logout">Logout</a></li>
                 </ul>
             </div>

@@ -1,0 +1,40 @@
+<div class="control-group optionGroup">
+    {{#if single}}
+        <div class="optionCategory" id="single">
+            <label class="control-label">Choose any one</label>
+            <div class="controls">
+                {{#each optionvalue}}
+                <label class="radio inline">
+                    <input type="radio" value="{{.}}" name="questionType"> {{.}}
+                </label>
+                {{/each}}
+                <BR><br>
+                <button type="submit" class="btn btn-primary save">Save changes</button>
+            </div>
+        </div>
+    {{/if}}
+    {{#if multi}}
+        <div class="optionCategory" id="multi">
+            <label class="control-label">Choose single/ multiple option</label>
+            <div class="controls">
+                {{#each optionvalue}}
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="inlineCheckbox1" value="option1" name="{{.}}"> {{.}}
+                    </label>
+                {{/each}}
+                <BR>
+                <button type="submit" class="btn btn-primary save">Save changes</button>
+            </div>
+        </div>
+    {{/if}}
+    {{#if other}}
+        <div class="optionCategory" id="other">
+            <label class="control-label">Add description</label>
+            <div class="controls">
+                <input class="form-control" id="focusedInput" type="text" placeholder="Enter here">
+                <BR>
+                <button type="submit" class="btn btn-primary save">Save changes</button>
+            </div>
+        </div>
+    {{/if}}
+</div>
