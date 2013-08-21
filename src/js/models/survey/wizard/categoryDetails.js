@@ -2,8 +2,8 @@ define(['backbone', 'modelValidator', 'jqueryCookie'], function(Backbone) {
     return Backbone.Model.extend({
         initialize: function() {},
         validation: {
-            category: 'validateCategory',
-            responseType: {
+            categoryname: 'validateCategory',
+            categorytype: {
                 required: true,
                 msg: 'Please check type of response'
             }
@@ -12,7 +12,7 @@ define(['backbone', 'modelValidator', 'jqueryCookie'], function(Backbone) {
             console.log(value);
             console.log(computedState);
             if ($.cookie("isNoCategory") === "true") {
-                this.set('category', 'NA');
+                this.set('categoryname', 'NA');
             } else {
                 if (value === undefined) {
                     return "Please enter a category";

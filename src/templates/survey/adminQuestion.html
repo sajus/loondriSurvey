@@ -1,0 +1,28 @@
+<div class="accordion-group">
+    <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse">
+            {{question.questionvalue}}
+        </a>
+    </div>
+    <div id="collapse" class="accordion-body collapse in">
+        <div class="accordion-inner">
+            <select name="category" size="3">
+            {{#if noCategory}}
+                <option value="NA" disabled>NA</option>
+            {{else}}
+                {{#each category}}
+                    <option value="{{categoryid}}">{{categoryname}}</option>
+                {{/each}}
+            {{/if}}
+            </select>
+            <br/>
+            {{#unless noCategory}}
+            <div class="btn-group">
+                <button class="btn newCategory">Add Category</button>
+                <button class="btn updateCategory" disabled>Update Category</button>
+                <button class="btn deleteCategory" disabled>Delete Category</button>
+            </div>
+            {{/unless}}
+       </div>
+    </div>
+</div>

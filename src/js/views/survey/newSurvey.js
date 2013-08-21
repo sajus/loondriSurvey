@@ -1,6 +1,4 @@
 define(function(require) {
-    // ['backbone', 'template!templates/survey/newSurvey','template!templates/survey/newOption','views/survey/wizard/surveyDetails','modelValidator', 'modelBinder','bootstrapAlert','datePicker','fueluxWizard']
-    // Backbone, newSurveyTemplate,newOptionTemplate,surveyDetailsView,Validator
     var Backbone = require('backbone'),
         newSurveyTemplate = require('template!templates/survey/newSurvey'),
         Validator = require('modelValidator'),
@@ -20,8 +18,6 @@ define(function(require) {
             Events.on("change:wizardState", this.changeWizardState, this);
         },
         events: {
-            'submit .form-horizontal': 'processForm',
-            'blur input[type=text]': 'processField',
             /* Wizard events */
             'change #surveyWizard': 'beforeStepChange',
             'changed #surveyWizard': 'afterStepChange',
@@ -58,6 +54,8 @@ define(function(require) {
                     message: "Please complete current step to finish wizard"
                 }]);
             } else {
+                this.unsetIdHashCookies();
+                console.log(this.getIdHashCookie());
                 Events.trigger('alert:success', [{
                     message: this.successMessage
                 }]);
@@ -98,24 +96,6 @@ define(function(require) {
             console.log(this.wizardStates);
             console.log(this.idHash);
             wizard$.wizard('next');
-        },
-        processField: function(e) {
-            var target$ = $(e.target),
-                fieldNameAttr = target$.attr('name');
-            this.model.set(fieldNameAttr, target$.val(), {
-                validate: true
-            });
-        },
-        processForm: function(e) {
-            e.preventDefault();
-            if (this.model.isValid(true)) {
-                this.$('.alert-success').fadeIn();
-                this.$('.alert-error').hide();
-                this.postData();
-            } else {
-                this.$('.alert-error').fadeIn();
-                this.$('.alert-success').hide();
-            }
         },
         render: function() {
             this.$el.html(newSurveyTemplate);
@@ -194,10 +174,10 @@ define(function(require) {
             targetParent$.find(".help-inline").html("");
             targetParent$.removeClass("error");
         },
-        postData: function() {
-            console.log("In the post data function");
-            console.log(this.model.toJSON());
-        },
+        // postData: function() {
+        //     console.log("In the post data function");
+        //     console.log(this.model.toJSON());
+        // },
         setIdHashCookies: function(idHashStr) {
             $.cookie('isHash', idHashStr)
         },
@@ -207,6 +187,9 @@ define(function(require) {
             } else {
                 return [null, null, null, null];
             }
+        },
+        unsetIdHashCookies: function() {
+            $.removeCookie('isHash');
         }
     });
 

@@ -1,14 +1,13 @@
-define(['backbone', 'template!templates/survey/listSurvey', 'fueluxDataSource','events', 'fueluxDataGrid','bootstrapDropdown','fueluxComboBox','fueluxSelectBox','fueluxSearchBox','moment'],
+define(['backbone', 'template!templates/survey/listSurvey', 'fueluxDataSource', 'events', 'fueluxDataGrid', 'bootstrapDropdown', 'fueluxComboBox', 'fueluxSelectBox', 'fueluxSearchBox', 'moment'],
     function(Backbone, listSurveyTemplate, FuelUxDataSource, Events) {
 
         return Backbone.View.extend({
             el: '.page',
 
-            initialize: function() {
-            },
+            initialize: function() {},
 
             events: {
-                "click tbody tr td" : "surveyDetail"
+                "click tbody tr td": "surveyDetail"
             },
 
             render: function() {
@@ -16,12 +15,12 @@ define(['backbone', 'template!templates/survey/listSurvey', 'fueluxDataSource','
                 var self = this;
                 var sampleData;
                 this.collection.fetch({
-                    async:false,
-                    success:function(){
+                    async: false,
+                    success: function() {
                         sampleData = self.collection.toJSON()[0].SurveyList;
-                        sampleData = _.map(sampleData,function(surveyObj){
-                            surveyObj.startDate = moment(surveyObj.startDate).format('MMMM Do YYYY, h:mm:ss a');
-                            surveyObj.endDate = moment(surveyObj.endDate).format('MMMM Do YYYY, h:mm:ss a');
+                        sampleData = _.map(sampleData, function(surveyObj) {
+                            surveyObj.startDate = moment(surveyObj.startDate).format('DD-MM-YYYY');
+                            surveyObj.endDate = moment(surveyObj.endDate).format('DD-MM-YYYY');
                             return surveyObj;
                         });
                     }
@@ -39,11 +38,11 @@ define(['backbone', 'template!templates/survey/listSurvey', 'fueluxDataSource','
                         property: "description",
                         label: "Description",
                         sortable: true
-                    },{
+                    }, {
                         property: "startDate",
                         label: "StartDate",
                         sortable: true
-                    },{
+                    }, {
                         property: "endDate",
                         label: "EndDate",
                         sortable: true
@@ -63,12 +62,12 @@ define(['backbone', 'template!templates/survey/listSurvey', 'fueluxDataSource','
             },
 
             surveyDetail: function(e) {
-                var target$=this.$(e.target),
-                    targetRow$=target$.closest('tr'),
-                    id=targetRow$.find('td').first().text();
+                var target$ = this.$(e.target),
+                    targetRow$ = target$.closest('tr'),
+                    id = targetRow$.find('td').first().text();
                 console.log("id " + id);
                 Events.trigger("view:navigate", {
-                    path: "surveyDetailed/"+id,
+                    path: "surveyDetailed/" + id,
                     options: {
                         trigger: true,
                     }

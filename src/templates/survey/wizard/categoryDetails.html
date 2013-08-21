@@ -5,13 +5,13 @@
             <label class="control-label" >Type of response</label>
             <div class="controls">
                 <label class="radio inline">
-                   <input type="radio" value="single" name="responseType"> Single choice
+                   <input type="radio" value="single" name="categorytype"> Single choice
                 </label>
                 <label class="radio inline">
-                   <input type="radio" value="multi" name="responseType"> Multiple choice
+                   <input type="radio" value="multi" name="categorytype"> Multiple choice
                 </label>
                 <label class="radio inline">
-                   <input type="radio" value="other" name="responseType"> Other
+                   <input type="radio" value="other" name="categorytype"> Other
                 </label>
                 <span class="help-inline"></span>
             </div>
@@ -20,11 +20,14 @@
             <label class="control-label" for="multiSelect">Select Category</label>
             <div class="controls">
                 <div>
-                    <select id="multiSelect" name="category" size="3">
+                    <select id="multiSelect" name="categoryname" size="3">
                         {{#if noCategory}}
                             <option value="NA" selected="selected" disabled>NA</option>
                         {{else}}
                             <!-- Render option template -->
+                            {{#if category}}
+                                <option value="{{category}}" selected="selected">{{category}}</option>
+                            {{/if}}
                         {{/if}}
                     </select>
                     <span class="help-inline"></span>

@@ -1,96 +1,80 @@
-<div class="questionList well well-mini">
-   <!-- <div class="controls clearfix">
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <div class="questionList well well-mini">
+            <!-- <div class="controls clearfix">
         <a class="btn pull-right" href="#"><i class="icon-plus"></i>Add sdsQuestion</a>
     </div>-->
-    <h2>Survey Title</h2>
-    <p class="lead">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus, quis, possimus maxime impedit eius minima cupiditate vero libero odio excepturi dolorem voluptas omnis quibusdam debitis harum fugit officia minus reprehenderit!
-    </p>
-    <h4>Questions:</h4>
-    <div class="accordion" id="accordion">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                    Question value #1
-                </a>
-            </div>
-            <div id="collapseOne" class="accordion-body collapse in">
-                <div class="accordion-inner">
-              <div id="mySelect" class="select btn-group" data-resize="auto">
-                <button type="button" data-toggle="dropdown" class="btn dropdown-toggle"><span class="dropdown-label" style="width: 120px;">Radio Option</span><span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                  <li data-value="1" class="selectVal"><a href="#">Radio Option</a></li>
-                  <li data-value="2" class="selectVal"><a href="#">Checkbox Option</a></li>
-                  <li data-value="3" class="selectVal" data-fizz="buzz"><a href="#">Input Option</a></li>
-                  
-                </ul>
-              </div>
-              <div class="control-group optionGroup">
-                <label class="control-label">Choose any one</label>
-                <div class="controls">
-                  <label class="radio inline">
-                   <input type="radio" value="category" name="questionType"> Category
-                 </label>
-                 <label class="radio inline">
-                   <input type="radio" value="non-category" name="questionType"> Non-Category
-                 </label>
-                 <span class="help-inline"></span>
-                 <button type="submit" class="btn btn-primary">Save changes</button>
-               </div>
-             </div>
-             <div class="control-group checkGroup">
-              <label class="control-label">Choose single/ multiple option</label>
-              <div class="controls">
-               <label class="checkbox-inline">
-                <input type="checkbox" id="inlineCheckbox1" value="option1"> 1
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" id="inlineCheckbox2" value="option2"> 2
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" id="inlineCheckbox3" value="option3"> 3
-              </label>
-              <span class="help-inline"></span>
-              <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-          <div class="control-group inputGroup">
-            <label class="control-label">Add description</label>
-            <div class="controls">
-             <input class="form-control" id="focusedInput" type="text" placeholder="Enter here">
-             <span class="help-inline"></span>
-             <button type="submit" class="btn btn-primary">Save changes</button>
-           </div>
-         </div>
-
-       </div>
-            </div>
-        </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                    Question value #2
-                </a>
-            </div>
-            <div id="collapseTwo" class="accordion-body collapse">
-                <div class="accordion-inner">
-
+            <h2>
+                Survey Title
+            </h2>
+            <p class="lead">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus, quis, possimus maxime impedit eius minima cupiditate vero libero odio excepturi dolorem voluptas omnis quibusdam debitis harum fugit officia minus reprehenderit!
+            </p>
+            <h4>
+                Questions:
+            </h4>
+            <div class="accordion" id="accordion">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">Question value #1</a>
+                    </div>
+                    <div id="collapseOne" class="accordion-body collapse in">
+                        <div class="accordion-inner">
+                            <div id="mySelect" class="select btn-group" data-resize="auto">
+                                <button type="button" data-toggle="dropdown" class="btn dropdown-toggle"><span class="dropdown-label" style="width: 120px;">Radio Option</span></button>
+                                <ul class="dropdown-menu">
+                                    <li data-value="1" class="selectVal">
+                                        <a href="#">Radio Option</a>
+                                    </li>
+                                    <li data-value="2" class="selectVal">
+                                        <a href="#">Checkbox Option</a>
+                                    </li>
+                                    <li data-value="3" class="selectVal" data-fizz="buzz">
+                                        <a href="#">Input Option</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="control-group optionGroup">
+                                <label class="control-label">Choose any one</label>
+                                <div class="controls">
+                                    <label class="radio inline"><input type="radio" value="category" name="questionType"> Category</label> <label class="radio inline"><input type="radio" value="non-category" name="questionType"> Non-Category</label> <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                            <div class="control-group checkGroup">
+                                <label class="control-label">Choose single/ multiple option</label>
+                                <div class="controls">
+                                    <label class="checkbox-inline"><input type="checkbox" id="inlineCheckbox1" value="option1"> 1</label> <label class="checkbox-inline"><input type="checkbox" id="inlineCheckbox2" value="option2"> 2</label> <label class="checkbox-inline"><input type="checkbox" id="inlineCheckbox3" value="option3"> 3</label> <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                            <div class="control-group inputGroup">
+                                <label class="control-label">Add description</label>
+                                <div class="controls">
+                                    <input class="form-control" id="focusedInput" type="text" placeholder="Enter here"> <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">Question value #2</a>
+                    </div>
+                    <div id="collapseTwo" class="accordion-body collapse">
+                        <div class="accordion-inner"></div>
+                    </div>
+                </div>
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">Question value #3</a>
+                    </div>
+                    <div id="collapseThree" class="accordion-body collapse">
+                        <div class="accordion-inner"></div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-                   Question value #3
-               </a>
-           </div>
-           <div id="collapseThree" class="accordion-body collapse">
-            <div class="accordion-inner">
-
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-
-
+    </body>
+</html>

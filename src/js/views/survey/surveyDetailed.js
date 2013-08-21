@@ -1,44 +1,82 @@
 define(function(require) {
-var Backbone = require('backbone'),
-    surveyDetailedTemplate = require('template!templates/survey/surveyDetailed'),
-    newOptionTemplate=require('template!templates/survey/newOption');
-    SurveyDetailedModalView=require('views/survey/surveyDetailedModal'),
-    SurveyDetailedModel=require('models/survey/surveyDetailed');
-/* Requires with no assignment */
-return Backbone.View.extend({
-    el: '.page',
-    initialize: function() {
+    var Backbone = require('backbone'),
+        Events = require('events'),
+        surveyDetailedTemplate = require('template!templates/survey/surveyDetailed'),
+        newOptionTemplate = require('template!templates/survey/newOption');
+    /* Requires with no assignment */
+    return Backbone.View.extend({
+        el: '.page',
+        initialize: function() {
+            var self = this,accessLevel = $.cookie('accesslevel');
+            $.ajax({
+                async: false,
+                url: Backbone.Model.gateWayUrl + "/getSurveyById",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    id: this.model.get('id')
+                }),
+                success: function(data, response) {
+                    self.model.set(data);
+                    console.log(data);
+                },
+                error: function(data, error, options) {
+                    Events.trigger("view:navigate", {
+                        path: "listSurvey",
+                        options: {
+                            trigger: true,
+                        }
+                    });
+                    Events.trigger('alert:error', [{
+                        message: error + " while fetching the survey  with id : " + self.model.get('id')
+                    }]);
+                }
+            })
+            if (accessLevel === "admin" || accessLevel === "super admin") {
+                /* Admin view loading */
+                this.QuestionView = require('views/survey/adminQuestion');
+            } else if (accessLevel === "user" || !accessLevel) {
+                /* User view loading */
+                this.QuestionView = require('views/survey/userQuestion');
+            }
+        },
+        events: {
+            'click .controls a': 'addNewQuestion'
+        },
+        addNewQuestion: function(e) {
+            e.preventDefault();
 
-    },
-    events: {
-        'click .controls a':'addNewQuestion',
-        'click .newCategory':'addNewCategory'
-    },
-    addNewQuestion:function(e){
-        e.preventDefault();
+            /* Modal Loading */
+            var surveyDetailedModel = new SurveyDetailedModel(),
+                surveyDetailedModalView = new SurveyDetailedModalView({
+                    model: surveyDetailedModel
+                });
 
-        /* Modal Loading */
-        var surveyDetailedModel=new SurveyDetailedModel(),
-            surveyDetailedModalView=new SurveyDetailedModalView({model:surveyDetailedModel});
-
-        this.$('.modalContainer').html(surveyDetailedModalView.render({category:false}).el);
-        this.$('#surveyDetailedModal').modal();
-    },
-    addNewCategory:function(e){
-        e.preventDefault();
-        /* Modal Loading */
-        var surveyDetailedModel=new SurveyDetailedModel();
-            surveyDetailedModel.set('categoryView',true);
-            console.log(surveyDetailedModel);
-        var surveyDetailedModalView=new SurveyDetailedModalView({model:surveyDetailedModel});
-
-        this.$('.modalContainer').html(surveyDetailedModalView.render({category:true}).el);
-        this.$('#surveyDetailedModal').modal();
-    },
-    render: function() {
-        this.$el.html(surveyDetailedTemplate);
-        return this;
-    }
-});
+            this.$('.modalContainer').html(surveyDetailedModalView.render({
+                category: false
+            }).el);
+            this.$('#surveyDetailedModal').modal();
+        },
+        render: function() {
+            this.$el.html(surveyDetailedTemplate(this.model.toJSON()));
+            var questionCollection = this.model.questions;
+            if (questionCollection.toJSON().length !== 0) {
+                /* ==========================================================================
+                   Filter questions and create question view based on admin/other user
+                   ========================================================================== */
+                questionCollection.each(function(qModel) {
+                    console.log(qModel);
+                    this.addQuestion(qModel);
+                },this);
+            } else {
+                this.$('.accordion').append("No question in this survey yet");
+            }
+            return this;
+        },
+        addQuestion: function(qModel) {
+            var questionView = new this.QuestionView({model:qModel});
+            this.$('.accordion').append(questionView.render().el);
+        }
+    });
 
 });

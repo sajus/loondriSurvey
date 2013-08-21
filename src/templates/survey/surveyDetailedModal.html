@@ -16,7 +16,6 @@
                         <span class="help-inline"></span>
                     </div>
                 </div>
-                {{/unless}}
                 <div class="control-group">
                     <label class="control-label" >Type Of Question</label>
                     <div class="controls">
@@ -29,11 +28,12 @@
                         <span class="help-inline"></span>
                     </div>
                 </div>
+                {{/unless}}
                 <div class="control-group categoryGroup">
                     <label class="control-label" for="multiSelect">Select Category</label>
                     <div class="controls">
                         <div>
-                            <select id="multiSelect" name="category" size="2" disabled>
+                            <select id="multiSelect" name="category" size="2">
 
                             </select>
                             <span class="help-inline"></span>
@@ -65,7 +65,7 @@
                     <div class="controls">
                         <input type="text" class="input-xlarge" id="option1" data-name="option" name="option1">
                         <label class="checkbox">Correct
-                           <input type="checkbox">
+                            <input name="answer1" type="checkbox">
                         </label>
                         <span class="help-inline"></span>
                         <p class="help-block">Add your options for question here</p>
@@ -79,7 +79,7 @@
                             <button class="btn addOption"><span class="icon-plus"></span></button>
                         </div>
                         <label class="checkbox">Correct
-                           <input type="checkbox">
+                            <input name="answer2" type="checkbox">
                         </label>
                         <span class="help-inline"></span>
                     </div>

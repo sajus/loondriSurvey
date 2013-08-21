@@ -10,7 +10,7 @@
                 {{/if}}>
                 <span class="help-inline"></span>
                 <label class="checkbox">Correct
-                   <input type="checkbox" {{#if isCustomResponse}}disabled{{/if}}>
+                   <input name="answer1" type="checkbox" {{#if isCustomResponse}}disabled{{/if}}>
                 </label>
                 <p class="help-block">Add your options for question here</p>
             </div>
@@ -26,7 +26,7 @@
                     <button class="btn addOption" {{#if isCustomResponse}}disabled{{/if}}><span class="icon-plus"></span></button>
                 </div>
                 <label class="checkbox">Correct
-                   <input type="checkbox" {{#if isCustomResponse}}disabled{{/if}}>
+                   <input name="answer2" type="checkbox" {{#if isCustomResponse}}disabled{{/if}}>
                 </label>
                 <span class="help-inline"></span>
             </div>

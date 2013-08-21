@@ -41,7 +41,7 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
             'user': 'user',
             'login': 'login',
             'wizard/:step':'newSurvey',
-            'surveyDetailed':'surveyDetailed',
+            'surveyDetailed/:id':'surveyDetailed',
             'surveyUserDetailed':'surveyUserDetailed',
             'listSurvey':'listSurvey',
             'logout':'logout',
@@ -84,10 +84,10 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
             });
         });
 
-        router.on('route:surveyDetailed', function() {
+        router.on('route:surveyDetailed', function(surveyId) {
             require(['views/survey/surveyDetailed','models/survey/survey'], function(SurveyDetailed,SurveyModel) {
                 surveyModel=new SurveyModel();
-                var surveyDetailed = Core.create(appView, 'SurveyDetailed', SurveyDetailed,{model:surveyModel});
+                var surveyDetailed = Core.create(appView, 'SurveyDetailed', SurveyDetailed,{model:surveyModel.set('id',surveyId)});
                 surveyDetailed.render();
             });
         });

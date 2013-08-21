@@ -17,7 +17,7 @@ textarea{
 .menubar a{
 	color: #000;
 }
-.addCategory{
+.addCategory,.updateCategory{
 	cursor: pointer;
 }
 .loginContainer{

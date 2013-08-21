@@ -5,8 +5,7 @@ define(['backbone'], function(Backbone) {
 		initialize: function() {},
 
 		url: function() {
-			return this.model.gateWayUrl + '/getAllSurvey';
+			return this.model.gateWayUrl + '/getCategoriesByQuestionId';
 		}
 	});
-
 });

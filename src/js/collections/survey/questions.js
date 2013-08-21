@@ -1,6 +1,7 @@
-define(['backbone'], function(Backbone) {
+define(['backbone','models/survey/wizard/questionDetails'], function(Backbone,QuestionModel) {
 
 	return Backbone.Collection.extend({
+		model: QuestionModel,
 
 		initialize: function() {},
 
@@ -8,5 +9,4 @@ define(['backbone'], function(Backbone) {
 			return this.model.gateWayUrl + '/getAllSurvey';
 		}
 	});
-
 });

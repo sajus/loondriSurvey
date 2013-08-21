@@ -11,7 +11,7 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizar
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
                         data: JSON.stringify({
-                            surveyid: this.getIdHashCookie()[0]
+                            id: this.getIdHashCookie()[0]
                         }),
                         success: function(data, response) {
                             self.model.set(data);
@@ -52,14 +52,16 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizar
                 return this;
             },
             postData: function() {
-                console.log("In the post data function");
+                console.log("In the post data function survey");
                 var self = this,
                     url = Backbone.Model.gateWayUrl;
                 url += (this.model.get('id') === undefined) ? "/createSurvey" : "/updateSurvey";
-                this.model.save(this.model.toJSON(), {
+                console.log("url: "+url);
+                console.log(this.formatDate(this.model.toJSON()));
+                this.model.save(this.formatDate(this.model.toJSON()), {
                     async: false,
                     url: url,
-                    success: function(model, response) {
+                    success: function(model, response,options) {
                         console.log("response is : " + response);
                         Events.trigger("change:wizardState", {
                             id: parseInt(response, 10),
@@ -67,6 +69,13 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizar
                         });
                     }
                 });
+            },
+            formatDate:function(modelData){
+                if(modelData.startdate.indexOf("00:00:00")===-1){
+                    modelData.startdate+=" 00:00:00";
+                    modelData.enddate+=" 00:00:00";
+                }
+                return modelData;
             }
         });
     });
