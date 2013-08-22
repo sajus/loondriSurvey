@@ -76,7 +76,7 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
         });
 
         router.on('route:newSurvey', function(step) {
-            require(['views/survey/newSurvey','models/survey/survey'], function(NewSurvey,SurveyModel) {
+            require(['views/survey/newSurvey','models/survey/wizard/surveyDetails'], function(NewSurvey,SurveyModel) {
                 console.log(step);
                 surveyModel=new SurveyModel();
                 var newSurvey = Core.create(appView, 'NewSurvey', NewSurvey,{model:surveyModel,step:step});
