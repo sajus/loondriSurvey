@@ -1,6 +1,6 @@
 define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUsers', 'views/users/editUserModalView', 'views/users/deleteUserModalView', 'views/users/summaryUserModalView', 'fueluxDataSource', 'fueluxDataGrid','bootstrapDropdown','fueluxComboBox','fueluxSelectBox','fueluxSearchBox'],
 	function($, _,Backbone, modifyUsersTemplate, UserEditView, UserDeleteView, UsersSummaryView, FuelUxDataSource){
-
+		var globalSelected = [];
 		var modifyUserPage = Backbone.View.extend({
 
 			el: '#modifyuser',
@@ -18,8 +18,14 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 			events: {
 				'click .userEdit': 'userEdit',
 				'click .userDelete': 'userDelete',
+				'mouseover .userDelete': 'rowSelectedDelete',
+				'mouseout .userDelete': 'rowSelectedNotDelete',
+				'click .userDelete': 'userDelete',
 				'click .summary': 'userTblSummary',
 				'click .sendEmail': 'sendEmail',
+				'change #selectUsersAtOnce': 'gridCheckBox',
+				'loaded #MyGrid': 'gridCheckBox',
+				'click .selectrows': 'rowSelected'
 			},
 
 			createDataGrid: function(userlist){
@@ -27,7 +33,7 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 					columns: [
 						{
 							property: "selectrows",
-							label: "<input type='checkbox' class='selectAllUsers'>",
+							label: "<input type='checkbox' id='selectUsersAtOnce'>",
 							sortable: false
 						},
 						{
@@ -73,7 +79,7 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 						{
 							property: "operations",
 							label: "Operations",
-							sortable: true
+							sortable: false
 						}
 					],
 					data: userlist,
@@ -110,11 +116,63 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 
 			sendEmail: function() {
 				console.log("Send Email");
+			},
+
+			gridCheckBox: function(e) {
+				e.preventDefault();
+           		e.stopPropagation();
+				$('#selectUsersAtOnce').prop('checked', function () {
+					if (this.checked) {
+						$(this).prop("checked", true);
+						$('.selectrows').prop("checked", true);
+						$('table[id="MyGrid"] tbody tr').addClass('warning')
+					} else {
+						$(this).prop('checked', false);
+						$('.selectrows').prop('checked', false);
+						$('table[id="MyGrid"] tbody tr').removeClass('warning')
+					}
+				});
+			},
+
+			rowSelected: function(e) {
+				console.log($(e.target).closest('input[type="checkbox"]').attr('data-id'));
+				$($(e.target).closest('input[type="checkbox"]')).prop('checked', function () {
+					if (this.checked) {
+						$(e.target).closest('tr').addClass('warning selectedRow');
+						globalSelected.push($(e.target).closest('input[type="checkbox"]').attr('data-id'));
+					} else {
+						$('.selectrows').prop('checked', function () {
+							if($(e.target).closest('tr').hasClass('error')) {
+								$(e.target).closest('tr').removeClass('error selectedRow');
+							} else {
+								$(e.target).closest('tr').removeClass('warning selectedRow');
+							}
+						});
+						globalSelected.pop($(e.target).closest('input[type="checkbox"]').attr('data-id'));
+					}
+				});
+				console.log("Users Selected::-")
+				console.log(globalSelected);
+			},
+
+			rowSelectedDelete: function() {
+				$('.selectrows').prop('checked', function () {
+					if (this.checked) {
+						$('.selectedRow').removeClass('warning').addClass('error');
+					}
+				});
+			},
+
+			rowSelectedNotDelete: function() {
+				$('.selectrows').prop('checked', function () {
+					if (this.checked) {
+						$('.selectedRow').removeClass('erro').addClass('warning');
+					}
+				});
 			}
+
 		});
 
 		return modifyUserPage;
 
 	});
-// var id = this.$(e.target).closest('tr').attr('data-id');
-//             var name = this.$('tr[data-id='+id+'] td a').closest('tr a').html();

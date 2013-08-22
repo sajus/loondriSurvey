@@ -13,7 +13,7 @@ define(['backbone', 'globals', 'modelValidator'], function(Backbone, globals) {
 			var operationHTML = '<button class="btn btn-small btn-primary userEdit" type="button"><i class="icon-edit icon-white"></i> Edit</button>';
 
 			_.each(response.userslist, function(userlist){
-				userlist.selectRows = "<input type='checkbox' class='selectrows'>";
+				userlist.selectRows = "<input type='checkbox' class='selectrows' data-id="+userlist.id+">";
 				userlist.gender==='M' ? userlist.gender = "Male" : userlist.gender = "Female";
 				userlist.status = userlist.status.toLowerCase();
 				userlist.status==='active' ? userlist.status = '<span class="label label-success">' + self.capitaliseFirstLetter(userlist.status) + '</span>' : userlist.status = '<span class="label label-inverse">' + self.capitaliseFirstLetter(userlist.status) + '</span>';
