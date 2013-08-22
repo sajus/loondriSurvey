@@ -28,7 +28,11 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizar
             },
             events: {
                 'submit .form-horizontal': 'processForm',
-                'change :input,blur :input': 'processField'
+                'change :input,blur :input': 'processField',
+                'keypress #startdate,#enddate':'preventAction'
+            },
+            preventAction:function(e){
+                e.preventDefault();
             },
             render: function() {
                 this.$el.html(surveyDetailsTemplate);

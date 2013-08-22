@@ -7,7 +7,11 @@ define(['backbone', 'collections/survey/questions', 'modelValidator'], function(
             var sArray = value.split("-"),
                 sDate = new Date(sArray[0], sArray[1] - 1, sArray[2]),
                 today = new Date();
-            if (sDate < today) {
+            today.setHours('00');
+            today.setMinutes('00');
+            today.setSeconds('00');
+            today.setMilliseconds('00');
+            if (sDate.getTime() < today.getTime()) {
                 return "Past dates are not allowed";
             }
         },
@@ -19,6 +23,10 @@ define(['backbone', 'collections/survey/questions', 'modelValidator'], function(
                 var eArray = value.split("-"),
                     eDate = new Date(eArray[0], eArray[1] - 1, eArray[2]),
                     today = new Date();
+                today.setHours('00');
+                today.setMinutes('00');
+                today.setSeconds('00');
+                today.setMilliseconds('00');
                 if (eDate < today) {
                     return "Past dates are not allowed";
                 }
@@ -65,7 +73,7 @@ define(['backbone', 'collections/survey/questions', 'modelValidator'], function(
         fetchQuestions: function() {
             var self = this;
             $.ajax({
-                async:false,
+                async: false,
                 url: Backbone.Model.gateWayUrl + "/getQuestionsBySurveyId",
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -77,7 +85,7 @@ define(['backbone', 'collections/survey/questions', 'modelValidator'], function(
                     console.log(self.questions.toJSON());
                 },
                 error: function(data, error, options) {
-                   console.log("some error occured while fetching question collection.");
+                    console.log("some error occured while fetching question collection.");
                 }
             })
         }

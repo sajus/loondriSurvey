@@ -54,7 +54,11 @@ define(function(require) {
                     message: "Please complete current step to finish wizard"
                 }]);
             } else {
+                /* Remove cookies create while using wizard */
                 this.unsetIdHashCookies();
+                $.removeCookie('isCustomResponse');
+                $.removeCookie('isNoCategory');
+
                 console.log(this.getIdHashCookie());
                 Events.trigger('alert:success', [{
                     message: this.successMessage
