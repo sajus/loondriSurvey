@@ -5,7 +5,7 @@
             <div class="controls">
                 {{#each optionvalue}}
                 <label class="radio inline">
-                    <input type="radio" value="{{.}}" name="questionType"> {{.}}
+                    <input type="radio" value="{{.}}" name="selectedvalue"> {{.}}
                 </label>
                 {{/each}}
                 <BR><br>
@@ -19,7 +19,7 @@
             <div class="controls">
                 {{#each optionvalue}}
                     <label class="checkbox-inline">
-                        <input type="checkbox" id="inlineCheckbox1" value="option1" name="{{.}}"> {{.}}
+                        <input type="checkbox" id="inlineCheckbox1" value="{{.}}" name="selectedvalue"> {{.}}
                     </label>
                 {{/each}}
                 <BR>
@@ -31,7 +31,7 @@
         <div class="optionCategory" id="other">
             <label class="control-label">Add description</label>
             <div class="controls">
-                <input class="form-control" id="focusedInput" type="text" placeholder="Enter here">
+                <input class="form-control" id="focusedInput" type="text" placeholder="Enter here" name="selectedvalue">
                 <BR>
                 <button type="submit" class="btn btn-primary save">Save changes</button>
             </div>

@@ -156,6 +156,7 @@ define(['jquery', 'underscore','views/app', 'backbone', 'core','events','jqueryC
         router.on('route:logout', function () {
             $.removeCookie('isAuthenticated');
             $.removeCookie('accesslevel');
+            $.removeCookie('empid');
             Events.trigger("view:navigate", {
                 path: "login",
                 options: {

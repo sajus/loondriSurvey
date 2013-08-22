@@ -33,7 +33,9 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
                 'change :input,blue :input': 'processField'
             },
             isAuthorized: function(params) {
-                var accesslevel = this.model.isAuthorized().accesslevel;
+                console.log(this.model.isAuthorized().id);
+                var accesslevel = this.model.isAuthorized().accesslevel,
+                    empid = this.model.isAuthorized().id;
                 if(accesslevel === undefined) {
                     Events.trigger("alert:error", [{
                         message: "Authentication Failed.Check username/password."
@@ -41,6 +43,7 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
                 } else if (accesslevel.toLowerCase() === "admin" || accesslevel.toLowerCase() === "super admin") {
                     $.cookie('isAuthenticated', true);
                     $.cookie('accesslevel', accesslevel.toLowerCase());
+                    $.cookie('empid', empid);
                     Events.trigger("alert:success", [{
                         message: "Authentication successful. Redirecting ...."
                     }]);
@@ -49,11 +52,13 @@ define(['backbone','events', 'views/BaseView', 'template!templates/login/login',
                     // Call setSessionCookies globally
                     $.cookie('isAuthenticated', true);
                     $.cookie('accesslevel', accesslevel.toLowerCase());
+                    $.cookie('empid', empid);
                     Events.trigger("alert:success", [{
                         message: "Authentication successful. Redirecting ...."
                     }]);
                     setTimeout(this.redirectToUser, 1000);
                 }
+                console.log($.cookie('empid'));
             },
             render: function() {
                 this.$el.html(loginPageTemplate);
