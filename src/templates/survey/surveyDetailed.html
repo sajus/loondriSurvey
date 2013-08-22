@@ -1,10 +1,12 @@
 <div class="questionList well well-mini">
-    <div class="controls clearfix">
-        <a class="btn pull-right" href="#"><i class="icon-plus"></i>Add Question</a>
-    </div>
-    <h2>{{title}}</h2>
+    {{#if isAdmin}}
+        <div class="controls clearfix">
+            <a class="btn pull-right" href="#"><i class="icon-plus"></i>Add Question</a>
+        </div>
+    {{/if}}
+    <h2>{{questions.title}}</h2>
     <p class="lead">
-        {{description}}
+        {{questions.description}}
     </p>
     <h4>Questions:</h4>
     <div class="accordion" id="accordion">

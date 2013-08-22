@@ -4,14 +4,21 @@ define(['backbone', 'template!templates/survey/listSurvey', 'fueluxDataSource', 
         return Backbone.View.extend({
             el: '.page',
 
-            initialize: function() {},
+            initialize: function() {
+                var accessLevel = $.cookie('accesslevel');
+                if (accessLevel === "admin" || accessLevel === "super admin") {
+                    this.isAdmin = true;
+                } else if (accessLevel === "user" || !accessLevel) {
+                    this.isAdmin = false;
+                }
+            },
 
             events: {
                 "click tbody tr td": "surveyDetail"
             },
 
             render: function() {
-                this.$el.html(listSurveyTemplate);
+                this.$el.html(listSurveyTemplate({isAdmin:this.isAdmin}));
                 var self = this;
                 var sampleData;
                 this.collection.fetch({

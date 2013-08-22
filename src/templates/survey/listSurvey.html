@@ -1,6 +1,8 @@
-<div class="well menubar">
-	<a href="#wizard/surveyDetails" class="btn pull-right" type="submit">Create New Survey</a>
-</div>
+{{#if isAdmin}}
+	<div class="well menubar">
+		<a href="#wizard/surveyDetails" class="btn pull-right" type="submit">Create New Survey</a>
+	</div>
+{{/if}}
 <div class="fuelux">
 	<table id="MyGrid" class="table table-bordered datagrid">
 		<thead>
