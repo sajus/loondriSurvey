@@ -8,14 +8,15 @@ define(function(require) {
     return Backbone.View.extend({
         className: 'accordion-group',
         initialize: function() {
-            this.model.fetchCategories(this.model.get('questionid'));
+            this.model.fetchCategories(this.model.get('questionid')||this.model.get('id'));
             /* Events */
             Events.on("categoriesChanged", this.refreshView, this);
         },
         events: {
             'click .newCategory': 'addNewCategory',
             'click .updateCategory': 'updateCategory',
-            'change select': 'toggleUpdateButton'
+            'click .deleteCategory': 'deleteCategory',
+            'change select': 'toggleControls'
         },
         refreshView: function() {
             console.log("in the refresh view");
@@ -31,12 +32,14 @@ define(function(require) {
             }));
             return this;
         },
-        toggleUpdateButton: function(e) {
+        toggleControls: function(e) {
             var target$ = this.$(e.target);
             if (target$.val() !== undefined) {
                 this.$('.updateCategory').attr("disabled", false);
+                this.$('.deleteCategory').attr("disabled", false);
             } else {
                 this.$('.updateCategory').attr("disabled", true);
+                this.$('.deleteCategory').attr("disabled", true);
             }
         },
         updateCategory: function(e) {
@@ -68,6 +71,27 @@ define(function(require) {
                 category: true
             }).el);
             $('#surveyDetailedModal').modal();
+        },
+        deleteCategory:function(e){
+            e.preventDefault();
+            $.ajax({
+                async: false,
+                url: Backbone.Model.gateWayUrl + '/deleteCategories',
+                type: "POST",
+                contentType: "json; charset=utf-8",
+                data: JSON.stringify({
+                    id: parseInt(this.$('[name=category]').val(), 10)
+                }),
+                success: function(data, response) {
+                    console.log("category deleted successfully");
+                    if(response==="success"){
+                        Events.trigger("categoriesChanged");
+                        Events.trigger('alert:success', [{
+                            message: "Category deleted successfully"
+                        }]);
+                    }
+                }
+            });
         }
     });
 

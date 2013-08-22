@@ -42,16 +42,19 @@
                         </div>
                         <br/>
                         <div class="input-append">
-                            <input class="span2" name="categoryInput" type="text">
-                            {{#if category}}
-                            <span class="add-on updateCategory">
-                                <i class="icon-pencil"></i>Update Category
-                            </span>
-                            {{else}}
-                            <span class="add-on addCategory">
-                                <i class="icon-plus"></i>Create Category
-                            </span>
-                            {{/if}}
+                            {{#unless isNA}}
+                                <input class="span2" name="categoryInput" type="text">
+                                {{#if category}}
+                                    <span class="add-on updateCategory">
+                                        <i class="icon-pencil"></i>Update Category
+                                    </span>
+
+                                {{else}}
+                                    <span class="add-on addCategory">
+                                        <i class="icon-plus"></i>Create Category
+                                    </span>
+                                {{/if}}
+                            {{/unless}}
                         </div>
                     </div>
                 </div>

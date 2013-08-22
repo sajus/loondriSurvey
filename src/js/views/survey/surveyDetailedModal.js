@@ -47,7 +47,7 @@ define(function(require) {
         },
         events: {
             // 'click .controls a':'addNewQuestion',
-            // 'change [name=questionType]':'toggleCategory',
+            'change [name=questionType]': 'toggleCategory',
             'change [name=responseType]': 'toggleOptions',
             'click .addOption': 'addOption',
             'click .removeOption': 'removeOption',
@@ -59,23 +59,26 @@ define(function(require) {
             'change input[type=text],textarea,select': 'processField',
             'click .save': 'processForm'
         },
-        // toggleCategory:function(e){
-        //     var target$=$(e.target),
-        //         targetSelect$=this.$('.categoryGroup').find('select');
-        //     if(target$.val().toLowerCase()==='category'){
-        //         targetSelect$.attr("disabled",false);
-        //         targetSelect$.html("");
-        //         this.model.unset(targetSelect$.attr('name'));
-        //     }else{
-        //         targetSelect$.html($("<option>",{text:"NA",value:"NA"})).attr("disabled",false);
-        //         this.model.set(targetSelect$.attr('name'), "NA", {
-        //             validate: true
-        //         });
-        //     }
-        //     this.model.set(target$.attr('name'), target$.val(), {
-        //         validate: true
-        //     });
-        // },
+        toggleCategory: function(e) {
+            var target$ = $(e.target),
+                targetSelect$ = this.$('.categoryGroup').find('select');
+            if (target$.val().toLowerCase() === 'category') {
+                targetSelect$.attr("disabled", false);
+                targetSelect$.html("");
+                this.model.unset(targetSelect$.attr('name'));
+            } else {
+                targetSelect$.html($("<option>", {
+                    text: "NA",
+                    value: "NA"
+                })).attr("disabled", false);
+                this.model.set(targetSelect$.attr('name'), "NA", {
+                    validate: true
+                });
+            }
+            this.model.set(target$.attr('name'), target$.val(), {
+                validate: true
+            });
+        },
         toggleOptions: function(e) {
             var target$ = $(e.target);
             if (target$.val().toLowerCase() === 'other') {
@@ -100,10 +103,12 @@ define(function(require) {
             });
         },
         render: function(options) {
-            var isCategory = (options.category) ? true : false;
+            this.isCategory = (options.category) ? true : false,
+            this.isNA = this.model.get('category')==='NA';
             this.$el.html(surveyDetailedModalTemplate({
-                isCategory: isCategory,
-                category: this.model.get('category')
+                isCategory: this.isCategory,
+                category: this.model.get('category'),
+                isNA:this.isNA
             }));
             if (this.options.categoryId !== undefined) {
                 for (var i = 0, l = this.categoryModel.optionsCollection.toJSON().length - 2; i < l; i++) {
@@ -213,110 +218,196 @@ define(function(require) {
             console.log("In the post data function changes");
             console.log(this.model.toJSON());
             console.log(this.options);
-            var self = this,
-                urlCategory = (this.options.categoryId !== undefined) ? Backbone.Model.gateWayUrl + "/updateCategory" : Backbone.Model.gateWayUrl + "/createCategory",
-                urlOptions = Backbone.Model.gateWayUrl + "/createOptions",
-                categoryPostData = {
-                    questionid: self.options.questionid,
-                    categoryname: self.model.get('category'),
-                    categorytype: self.model.get('responseType'),
-                };
-            if (this.options.categoryId !== undefined) {
-                categoryPostData.id = this.options.categoryId;
+            if (!this.isCategory) {
+                console.log("this is where to add new question");
+                this.postNewQuestion();
+            } else {
+                var self = this,
+                    urlCategory = (this.options.categoryId !== undefined) ? Backbone.Model.gateWayUrl + "/updateCategory" : Backbone.Model.gateWayUrl + "/createCategory",
+                    urlOptions = Backbone.Model.gateWayUrl + "/createOptions",
+                    categoryPostData = {
+                        questionid: self.options.questionid,
+                        categoryname: self.model.get('category'),
+                        categorytype: self.model.get('responseType'),
+                    };
+                if (this.options.categoryId !== undefined) {
+                    categoryPostData.id = this.options.categoryId;
+                }
+                /* Create/Update category */
+                // categoriesid
+                $.ajax({
+                    async: false,
+                    url: urlCategory,
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(categoryPostData),
+                    success: function(data, response) {
+                        console.log("in the success of createCategory");
+                        console.log(data); //Use this category id to post options
+                        if (self.options.categoryId === undefined) {
+                            var postData = self.convertOptionData(self.model.toJSON(), [self.options.questionid, parseInt(data, 10)]);
+                            $.ajax({
+                                async: false,
+                                url: urlOptions,
+                                type: "POST",
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify(postData),
+                                success: function(data, response) {
+                                    console.log("in the success of createOptions");
+                                    if (response === 'success') {
+                                        $('#surveyDetailedModal').modal('hide');
+                                        Events.trigger("categoriesChanged");
+                                    } else {
+                                        Events.trigger('alert:error', [{
+                                            message: "Error occured while creating options."
+                                        }]);
+                                    }
+                                },
+                                error: function(data) {
+                                    console.log("in the error of create cat");
+                                }
+                            })
+                        } else {
+                            /* Merge the options (update/delete options) */
+                            var collection = self.categoryModel.optionsCollection,
+                                collectionJSON = collection.toJSON(),
+                                collectionLength = collection.toJSON().length,
+                                optionsObject = self.convertOptionData(self.model.toJSON(), [self.options.questionid, parseInt(data, 10)]),
+                                optionsHash = optionsObject.options,
+                                optionsHashLength = optionsHash.length,
+                                objArr = [],
+                                index = 0;
+                            console.log("in the merging of options");
+                            console.log(collectionLength);
+                            console.log(optionsHashLength);
+                            if (optionsHashLength >= collectionLength) {
+                                _.each(collectionJSON, function(originalOption, key) {
+                                    // console.log(originalOption);
+                                    var obj = _.extend({}, originalOption, optionsHash[key]);
+                                    if (optionsHash[key].answer !== originalOption.answer ||
+                                        optionsHash[key].optionvalue !== originalOption.optionvalue) {
+                                        objArr.push(obj);
+                                    }
+                                    index++;
+                                });
+                                // updateOptions
+                                self.updateOptions(objArr);
+                                // Create rest options
+                                if (optionsHash[index] !== undefined) {
+                                    for (; index < optionsHashLength; index++) {
+                                        // Create the option
+                                        self.createOption(optionsHash[index]);
+                                    }
+                                }
+                            } else if (optionsHashLength < collectionLength) {
+                                _.each(optionsHash, function(originalOption, key) {
+                                    // console.log(originalOption);
+                                    var obj = _.extend({}, collectionJSON[key], originalOption);
+                                    if (collectionJSON[key].answer !== originalOption.answer ||
+                                        collectionJSON[key].optionvalue !== originalOption.optionvalue) {
+                                        objArr.push(obj);
+                                    }
+                                    index++;
+                                });
+                                // Update options
+                                self.updateOptions(objArr);
+                                //delete rest
+                                if (collectionJSON[index] !== undefined) {
+                                    for (; index < collectionLength; index++) {
+                                        // Delete the option
+                                        self.deleteOption(collectionJSON[index]);
+                                    }
+                                }
+                            }
+                            $('#surveyDetailedModal').modal('hide');
+                            Events.trigger("categoriesChanged");
+                        }
+                    },
+                    error: function(data) {
+                        console.log("in the error of create cat");
+                    }
+                })
+                /* Create options */
             }
-            /* Create/Update category */
-            // categoriesid
+        },
+        postNewQuestion: function() {
+            var data = this.model.toJSON(),
+                self = this;
             $.ajax({
                 async: false,
-                url: urlCategory,
+                url: Backbone.Model.gateWayUrl + '/createQuestions',
                 type: "POST",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(categoryPostData),
+                contentType: "json; charset=utf-8",
+                data: JSON.stringify({
+                    questionvalue: data.question,
+                    questiontype: data.questionType,
+                    surveyid: this.options.surveyId
+                }),
                 success: function(data, response) {
-                    console.log("in the success of createCategory");
-                    console.log(data); //Use this category id to post options
-                    if (self.options.categoryId === undefined) {
-                        var postData = self.convertOptionData(self.model.toJSON(), [self.options.questionid, parseInt(data, 10)]);
-                        $.ajax({
-                            async: false,
-                            url: urlOptions,
-                            type: "POST",
-                            contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify(postData),
-                            success: function(data, response) {
-                                console.log("in the success of createOptions");
-                                if (response === 'success') {
-                                    $('#surveyDetailedModal').modal('hide');
-                                    Events.trigger("categoriesChanged");
-                                } else {
-                                    Events.trigger('alert:error', [{
-                                        message: "Error occured while creating options."
-                                    }]);
-                                }
-                            },
-                            error: function(data) {
-                                console.log("in the error of create cat");
-                            }
-                        })
-                    } else {
-                        /* Merge the options (update/delete options) */
-                        var collection = self.categoryModel.optionsCollection,
-                            collectionJSON = collection.toJSON(),
-                            collectionLength = collection.toJSON().length,
-                            optionsObject = self.convertOptionData(self.model.toJSON(), [self.options.questionid, parseInt(data, 10)]),
-                            optionsHash = optionsObject.options,
-                            optionsHashLength = optionsHash.length,
-                            objArr = [],
-                            index = 0;
-                        console.log("in the merging of options");
-                        console.log(collectionLength);
-                        console.log(optionsHashLength);
-                        if (optionsHashLength >= collectionLength) {
-                            _.each(collectionJSON, function(originalOption, key) {
-                                // console.log(originalOption);
-                                var obj = _.extend({}, originalOption, optionsHash[key]);
-                                if (optionsHash[key].answer !== originalOption.answer ||
-                                    optionsHash[key].optionvalue !== originalOption.optionvalue) {
-                                    objArr.push(obj);
-                                }
-                                index++;
-                            });
-                            // updateOptions
-                            self.updateOptions(objArr);
-                            // Create rest options
-                            if (optionsHash[index] !== undefined) {
-                                for (; index < optionsHashLength; index++) {
-                                    // Create the option
-                                    self.createOption(optionsHash[index]);
-                                }
-                            }
-                        } else if (optionsHashLength < collectionLength) {
-                            _.each(optionsHash, function(originalOption, key) {
-                                // console.log(originalOption);
-                                var obj = _.extend({}, collectionJSON[key], originalOption);
-                                if (collectionJSON[key].answer !== originalOption.answer ||
-                                    collectionJSON[key].optionvalue !== originalOption.optionvalue) {
-                                    objArr.push(obj);
-                                }
-                                index++;
-                            });
-                            // Update options
-                            self.updateOptions(objArr);
-                            //delete rest
-                            if (collectionJSON[index] !== undefined) {
-                                for (; index < collectionLength; index++) {
-                                    // Delete the option
-                                    self.deleteOption(collectionJSON[index]);
-                                }
-                            }
-                        }
+                    if (parseInt(data, 10)) {
+                        console.log("question added successfully");
+                        console.log(response);
+                        self.postNewCategory(parseInt(data, 10));
                     }
-                },
-                error: function(data) {
-                    console.log("in the error of create cat");
                 }
-            })
-            /* Create options */
+            });
+        },
+        postNewCategory: function(questionid) {
+            var data = this.model.toJSON(),
+                self = this;
+            $.ajax({
+                async: false,
+                url: Backbone.Model.gateWayUrl + '/createCategory',
+                type: "POST",
+                contentType: "json; charset=utf-8",
+                data: JSON.stringify({
+                    categoryname: data.category,
+                    categorytype: data.responseType,
+                    questionid: questionid
+                }),
+                success: function(data, response) {
+                    if (parseInt(data, 10)) {
+                        console.log("category added successfully");
+                        console.log(response);
+                        self.postNewOptions(questionid, parseInt(data, 10));
+                    }
+                }
+            });
+        },
+        postNewOptions: function(questionid, categoryid) {
+            var data = this.model.toJSON(),
+                self = this;
+            $.ajax({
+                async: false,
+                url: Backbone.Model.gateWayUrl + '/createOptions',
+                type: "POST",
+                contentType: "json; charset=utf-8",
+                data: JSON.stringify(this.convertOptionData(data, [questionid, categoryid])),
+                success: function(data, response) {
+                    if (response === 'success') {
+                        console.log("options added successfully");
+                        console.log(response);
+                        console.log("All done");
+                        $('#surveyDetailedModal').modal('hide');
+                        self.addQuestionToView(questionid);
+                    }
+                }
+            });
+        },
+        addQuestionToView: function(questionid) {
+            $.ajax({
+                async: false,
+                url: Backbone.Model.gateWayUrl + '/getQuestionById',
+                type: "POST",
+                contentType: "json; charset=utf-8",
+                data: JSON.stringify({
+                    id: questionid
+                }),
+                success: function(data, response) {
+                    QuestionModel=require('models/survey/wizard/questionDetails');
+                    Events.trigger("addQuestion",new QuestionModel(data));
+                }
+            });
         },
         updateOptions: function(options) {
             console.log("in the updateOptions");

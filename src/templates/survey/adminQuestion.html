@@ -1,28 +1,22 @@
-<div class="accordion-group">
-    <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse">
-            {{question.questionvalue}}
-        </a>
-    </div>
-    <div id="collapse" class="accordion-body collapse in">
-        <div class="accordion-inner">
-            <select name="category" size="3">
-            {{#if noCategory}}
-                <option value="NA" disabled>NA</option>
-            {{else}}
-                {{#each category}}
-                    <option value="{{categoryid}}">{{categoryname}}</option>
-                {{/each}}
-            {{/if}}
-            </select>
-            <br/>
-            {{#unless noCategory}}
-            <div class="btn-group">
-                <button class="btn newCategory">Add Category</button>
-                <button class="btn updateCategory" disabled>Update Category</button>
-                <button class="btn deleteCategory" disabled>Delete Category</button>
-            </div>
-            {{/unless}}
-       </div>
-    </div>
+<div class="accordion-heading">
+    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{#if question.questionid}}{{question.questionid}}{{else}}{{question.id}}{{/if}}">
+        {{question.questionvalue}}
+    </a>
+</div>
+<div id="collapse{{#if question.questionid}}{{question.questionid}}{{else}}{{question.id}}{{/if}}" class="accordion-body collapse">
+    <div class="accordion-inner">
+        <select name="category" size="3">
+            {{#each category}}
+                <option value="{{categoryid}}">{{categoryname}}</option>
+            {{/each}}
+        </select>
+        <br/>
+        <div class="btn-group">
+        {{#unless noCategory}}
+            <button class="btn newCategory"><i class="icon-plus"></i> Add Category</button>
+        {{/unless}}
+        <button class="btn updateCategory" disabled><i class="icon-pencil"></i> Update Category</button>
+        <button class="btn deleteCategory" disabled><i class="icon-trash"></i> Delete Category</button>
+        </div>
+   </div>
 </div>

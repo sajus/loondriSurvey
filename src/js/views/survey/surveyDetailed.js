@@ -2,7 +2,9 @@ define(function(require) {
     var Backbone = require('backbone'),
         Events = require('events'),
         surveyDetailedTemplate = require('template!templates/survey/surveyDetailed'),
-        newOptionTemplate = require('template!templates/survey/newOption');
+        newOptionTemplate = require('template!templates/survey/newOption'),
+        SurveyDetailedModel=require('models/survey/surveyDetailed'),
+        SurveyDetailedModalView=require('views/survey/surveyDetailedModal');
     /* Requires with no assignment */
     return Backbone.View.extend({
         el: '.page',
@@ -37,10 +39,13 @@ define(function(require) {
             if (accessLevel === "admin" || accessLevel === "super admin") {
                 /* Admin view loading */
                 this.QuestionView = require('views/survey/adminQuestion');
+                 this.isAdmin = true;
             } else if (accessLevel === "user" || !accessLevel) {
                 /* User view loading */
                 this.QuestionView = require('views/survey/userQuestion');
+                this.isAdmin = false;
             }
+            Events.on("addQuestion",this.addQuestion,this);
         },
         events: {
             'click .controls a': 'addNewQuestion'
@@ -51,7 +56,8 @@ define(function(require) {
             /* Modal Loading */
             var surveyDetailedModel = new SurveyDetailedModel(),
                 surveyDetailedModalView = new SurveyDetailedModalView({
-                    model: surveyDetailedModel
+                    model: surveyDetailedModel,
+                    surveyId:this.model.get('id')
                 });
 
             this.$('.modalContainer').html(surveyDetailedModalView.render({
@@ -60,14 +66,13 @@ define(function(require) {
             this.$('#surveyDetailedModal').modal();
         },
         render: function() {
-            this.$el.html(surveyDetailedTemplate(this.model.toJSON()));
+            this.$el.html(surveyDetailedTemplate({questions:this.model.toJSON(), isAdmin:this.isAdmin}));
             var questionCollection = this.model.questions;
             if (questionCollection.toJSON().length !== 0) {
                 /* ==========================================================================
                    Filter questions and create question view based on admin/other user
                    ========================================================================== */
                 questionCollection.each(function(qModel) {
-                    console.log(qModel);
                     this.addQuestion(qModel);
                 },this);
             } else {
