@@ -1,0 +1,36 @@
+<div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h3>Update Question</h3>
+</div>
+<div class="modal-body">
+    <div class="alert-container">
+    </div>
+    <div class="formContainer">
+        <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label" >Type Of Question</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                           <input type="radio" value="category" name="questiontype" disabled> Category
+                        </label>
+                        <label class="radio inline">
+                           <input type="radio" value="non-category" name="questiontype" disabled> Non-Category
+                        </label>
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="questionvalue">Question</label>
+                    <div class="controls">
+                        <textarea id="questionvalue" name="questionvalue">
+                        </textarea>
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
+<div class="modal-footer">
+    <a href="#" class="btn btn-primary save">Save changes</a>
+    <a href="#" class="btn cancel">Close</a>
+</div>

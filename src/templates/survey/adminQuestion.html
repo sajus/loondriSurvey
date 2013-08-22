@@ -5,18 +5,32 @@
 </div>
 <div id="collapse{{#if question.questionid}}{{question.questionid}}{{else}}{{question.id}}{{/if}}" class="accordion-body collapse">
     <div class="accordion-inner">
-        <select name="category" size="3">
-            {{#each category}}
-                <option value="{{categoryid}}">{{categoryname}}</option>
-            {{/each}}
-        </select>
-        <br/>
-        <div class="btn-group">
-        {{#unless noCategory}}
-            <button class="btn newCategory"><i class="icon-plus"></i> Add Category</button>
-        {{/unless}}
-        <button class="btn updateCategory" disabled><i class="icon-pencil"></i> Update Category</button>
-        <button class="btn deleteCategory" disabled><i class="icon-trash"></i> Delete Category</button>
+        <div class="well well-mini">
+            <p class="lead">
+                Question:
+            </p>
+            <div class="btn-group">
+                <button class="btn updateQuestion"><i class="icon-pencil"></i> Update</button>
+                <button class="btn deleteQuestion"><i class="icon-trash"></i> Delete</button>
+            </div>
+        </div>
+        <div class="well well-mini">
+            <p class="lead">
+                Categories:
+            </p>
+            <select name="category" size="3">
+                {{#each category}}
+                    <option value="{{categoryid}}">{{categoryname}}</option>
+                {{/each}}
+            </select>
+            <br/>
+            <div class="btn-group">
+            {{#unless noCategory}}
+                <button class="btn newCategory"><i class="icon-plus"></i> Add</button>
+            {{/unless}}
+            <button class="btn updateCategory" disabled><i class="icon-pencil"></i> Update</button>
+            <button class="btn deleteCategory" disabled><i class="icon-trash"></i> Delete</button>
+            </div>
         </div>
    </div>
 </div>
