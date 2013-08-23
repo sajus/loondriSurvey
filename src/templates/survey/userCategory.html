@@ -1,4 +1,4 @@
-<div class="control-group optionGroup">
+<div class="optionGroup well well-mini">
     {{#if single}}
         <div class="optionCategory" id="single">
             <label class="control-label">Choose any one</label>
@@ -19,7 +19,7 @@
             <div class="controls">
                 {{#each optionvalue}}
                     <label class="checkbox-inline">
-                        <input type="checkbox" id="inlineCheckbox1" value="{{.}}" name="selectedvalue"> {{.}}
+                        <input type="checkbox" id="inlineCheckbox1" value="{{.}}"> {{.}}
                     </label>
                 {{/each}}
                 <BR>

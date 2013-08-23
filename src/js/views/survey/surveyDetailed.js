@@ -3,13 +3,15 @@ define(function(require) {
         Events = require('events'),
         surveyDetailedTemplate = require('template!templates/survey/surveyDetailed'),
         newOptionTemplate = require('template!templates/survey/newOption'),
-        SurveyDetailedModel=require('models/survey/surveyDetailed'),
-        SurveyDetailedModalView=require('views/survey/surveyDetailedModal');
+        SurveyDetailedModel = require('models/survey/surveyDetailed'),
+        SurveyDetailedModalView = require('views/survey/surveyDetailedModal');
     /* Requires with no assignment */
+    require('jqueryCookie');
     return Backbone.View.extend({
         el: '.page',
         initialize: function() {
-            var self = this,accessLevel = $.cookie('accesslevel');
+            var self = this,
+                accessLevel = $.cookie('accesslevel');
             $.ajax({
                 async: false,
                 url: Backbone.Model.gateWayUrl + "/getSurveyById",
@@ -39,13 +41,13 @@ define(function(require) {
             if (accessLevel === "admin" || accessLevel === "super admin") {
                 /* Admin view loading */
                 this.QuestionView = require('views/survey/adminQuestion');
-                 this.isAdmin = true;
+                this.isAdmin = true;
             } else if (accessLevel === "user" || !accessLevel) {
                 /* User view loading */
                 this.QuestionView = require('views/survey/userQuestion');
                 this.isAdmin = false;
             }
-            Events.on("addQuestion",this.addQuestion,this);
+            Events.on("addQuestion", this.addQuestion, this);
         },
         events: {
             'click .controls a': 'addNewQuestion'
@@ -57,7 +59,7 @@ define(function(require) {
             var surveyDetailedModel = new SurveyDetailedModel(),
                 surveyDetailedModalView = new SurveyDetailedModalView({
                     model: surveyDetailedModel,
-                    surveyId:this.model.get('id')
+                    surveyId: this.model.get('id')
                 });
 
             this.$('.modalContainer').html(surveyDetailedModalView.render({
@@ -66,22 +68,40 @@ define(function(require) {
             this.$('#surveyDetailedModal').modal();
         },
         render: function() {
-            this.$el.html(surveyDetailedTemplate({questions:this.model.toJSON(), isAdmin:this.isAdmin}));
+            this.$el.html(surveyDetailedTemplate({
+                questions: this.model.toJSON(),
+                isAdmin: this.isAdmin
+            }));
             var questionCollection = this.model.questions;
             if (questionCollection.toJSON().length !== 0) {
                 /* ==========================================================================
                    Filter questions and create question view based on admin/other user
                    ========================================================================== */
+                /* Set the cookie hash for tracking states */
+                if (!this.isAdmin) {
+                    var surveyStatus = [];
+                    questionCollection.each(function() {
+                        surveyStatus.push(false);
+                    });
+                    console.log(surveyStatus);
+                    this.setStatusCookies(surveyStatus.toString())
+
+                }
                 questionCollection.each(function(qModel) {
                     this.addQuestion(qModel);
-                },this);
+                }, this);
             } else {
                 this.$('.accordion').append("No question in this survey yet");
             }
             return this;
         },
+        setStatusCookies: function(idHashStr) {
+            $.cookie('statusSurvey', idHashStr)
+        },
         addQuestion: function(qModel) {
-            var questionView = new this.QuestionView({model:qModel});
+            var questionView = new this.QuestionView({
+                model: qModel
+            });
             this.$('.accordion').append(questionView.render().el);
         }
     });
