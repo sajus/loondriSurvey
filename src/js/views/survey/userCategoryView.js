@@ -84,10 +84,7 @@ define(function(require) {
                 status: "incomplete"
             };
             $.ajax({
-                async: false,
                 url: urlCategory,
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(surveyPostData),
                 success: function(data, response) {
                     // console.log("in the success of createOptions");

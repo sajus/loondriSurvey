@@ -73,10 +73,7 @@ define(['backbone', 'collections/survey/questions', 'modelValidator'], function(
         fetchQuestions: function() {
             var self = this;
             $.ajax({
-                async: false,
                 url: Backbone.Model.gateWayUrl + "/getQuestionsBySurveyId",
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
                     surveyid: this.get('id')
                 }),

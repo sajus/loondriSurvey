@@ -72,10 +72,7 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizar
                     url = Backbone.Model.gateWayUrl;
                 url += (this.model.get('id') === undefined) ? "/createOptions" : "/updateOptions";
                 $.ajax({
-                    async: false,
                     url: url,
-                    type: "POST",
-                    contentType: "json; charset=utf-8",
                     data: JSON.stringify(
                         this.convertOptionData(self.model.toJSON())
                     ),

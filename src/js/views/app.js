@@ -1,51 +1,75 @@
-define(['jquery', 'backbone', 'core', 'events', 'template!templates/layout','utilities/alerts','views/alert'], function($, Backbone, Core, Events, layoutTemplate,alerts,AlertView) {
+define(['jquery', 'backbone', 'core', 'events', 'template!templates/layout', 'utilities/alerts', 'views/alert'], function($, Backbone, Core, Events, layoutTemplate, alerts, AlertView) {
 
     var AppView = Backbone.View.extend({
 
         el: '.container',
 
-        initialize: function () {
+        initialize: function() {
             /* ==========================================================================
                Events
                ========================================================================== */
-            Events.on("view:navigate",this.navigate,this);
-            Events.on("alert:success",this.alertSuccess,this);
-            Events.on("alert:error",this.alertError,this);
+            Events.on("view:navigate", this.navigate, this);
+            Events.on("alert:success", this.alertSuccess, this);
+            Events.on("alert:error", this.alertError, this);
+
+            /* ==========================================================================
+               GLOBAL AJAX SETUP
+               ========================================================================== */
+            $.ajaxSetup({
+                async: false,
+                type: "POST",
+                contentType: "json; charset=utf-8"
+            });
 
         },
-        navigate:function(navigationData){
+        navigate: function(navigationData) {
             Events.trigger('page:navigate', navigationData);
         },
-        alertSuccess:function(messages){
-            this.alert(alerts.render({type: 'success', messages: messages}));
+        alertSuccess: function(messages) {
+            this.alert(alerts.render({
+                type: 'success',
+                messages: messages
+            }));
         },
-        alertError:function(messages){
-            this.alert(alerts.render({type: 'error', messages: messages}));
+        alertError: function(messages) {
+            this.alert(alerts.render({
+                type: 'error',
+                messages: messages
+            }));
         },
         alert: function(alertModel) {
-            if($(".modal").size()!==0){
-                this.alertView = new AlertView({ el: '.modal .alert-container' });
-            }else{
-                this.alertView = new AlertView({ el: '.alert-container' });
+            if ($(".modal").size() !== 0) {
+                this.alertView = new AlertView({
+                    el: '.modal .alert-container'
+                });
+            } else {
+                this.alertView = new AlertView({
+                    el: '.alert-container'
+                });
             }
             this.alertView.model = alertModel;
             this.alertView.render();
         },
-        render: function () {
+        render: function() {
             var self = this;
             console.log("in app render");
             this.$el.html(layoutTemplate);
 
-            require(['views/header/menuView'], function (HeaderMenuView) {
-                var headerMenuView = Core.create(self, 'HeaderMenuView', HeaderMenuView,{skipAuthCheck:true});
+            require(['views/header/menuView'], function(HeaderMenuView) {
+                var headerMenuView = Core.create(self, 'HeaderMenuView', HeaderMenuView, {
+                    skipAuthCheck: true
+                });
                 headerMenuView.render();
             });
 
-            require(['views/footer/footerView'], function (FooterView) {
+            require(['views/footer/footerView'], function(FooterView) {
                 /*
                     Pass the appView down into the footer so we can render the visualisation
                 */
-                var footerView = Core.create(self, 'FooterView', FooterView, {appView: self,skipAuthCheck:true});
+                var footerView = Core.create(self, 'FooterView', FooterView, {
+                    appView: self,
+                    skipAuthCheck: true
+                });
                 footerView.render();
             });
         }

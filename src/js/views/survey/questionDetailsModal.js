@@ -42,10 +42,7 @@ define(function(require) {
                 data.id = id;
                 delete data.questionid;
                 $.ajax({
-                    async: false,
                     url: Backbone.Model.gateWayUrl + '/updateQuestions',
-                    type: "POST",
-                    contentType: "json; charset=utf-8",
                     data: JSON.stringify(data),
                     success: function(data, response) {
                         if (parseInt(data, 10)) {
@@ -62,10 +59,7 @@ define(function(require) {
             e.preventDefault();
             console.log("in the delete question mode.");
             $.ajax({
-                async: false,
                 url: Backbone.Model.gateWayUrl + '/deleteQuestions',
-                type: "POST",
-                contentType: "json; charset=utf-8",
                 data: JSON.stringify({
                     id:this.model.toJSON().questionid
                 }),

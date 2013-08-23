@@ -10,10 +10,7 @@ define(['backbone', 'collections/survey/options', 'modelValidator', 'jqueryCooki
                 return;
             } else {
                 $.ajax({
-                    async: false,
                     url: Backbone.Model.gateWayUrl + "/getOptionsByCategoryId",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
                     data: JSON.stringify({
                         categoriesid: this.get('categoriesid')
                     }),
