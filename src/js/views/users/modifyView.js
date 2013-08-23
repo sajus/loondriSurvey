@@ -10,7 +10,10 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 				this.collection.fetch({
 					success: function(){
 						self.$el.html(modifyUsersTemplate({totalUsers: self.collection.length}));
-						self.createDataGrid(self.collection.toJSON());
+						self.usersData(self.collection.toJSON());
+						self.createDataGrid(self.usersData(self.collection.toJSON()));
+						//self.summaryData(self.collection.toJSON());
+						//console.log(self.collection.userData());
 					}
 				});
 			},
@@ -27,8 +30,52 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 				'loaded #MyGrid': 'gridCheckBox',
 				'click .selectrows': 'rowSelected'
 			},
+			usersData: function(Userlist){
+					var userlistObj = {};
+					var userslistObj = [];
+					var self = this;
+					var operationHTML = '<button class="btn btn-small btn-primary userEdit" type="button"><i class="icon-edit icon-white"></i> Edit</button>';
 
-			createDataGrid: function(userlist){
+					_.each(Userlist, function(userlist){
+						userlist.selectRows = "<input type='checkbox' class='selectrows' data-id="+userlist.id+">";
+						userlist.gender==='M' ? userlist.gender = "Male" : userlist.gender = "Female";
+						userlist.status = userlist.status.toLowerCase();
+						userlist.status==='active' ? userlist.status = '<span class="label label-success">' + self.capitaliseFirstLetter(userlist.status) + '</span>' : userlist.status = '<span class="label label-inverse">' + self.capitaliseFirstLetter(userlist.status) + '</span>';
+
+						userlistObj = _.object([
+							"selectrows",
+							"empid",
+							"firstname",
+							"lastname",
+							"email",
+							"gender",
+							"designation",
+							"status",
+							"accesslevel",
+							"operations"
+						],[
+							userlist.selectRows,
+							userlist.id,
+							userlist.firstname,
+							userlist.lastname,
+							userlist.email,
+							userlist.gender,
+							userlist.designation,
+							userlist.status,
+							userlist.accesslevel,
+							operationHTML
+						]);
+
+						userslistObj.push(userlistObj);
+					});
+
+					return userslistObj;
+			},
+			capitaliseFirstLetter: function(string) {
+				return string.charAt(0).toUpperCase() + string.slice(1);
+			},
+			
+			createDataGrid: function(userslistObj){
 				var DataSource = new FuelUxDataSource({
 					columns: [
 						{
@@ -82,7 +129,7 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 							sortable: false
 						}
 					],
-					data: userlist,
+					data: userslistObj,
 					delay: 250
 				});
 
@@ -94,6 +141,18 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 					},
 					stretchHeight: false
 				});
+			},
+			summaryData: function(userlistData){
+					var femaleUsers = _.where(userlistData, {gender: "f"});
+					var maleUsers = _.where(userlistData, {gender: "m"});
+					var activeUsers = _.where(userlistData,{status: "active"});
+					var inactiveUsers = _.where(userlistData,{status: "inactive"});
+					
+					$('#femaleUsers').html(femaleUsers.length);
+					$('#maleUsers').html(maleUsers.length);
+					$('#inactiveUsers').html(inactiveUsers.length);
+					$('#activeUsers').html(activeUsers.length);
+					
 			},
 
 			userEdit: function(e) {
@@ -112,6 +171,7 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 				var usersSummary = new UsersSummaryView();
 				this.$('.modal-container').html(usersSummary.render().el);
         		this.$('#summaryModal').modal();
+				this.summaryData(this.collection.toJSON());
 			},
 
 			sendEmail: function() {
@@ -135,9 +195,10 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 			},
 
 			rowSelected: function(e) {
-				console.log($(e.target).closest('input[type="checkbox"]').attr('data-id'));
+				//console.log($(e.target).closest('input[type="checkbox"]').attr('data-id'));
 				$($(e.target).closest('input[type="checkbox"]')).prop('checked', function () {
 					if (this.checked) {
+						$('.userDelete').removeProp('disabled').removeClass('disabled');
 						$(e.target).closest('tr').addClass('warning selectedRow');
 						globalSelected.push($(e.target).closest('input[type="checkbox"]').attr('data-id'));
 					} else {
@@ -151,14 +212,15 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 						globalSelected.pop($(e.target).closest('input[type="checkbox"]').attr('data-id'));
 					}
 				});
-				console.log("Users Selected::-")
-				console.log(globalSelected);
+				//console.log("Users Selected::-")
+				//console.log(globalSelected);
 			},
 
 			rowSelectedDelete: function() {
 				$('.selectrows').prop('checked', function () {
 					if (this.checked) {
-						$('.selectedRow').removeClass('warning').addClass('error');
+						$(this).parent().parent().removeClass('warning').addClass('error');
+						//$('.selectedRow').removeClass('warning').addClass('error');
 					}
 				});
 			},
@@ -166,7 +228,8 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 			rowSelectedNotDelete: function() {
 				$('.selectrows').prop('checked', function () {
 					if (this.checked) {
-						$('.selectedRow').removeClass('erro').addClass('warning');
+						$(this).parent().parent().removeClass('error').addClass('warning');
+						//$('.selectedRow').removeClass('erro').addClass('warning');
 					}
 				});
 			}

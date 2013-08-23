@@ -13,10 +13,10 @@ define(['jquery', 'underscore', 'views/BaseView', 'backbone', 'events','template
 
         events: {
             'submit .form-horizontal': 'processForm',
-            'blur select, change :input': 'processField',
+			"blur input[type='text']": 'processField',
             'click #resetForm': 'resetForm'
         },
-
+		
         resetForm: function(e){
             e.preventDefault();
             this.trigger('reset');
