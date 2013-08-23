@@ -14,10 +14,7 @@ define(function(require) {
             var self = this;
             if (this.options.categoryId !== undefined) {
                 $.ajax({
-                    async: false,
                     url: Backbone.Model.gateWayUrl + "/getCategoryById",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
                     data: JSON.stringify({
                         id: this.options.categoryId
                     }),
@@ -236,10 +233,7 @@ define(function(require) {
                 /* Create/Update category */
                 // categoriesid
                 $.ajax({
-                    async: false,
                     url: urlCategory,
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(categoryPostData),
                     success: function(data, response) {
                         console.log("in the success of createCategory");
@@ -247,10 +241,7 @@ define(function(require) {
                         if (self.options.categoryId === undefined) {
                             var postData = self.convertOptionData(self.model.toJSON(), [self.options.questionid, parseInt(data, 10)]);
                             $.ajax({
-                                async: false,
                                 url: urlOptions,
-                                type: "POST",
-                                contentType: "application/json; charset=utf-8",
                                 data: JSON.stringify(postData),
                                 success: function(data, response) {
                                     console.log("in the success of createOptions");
@@ -334,10 +325,7 @@ define(function(require) {
             var data = this.model.toJSON(),
                 self = this;
             $.ajax({
-                async: false,
                 url: Backbone.Model.gateWayUrl + '/createQuestions',
-                type: "POST",
-                contentType: "json; charset=utf-8",
                 data: JSON.stringify({
                     questionvalue: data.question,
                     questiontype: data.questionType,
@@ -356,10 +344,7 @@ define(function(require) {
             var data = this.model.toJSON(),
                 self = this;
             $.ajax({
-                async: false,
                 url: Backbone.Model.gateWayUrl + '/createCategory',
-                type: "POST",
-                contentType: "json; charset=utf-8",
                 data: JSON.stringify({
                     categoryname: data.category,
                     categorytype: data.responseType,
@@ -378,10 +363,7 @@ define(function(require) {
             var data = this.model.toJSON(),
                 self = this;
             $.ajax({
-                async: false,
                 url: Backbone.Model.gateWayUrl + '/createOptions',
-                type: "POST",
-                contentType: "json; charset=utf-8",
                 data: JSON.stringify(this.convertOptionData(data, [questionid, categoryid])),
                 success: function(data, response) {
                     if (response === 'success') {
@@ -396,10 +378,7 @@ define(function(require) {
         },
         addQuestionToView: function(questionid) {
             $.ajax({
-                async: false,
                 url: Backbone.Model.gateWayUrl + '/getQuestionById',
-                type: "POST",
-                contentType: "json; charset=utf-8",
                 data: JSON.stringify({
                     id: questionid
                 }),
@@ -413,10 +392,7 @@ define(function(require) {
             console.log("in the updateOptions");
             _.each(options, function(option) {
                 $.ajax({
-                    async: false,
                     url: Backbone.Model.gateWayUrl + '/updateOptions',
-                    type: "POST",
-                    contentType: "json; charset=utf-8",
                     data: JSON.stringify(
                         option
                     ),
@@ -429,10 +405,7 @@ define(function(require) {
         deleteOption: function(option) {
             console.log("in the delete option");
             $.ajax({
-                async: false,
                 url: Backbone.Model.gateWayUrl + '/deleteOptions',
-                type: "POST",
-                contentType: "json; charset=utf-8",
                 data: JSON.stringify({
                     id: option.id
                 }),
@@ -448,10 +421,7 @@ define(function(require) {
             finalOption.questionid = this.options.questionid;
             finalOption.options = [option];
             $.ajax({
-                async: false,
                 url: Backbone.Model.gateWayUrl + '/createOptions',
-                type: "POST",
-                contentType: "json; charset=utf-8",
                 data: JSON.stringify(finalOption),
                 success: function(data, response) {
                     console.log("option created successfully");

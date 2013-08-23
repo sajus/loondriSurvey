@@ -6,10 +6,7 @@ define(['backbone', 'collections/survey/categories', 'modelValidator'], function
         fetchCategories: function(id) {
             var self = this;
             $.ajax({
-                async: false,
                 url: Backbone.Model.gateWayUrl + "/getCategoriesByQuestionId",
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
                     questionid: id
                 }),

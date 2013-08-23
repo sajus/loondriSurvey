@@ -106,10 +106,7 @@ define(function(require) {
         deleteCategory: function(e) {
             e.preventDefault();
             $.ajax({
-                async: false,
                 url: Backbone.Model.gateWayUrl + '/deleteCategories',
-                type: "POST",
-                contentType: "json; charset=utf-8",
                 data: JSON.stringify({
                     id: parseInt(this.$('[name=category]').val(), 10)
                 }),

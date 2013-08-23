@@ -13,10 +13,7 @@ define(function(require) {
             var self = this,
                 accessLevel = $.cookie('accesslevel');
             $.ajax({
-                async: false,
                 url: Backbone.Model.gateWayUrl + "/getSurveyById",
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
                     id: this.model.get('id')
                 }),

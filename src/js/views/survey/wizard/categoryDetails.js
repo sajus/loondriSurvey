@@ -22,10 +22,7 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizar
                 this._modelBinder = new Backbone.ModelBinder();
                 if (parseInt(this.idHash[2], 10)) {
                     $.ajax({
-                        async: false,
                         url: Backbone.Model.gateWayUrl + "/getCategoryById",
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
                         data: JSON.stringify({
                             id: self.idHash[2]
                         }),
