@@ -45,6 +45,8 @@ define(function(require) {
                 this.isAdmin = false;
             }
             Events.on("addQuestion", this.addQuestion, this);
+            Events.on('filterQuestions', this.filterQuestions, this);
+            this.model.questions.on('remove', this.filterSurvey, this);
         },
         events: {
             'click .controls a': 'addNewQuestion'
@@ -81,7 +83,7 @@ define(function(require) {
                         surveyStatus.push(false);
                     });
                     console.log(surveyStatus);
-                    this.setStatusCookies(surveyStatus.toString())
+                    this.setStatusCookies(surveyStatus.toString());
 
                 }
                 questionCollection.each(function(qModel) {
@@ -93,13 +95,27 @@ define(function(require) {
             return this;
         },
         setStatusCookies: function(idHashStr) {
-            $.cookie('statusSurvey', idHashStr)
+            $.cookie('statusSurvey', idHashStr);
         },
         addQuestion: function(qModel) {
             var questionView = new this.QuestionView({
                 model: qModel
             });
             this.$('.accordion').append(questionView.render().el);
+        },
+        filterQuestions: function(data) {
+            console.log("in the filter questions");
+            this.model.questions.remove(data.qModel);
+        },
+        filterSurvey: function(data) {
+            console.log("in the filerSurvey");
+            console.log(this.model.questions.toJSON());
+            if (this.model.questions.length === 0) {
+                alert('survey completed successfully');
+            } else {
+                Events.trigger("removeQuestionView", data.toJSON());
+                // alert('Survey is still pending');
+            }
         }
     });
 

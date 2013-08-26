@@ -2,7 +2,8 @@ define(function(require) {
     var Backbone = require('backbone'),
         questionTemplate = require('template!templates/survey/userQuestion'),
         CategoryModel = require('models/survey/wizard/categoryDetails'),
-        CategoryView = require('views/survey/userCategoryView');
+        CategoryView = require('views/survey/userCategoryView'),
+        Events = require('events');
     /* Requires with no assignment */
     require('jqueryCookie');
     return Backbone.View.extend({
@@ -12,9 +13,27 @@ define(function(require) {
             this.surveyId = this.model.get('surveyid');
             this.questionId = this.model.get('questionid');
             console.log($.cookie('statusSurvey'));
+            /* Post Chaining */
+            Events.on('postResponse', this.filterCategories, this);
+            Events.on('removeQuestionView', this.removeQuestionView, this);
         },
         events: {
             'change .category': 'selectChoice'
+        },
+        removeCategory: function() {
+            var returnValue = false;
+            var select$ = this.$('[name=category]');
+            if (select$.length !== 0) {
+                /* Remove option */
+                // DOM
+                select$.find('option:selected').remove();
+                returnValue = (select$.find('option').length === 0) ? true : false;
+                // From DB
+            } else {
+                returnValue = true;
+                console.warn("no option to remove");
+            }
+            return returnValue;
         },
         render: function() {
             console.log(this.model.categories.toJSON());
@@ -45,15 +64,24 @@ define(function(require) {
             }
             return this;
         },
-        filterQuestion: function() {
-            /* Check whether this question is already answered */
-
-        },
-        filterCategories: function() {
-            /* check whether the user has already answered the category */
-            /* If all categories are answered then set the question as complete */
-            /* Set the cookie for survey ---Add question flag to true */
-
+        filterCategories: function(responsePostData) {
+            if (this.model.get('questionid') !== responsePostData.questionid) {
+                return;
+            }
+            console.log("in the filter categories");
+            console.log(responsePostData);
+            console.log(this.model.toJSON());
+            console.log(this.model.categories.toJSON());
+            //noCategory
+            if (this.removeCategory()) {
+                /* Check if no question */
+                Events.trigger('filterQuestions', {
+                    responsePostData: responsePostData,
+                    qModel: this.model
+                });
+            } else {
+                console.warn("Still many categories are left");
+            }
         },
         selectChoice: function() {
             var $Id = $('.category').find('option:selected').val();
@@ -67,6 +95,14 @@ define(function(require) {
                 questionId: this.questionId
             });
             this.$('.userCategory').html(categoryView.render().el);
+        },
+        removeQuestionView: function(data) {
+            console.log("in the remove question view");
+            if (this.model.get('questionid') !== data.questionid) {
+                return;
+            }
+            this.remove();
+            console.log("removed the view with qid: "+data.questionid);
         }
     });
 
