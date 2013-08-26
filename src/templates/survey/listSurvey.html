@@ -8,28 +8,20 @@
 		<thead>
 		<tr>
 			<th>
-				<span class="datagrid-header-title">Search Survey</span>
-
-				<div class="datagrid-header-left">
-					<div class="input-append search datagrid-search">
-						<input type="text" class="input-medium" placeholder="Search">
-						<button type="button" class="btn"><i class="icon-search"></i></button>
+					<div class="datagrid-header-left">
+						<div class="input-append search datagrid-search">
+							<input type="text" class="input-medium" placeholder="Search Survey">
+							<button type="button" class="btn"><i class="icon-search"></i></button>
+						</div>
 					</div>
-				</div>
-				<!-- <div class="datagrid-header-right">
-					<div class="select filter" data-resize="auto">
-						<button type="button" data-toggle="dropdown" class="btn dropdown-toggle">
-							<span class="dropdown-label"></span>
-							<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu">
-							<li data-value="all" data-selected="true"><a href="#">All</a></li>
-							<li data-value="lt5m"><a href="#">Population < 5M</a></li>
-							<li data-value="gte5m"><a href="#">Population >= 5M</a></li>
-						</ul>
+					<div class="rows pull-right">
+						<div class="btn-group">
+							<button class="btn btn-danger surveyDelete disabled" disabled="true"><i class="icon-trash icon-white"></i> Delete</button>
+						</div>
+						<button class="btn btn-inverse summary"><i class="icon-list-alt icon-white"></i> Summary</button>
+						<!-- <span class="datagrid-header-title">Total users: <span class="badge badge-inverse">{{totalUsers}}</span></span> -->
 					</div>
-				</div> -->
-			</th>
+				</th>
 		</tr>
 		</thead>
 		<tfoot>
@@ -77,3 +69,4 @@
 		</tfoot>
 	</table>
 </div>
+<div class="modal-container"></div>
