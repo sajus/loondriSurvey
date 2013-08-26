@@ -1,10 +1,13 @@
-define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUsers', 'views/users/editUserModalView', 'views/users/deleteUserModalView', 'views/users/summaryUserModalView', 'fueluxDataSource', 'fueluxDataGrid','bootstrapDropdown','fueluxComboBox','fueluxSelectBox','fueluxSearchBox'],
-	function($, _,Backbone, modifyUsersTemplate, UserEditView, UserDeleteView, UsersSummaryView, FuelUxDataSource){
+define(['jquery', 'underscore', 'backbone', 'models/user/getUserModel','template!templates/users/modifyUsers', 'views/users/editUserModalView', 'views/users/deleteUserModalView', 'views/users/summaryUserModalView', 'fueluxDataSource', 'fueluxDataGrid','bootstrapDropdown','fueluxComboBox','fueluxSelectBox','fueluxSearchBox'],
+	function($, _,Backbone, GetUserModel, modifyUsersTemplate, UserEditView, UserDeleteView, UsersSummaryView, FuelUxDataSource){
 		var globalSelected = [];
+		var checkCounter = 0;
 		var modifyUserPage = Backbone.View.extend({
 
 			el: '#modifyuser',
-
+			initialize: function(){
+				this.getUserModel = new GetUserModel();
+			},
 			render: function(){
 				var self = this;
 				this.collection.fetch({
@@ -12,8 +15,6 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 						self.$el.html(modifyUsersTemplate({totalUsers: self.collection.length}));
 						self.usersData(self.collection.toJSON());
 						self.createDataGrid(self.usersData(self.collection.toJSON()));
-						//self.summaryData(self.collection.toJSON());
-						//console.log(self.collection.userData());
 					}
 				});
 			},
@@ -27,7 +28,7 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 				'click .summary': 'userTblSummary',
 				'click .sendEmail': 'sendEmail',
 				'change #selectUsersAtOnce': 'gridCheckBox',
-				'loaded #MyGrid': 'gridCheckBox',
+				//'loaded #MyGrid': 'gridCheckBox',
 				'click .selectrows': 'rowSelected'
 			},
 			usersData: function(Userlist){
@@ -143,22 +144,40 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 				});
 			},
 			summaryData: function(userlistData){
-					var femaleUsers = _.where(userlistData, {gender: "f"});
-					var maleUsers = _.where(userlistData, {gender: "m"});
-					var activeUsers = _.where(userlistData,{status: "active"});
-					var inactiveUsers = _.where(userlistData,{status: "inactive"});
+					$('#femaleUsers').html(( _.where(userlistData, {gender: "f"})).length);
+					$('#maleUsers').html(( _.where(userlistData, {gender: "m"})).length);
+					$('#activeUsers').html(( _.where(userlistData,{status: "active"})).length);
+					$('#inactiveUsers').html(( _.where(userlistData,{status: "inactive"})).length);
+					$('#uiHead').html(( _.where(userlistData, {designation: "UI Head"})).length);
+					$('#srManagers').html(( _.where(userlistData, {designation: "Sr. Manager"})).length);
+					$('#assoManagers').html(( _.where(userlistData, {designation: "Associate Manager"})).length);
+					$('#managers').html(( _.where(userlistData, {designation: "Manager"})).length);
+					$('#WebDevAnalyst').html(( _.where(userlistData, {designation: "WebDev Analyst"})).length);
+					$('#designAnalyst').html((_.where(userlistData, {designation: "Designer Analyst"})).length);
+					$('#srwebDeveloper').html(( _.where(userlistData, {designation: "Sr. Web Developer"})).length);
+					$('#sruiDesigner').html((_.where(userlistData, {designation: "Sr. UI Designer"})).length);
+					$('#webDeveloper').html((_.where(userlistData, {designation: "Web Developer"})).length);
+					$('#uiDesigner').html((_.where(userlistData, {designation: "UI Designer"})).length);
+					$('#trainee').html((_.where(userlistData, {designation: "Trainee"})).length);
 					
-					$('#femaleUsers').html(femaleUsers.length);
-					$('#maleUsers').html(maleUsers.length);
-					$('#inactiveUsers').html(inactiveUsers.length);
-					$('#activeUsers').html(activeUsers.length);
-					
+					$('#totalUsers').html(userlistData.length);
 			},
 
 			userEdit: function(e) {
+				var self = this;
 				var userEdit = new UserEditView();
 				this.$('.modal-container').html(userEdit.render().el);
         		this.$('#editModal').modal({backdrop:'static'});
+				this.getUserModel.set({id: 9901});
+				this.getUserModel.save(self.getUserModel.toJSON(), {
+					success: function()  {
+						console.log('success');
+					},
+					error: function() {
+						console.log('error');
+					}
+				});
+				
 			},
 
 			userDelete: function() {
@@ -172,6 +191,8 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 				this.$('.modal-container').html(usersSummary.render().el);
         		this.$('#summaryModal').modal();
 				this.summaryData(this.collection.toJSON());
+				$('body').append($('#summaryModal').find('.summaryModal').html());
+				$('.container').siblings('.table-bordered').addClass('addPrint');
 			},
 
 			sendEmail: function() {
@@ -183,13 +204,15 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
            		e.stopPropagation();
 				$('#selectUsersAtOnce').prop('checked', function () {
 					if (this.checked) {
+						$('.userDelete').removeProp('disabled').removeClass('disabled');
 						$(this).prop("checked", true);
 						$('.selectrows').prop("checked", true);
 						$('table[id="MyGrid"] tbody tr').addClass('warning')
 					} else {
 						$(this).prop('checked', false);
 						$('.selectrows').prop('checked', false);
-						$('table[id="MyGrid"] tbody tr').removeClass('warning')
+						$('table[id="MyGrid"] tbody tr').removeClass('warning');
+						$('.userDelete').prop('disabled','true');
 					}
 				});
 			},
@@ -198,10 +221,18 @@ define(['jquery', 'underscore', 'backbone', 'template!templates/users/modifyUser
 				//console.log($(e.target).closest('input[type="checkbox"]').attr('data-id'));
 				$($(e.target).closest('input[type="checkbox"]')).prop('checked', function () {
 					if (this.checked) {
-						$('.userDelete').removeProp('disabled').removeClass('disabled');
 						$(e.target).closest('tr').addClass('warning selectedRow');
 						globalSelected.push($(e.target).closest('input[type="checkbox"]').attr('data-id'));
+						checkCounter++;
+						if(checkCounter > 0){
+							$('.userDelete').removeProp('disabled').removeClass('disabled');
+						}
+						
 					} else {
+						checkCounter--;
+						if(checkCounter == 0){
+						$('.userDelete').prop('disabled','true');
+						}
 						$('.selectrows').prop('checked', function () {
 							if($(e.target).closest('tr').hasClass('error')) {
 								$(e.target).closest('tr').removeClass('error selectedRow');

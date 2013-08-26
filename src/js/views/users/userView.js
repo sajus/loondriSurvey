@@ -44,9 +44,9 @@ define(['jquery', 'underscore', 'views/BaseView', 'backbone', 'events','template
 
             this.modelBinder.bind(this.model, this.el);
 
-            this.$('input#female').attr("checked", "true").trigger('change');
-            this.$('input#active').attr("checked", "true").trigger('change');
-            this.$('input#accessUser').attr("checked", "true").trigger('change');
+            this.$('input#female').prop("checked", "true").trigger('change');
+            this.$('input#active').prop("checked", "true").trigger('change');
+            this.$('input#accessUser').prop("checked", "true").trigger('change');
 
             Backbone.Validation.bind(this, {
                 invalid: this.showError,
