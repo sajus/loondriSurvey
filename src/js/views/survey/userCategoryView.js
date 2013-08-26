@@ -6,7 +6,6 @@ define(function(require) {
         BaseView = require('views/BaseView');
     Events = require('events');
     /* Requires with no assignment */
-    require('modelBinder');
     require('jqueryCookie');
     return BaseView.extend({
         initialize: function() {
@@ -44,12 +43,6 @@ define(function(require) {
                 other: this.other,
                 optionvalue: this.optionvalue
             }));
-            this._modelBinder.bind(this.model, this.el);
-            Backbone.Validation.bind(this, {
-                invalid: this.showError,
-                valid: this.removeError,
-                forceUpdate: false
-            });
             return this;
         },
         postData: function() {
