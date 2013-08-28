@@ -3,7 +3,8 @@ define(function(require) {
         questionDetailsTemplate = require('template!templates/survey/questionDetailedModal'),
         questionDeleteModalTemplate = require('template!templates/survey/questionDeleteModal'),
         BaseView = require('views/BaseView'),
-        Events = require('events');
+        Events = require('events'),
+        services = require('services');
     /* Requires with no assignment */
     require('modelBinder');
     return BaseView.extend({
@@ -41,39 +42,32 @@ define(function(require) {
                 var data = this.model.toJSON();
                 data.id = id;
                 delete data.questionid;
-                $.ajax({
-                    url: Backbone.Model.gateWayUrl + '/updateQuestions',
-                    data: JSON.stringify(data),
-                    success: function(data, response) {
-                        if (parseInt(data, 10)) {
-                            console.log("question updated successfully");
-                            console.log(response);
-                            $('#surveyDetailedModal').modal('hide');
-                            Events.trigger("categoriesChanged");
-                        }
+                services.updateQuestions(data).then(function(data) {
+                    if (parseInt(data, 10)) {
+                        $('#surveyDetailedModal').modal('hide');
+                        Events.trigger("categoriesChanged");
                     }
+                }, function() {
+                    console.error('failed to update question');
                 });
             }
         },
         deleteQuestion: function(e) {
             e.preventDefault();
+            var qid=this.model.toJSON().questionid;
             console.log("in the delete question mode.");
-            $.ajax({
-                url: Backbone.Model.gateWayUrl + '/deleteQuestions',
-                data: JSON.stringify({
-                    id:this.model.toJSON().questionid
-                }),
-                success: function(data, response) {
-                    if (response==='success') {
-                        console.log("question deleted successfully");
-                        console.log(response);
-                        $('#surveyDetailedModal').modal('hide');
-                        Events.trigger("questionRemoved");
-                    }
+            services.deleteQuestions({
+                id: qid
+            }).then(function(data, responseText) {
+                if (responseText === 'success') {
+                    $('#surveyDetailedModal').modal('hide');
+                    Events.trigger("questionRemoved",qid);
                 }
+            }, function() {
+                console.error('failed to delete question');
             });
         },
-        cancelModalAction:function(e){
+        cancelModalAction: function(e) {
             e.preventDefault();
             $('#surveyDetailedModal').modal('hide');
         }

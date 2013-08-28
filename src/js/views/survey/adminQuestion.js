@@ -1,10 +1,11 @@
 define(function(require) {
     var Backbone = require('backbone'),
         questionTemplate = require('template!templates/survey/adminQuestion'),
-        SurveyDetailedModel=require('models/survey/surveyDetailed'),
+        SurveyDetailedModel = require('models/survey/surveyDetailed'),
         QuestionDetailsModalView = require('views/survey/questionDetailsModal'),
         SurveyDetailedModalView = require('views/survey/surveyDetailedModal'),
-        Events = require('events');
+        Events = require('events'),
+        services = require('services');
     /* Requires with no assignment */
     return Backbone.View.extend({
         className: 'accordion-group',
@@ -14,7 +15,10 @@ define(function(require) {
             Events.on("categoriesChanged", this.refreshView, this);
             Events.on("questionRemoved", this.removeView, this);
         },
-        removeView:function(){
+        removeView: function(qid) {
+            if (this.model.get('questionid') !== qid) {
+                return;
+            }
             this.remove();
         },
         events: {
@@ -68,12 +72,12 @@ define(function(require) {
         updateQuestion: function(e) {
             e.preventDefault();
             /* Modal Loading */
-            QuestionDetailsModel=require('models/survey/wizard/questionDetails');
+            QuestionDetailsModel = require('models/survey/wizard/questionDetails');
             var questionDetailsModel = new QuestionDetailsModel();
             // Load model contents and bind it to modal view.
             var questionDetailsModalView = new QuestionDetailsModalView({
                 model: this.model,
-                isDeleteMode:false
+                isDeleteMode: false
             });
             $('.modalContainer').html(questionDetailsModalView.render().el);
             $('#surveyDetailedModal').modal();
@@ -84,7 +88,7 @@ define(function(require) {
             // Load model contents and bind it to modal view.
             var questionDetailsModalView = new QuestionDetailsModalView({
                 model: this.model,
-                isDeleteMode:true
+                isDeleteMode: true
             });
             $('.modalContainer').html(questionDetailsModalView.render().el);
             $('#surveyDetailedModal').modal();
@@ -105,20 +109,17 @@ define(function(require) {
         },
         deleteCategory: function(e) {
             e.preventDefault();
-            $.ajax({
-                url: Backbone.Model.gateWayUrl + '/deleteCategories',
-                data: JSON.stringify({
-                    id: parseInt(this.$('[name=category]').val(), 10)
-                }),
-                success: function(data, response) {
-                    console.log("category deleted successfully");
-                    if (response === "success") {
-                        Events.trigger("categoriesChanged");
-                        Events.trigger('alert:success', [{
-                            message: "Category deleted successfully"
-                        }]);
-                    }
+            services.deleteCategory({
+                id: parseInt(this.$('[name=category]').val(), 10)
+            }).then(function(data, statusText, jqXHR) {
+                if (statusText === "success") {
+                    Events.trigger("categoriesChanged");
+                    Events.trigger('alert:success', [{
+                        message: "Category deleted successfully"
+                    }]);
                 }
+            }, function(jqXHR, statusText, error) {
+                console.error('failed to delete category');
             });
         }
     });

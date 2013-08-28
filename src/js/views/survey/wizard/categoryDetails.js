@@ -1,5 +1,5 @@
-define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizard/categoryDetails', 'modelBinder', 'bootstrapAlert', 'jqueryCookie'],
-    function(Backbone, Events, BaseView, categoryDetailsTemplate) {
+define(['backbone', 'services', 'events', 'views/BaseView', 'template!templates/survey/wizard/categoryDetails', 'modelBinder', 'bootstrapAlert', 'jqueryCookie'],
+    function(Backbone, services, Events, BaseView, categoryDetailsTemplate) {
 
         return BaseView.extend({
             el: '#categoryDetails',
@@ -21,16 +21,13 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizar
                 var self = this;
                 this._modelBinder = new Backbone.ModelBinder();
                 if (parseInt(this.idHash[2], 10)) {
-                    $.ajax({
-                        url: Backbone.Model.gateWayUrl + "/getCategoryById",
-                        data: JSON.stringify({
-                            id: self.idHash[2]
-                        }),
-                        success: function(data, response) {
-                            self.model.set(data);
-                            console.log(data);
-                        }
-                    })
+                    services.getCategoryById({
+                        id: self.idHash[2]
+                    }).then(function(data) {
+                        self.model.set(data);
+                    }, function() {
+                        console.error('failed to get CategoryById');
+                    });
                 }
             },
             events: {

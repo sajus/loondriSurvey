@@ -4,7 +4,8 @@ define(function(require) {
         surveyDetailedTemplate = require('template!templates/survey/surveyDetailed'),
         newOptionTemplate = require('template!templates/survey/newOption'),
         SurveyDetailedModel = require('models/survey/surveyDetailed'),
-        SurveyDetailedModalView = require('views/survey/surveyDetailedModal');
+        SurveyDetailedModalView = require('views/survey/surveyDetailedModal'),
+        services = require('services');
     /* Requires with no assignment */
     require('jqueryCookie');
     return Backbone.View.extend({
@@ -12,29 +13,24 @@ define(function(require) {
         initialize: function() {
             var self = this,
                 accessLevel = $.cookie('accesslevel');
-            $.ajax({
-                url: Backbone.Model.gateWayUrl + "/getSurveyById",
-                data: JSON.stringify({
-                    id: this.model.get('id')
-                }),
-                success: function(data, response) {
-                    self.model.set(data);
-                    /* Fetch the questions now. */
-                    self.model.fetchQuestions();
-                    console.log(data);
-                },
-                error: function(data, error, options) {
-                    Events.trigger("view:navigate", {
-                        path: "listSurvey",
-                        options: {
-                            trigger: true,
-                        }
-                    });
-                    Events.trigger('alert:error', [{
-                        message: error + " while fetching the survey  with id : " + self.model.get('id')
-                    }]);
-                }
-            })
+            services.getSurveyById({
+                id: this.model.get('id')
+            }).then(function(data) {
+                self.model.set(data);
+                /* Fetch the questions now. */
+                self.model.fetchQuestions();
+            }, function(jqXHR,error) {
+                console.error('failed to get survey by id');
+                Events.trigger("view:navigate", {
+                    path: "listSurvey",
+                    options: {
+                        trigger: true,
+                    }
+                });
+                Events.trigger('alert:error', [{
+                    message: error + " while fetching the survey  with id : " + self.model.get('id')
+                }]);
+            });
             if (accessLevel === "admin" || accessLevel === "super admin") {
                 /* Admin view loading */
                 this.QuestionView = require('views/survey/adminQuestion');
@@ -98,6 +94,8 @@ define(function(require) {
             $.cookie('statusSurvey', idHashStr);
         },
         addQuestion: function(qModel) {
+            console.log("in the add question");
+            console.log(qModel.toJSON());
             var questionView = new this.QuestionView({
                 model: qModel
             });

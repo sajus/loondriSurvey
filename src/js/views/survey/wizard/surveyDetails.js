@@ -1,23 +1,18 @@
-define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizard/surveyDetails', 'modelBinder', 'datePicker', 'bootstrapAlert'],
-    function(Backbone, Events, BaseView, surveyDetailsTemplate) {
+define(['backbone', 'services', 'events', 'views/BaseView', 'template!templates/survey/wizard/surveyDetails', 'modelBinder', 'datePicker', 'bootstrapAlert'],
+    function(Backbone, services, Events, BaseView, surveyDetailsTemplate) {
         return BaseView.extend({
             el: '#surveyDetails',
             initialize: function() {
                 var self = this;
                 this._modelBinder = new Backbone.ModelBinder();
                 if (parseInt(this.getIdHashCookie()[0], 10)) {
-                    $.ajax({
-                        url: Backbone.Model.gateWayUrl + "/getSurveyById",
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify({
-                            id: this.getIdHashCookie()[0]
-                        }),
-                        success: function(data, response) {
-                            self.model.set(data);
-                            console.log(data);
-                        }
-                    })
+                    services.getSurveyById({
+                        id: this.getIdHashCookie()[0]
+                    }).then(function(data) {
+                        self.model.set(data);
+                    }, function() {
+                        console.error('failed to get SurveyById');
+                    });
                     // this.model.save({url:"/getSurveyById"},{
                     //     error:function(){
                     //         console.log("in the error of fetch");
@@ -29,9 +24,9 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizar
             events: {
                 'submit .form-horizontal': 'processForm',
                 'change :input,blur :input': 'processField',
-                'keypress #startdate,#enddate':'preventAction'
+                'keypress #startdate,#enddate': 'preventAction'
             },
-            preventAction:function(e){
+            preventAction: function(e) {
                 e.preventDefault();
             },
             render: function() {
@@ -60,12 +55,12 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizar
                 var self = this,
                     url = Backbone.Model.gateWayUrl;
                 url += (this.model.get('id') === undefined) ? "/createSurvey" : "/updateSurvey";
-                console.log("url: "+url);
+                console.log("url: " + url);
                 console.log(this.formatDate(this.model.toJSON()));
                 this.model.save(this.formatDate(this.model.toJSON()), {
                     async: false,
                     url: url,
-                    success: function(model, response,options) {
+                    success: function(model, response, options) {
                         console.log("response is : " + response);
                         Events.trigger("change:wizardState", {
                             id: parseInt(response, 10),
@@ -74,10 +69,10 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizar
                     }
                 });
             },
-            formatDate:function(modelData){
-                if(modelData.startdate.indexOf("00:00:00")===-1){
-                    modelData.startdate+=" 00:00:00";
-                    modelData.enddate+=" 00:00:00";
+            formatDate: function(modelData) {
+                if (modelData.startdate.indexOf("00:00:00") === -1) {
+                    modelData.startdate += " 00:00:00";
+                    modelData.enddate += " 00:00:00";
                 }
                 return modelData;
             }

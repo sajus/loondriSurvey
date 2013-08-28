@@ -4,7 +4,8 @@ define(function(require) {
         newOptionTemplate = require('template!templates/survey/newOption'),
         BaseView = require('views/BaseView'),
         Events = require('events'),
-        CategoryModel = require('models/survey/wizard/categoryDetails');
+        CategoryModel = require('models/survey/wizard/categoryDetails'),
+        services = require('services');
     /* Requires with no assignment */
     require('modelBinder');
     return BaseView.extend({
@@ -12,33 +13,28 @@ define(function(require) {
         id: "surveyDetailedModal",
         initialize: function() {
             var self = this;
+            console.log(services);
             if (this.options.categoryId !== undefined) {
-                $.ajax({
-                    url: Backbone.Model.gateWayUrl + "/getCategoryById",
-                    data: JSON.stringify({
-                        id: this.options.categoryId
-                    }),
-                    success: function(data, response) {
-                        self.model.set({
-                            category: data.categoryname,
-                            responseType: data.categorytype
-                        });
-                        self.model.set('categoryInput', data.categoryname);
-                        /* Fetch options for the category */
-                        self.categoryModel = new CategoryModel();
-                        self.categoryModel.set({
-                            categoriesid: self.options.categoryId,
-                            categorytype: data.categorytype
-                        });
-                        console.log(self.categoryModel);
-                        self.categoryModel.fetchOptions();
-                        console.log(self.categoryModel.optionsCollection.toJSON());
-                        self.model.set(self.reverseOptionData(self.categoryModel.optionsCollection.toJSON()));
-                    }
+                /* Service call getCategoryById */
+                services.getCategoryById({
+                    id: this.options.categoryId
+                }).then(function(data) {
+                    self.model.set({
+                        category: data.categoryname,
+                        responseType: data.categorytype
+                    });
+                    self.model.set('categoryInput', data.categoryname);
+                    /* Fetch options for the category */
+                    self.categoryModel = new CategoryModel();
+                    self.categoryModel.set({
+                        categoriesid: self.options.categoryId,
+                        categorytype: data.categorytype
+                    });
+                    self.categoryModel.fetchOptions();
+                    self.model.set(self.reverseOptionData(self.categoryModel.optionsCollection.toJSON()));
+                }, function() {
+                    console.error('failed to get category by id');
                 });
-                // fetch the options
-                // attach it to the model
-                // bind the model
             }
             this._modelBinder = new Backbone.ModelBinder();
         },
@@ -101,11 +97,11 @@ define(function(require) {
         },
         render: function(options) {
             this.isCategory = (options.category) ? true : false,
-            this.isNA = this.model.get('category')==='NA';
+            this.isNA = this.model.get('category') === 'NA';
             this.$el.html(surveyDetailedModalTemplate({
                 isCategory: this.isCategory,
                 category: this.model.get('category'),
-                isNA:this.isNA
+                isNA: this.isNA
             }));
             if (this.options.categoryId !== undefined) {
                 for (var i = 0, l = this.categoryModel.optionsCollection.toJSON().length - 2; i < l; i++) {
@@ -324,110 +320,102 @@ define(function(require) {
         postNewQuestion: function() {
             var data = this.model.toJSON(),
                 self = this;
-            $.ajax({
-                url: Backbone.Model.gateWayUrl + '/createQuestions',
-                data: JSON.stringify({
-                    questionvalue: data.question,
-                    questiontype: data.questionType,
-                    surveyid: this.options.surveyId
-                }),
-                success: function(data, response) {
-                    if (parseInt(data, 10)) {
-                        console.log("question added successfully");
-                        console.log(response);
-                        self.postNewCategory(parseInt(data, 10));
-                    }
+            /* Service call :  createQuestions */
+            services.createQuestions({
+                questionvalue: data.question,
+                questiontype: data.questionType,
+                surveyid: this.options.surveyId
+            }).then(function(data) {
+                if (parseInt(data, 10)) {
+                    self.postNewCategory(parseInt(data, 10));
                 }
+            }, function() {
+                console.error('failed to create question');
             });
         },
         postNewCategory: function(questionid) {
             var data = this.model.toJSON(),
                 self = this;
-            $.ajax({
-                url: Backbone.Model.gateWayUrl + '/createCategory',
-                data: JSON.stringify({
-                    categoryname: data.category,
-                    categorytype: data.responseType,
-                    questionid: questionid
-                }),
-                success: function(data, response) {
-                    if (parseInt(data, 10)) {
-                        console.log("category added successfully");
-                        console.log(response);
-                        self.postNewOptions(questionid, parseInt(data, 10));
-                    }
+            /* Service call: createCategory */
+            services.createCategory({
+                categoryname: data.category,
+                categorytype: data.responseType,
+                questionid: questionid
+            }).then(function(data) {
+                if (parseInt(data, 10)) {
+                    self.postNewOptions(questionid, parseInt(data, 10));
+                } else {
+                    console.error('error');
                 }
+            }, function() {
+                console.error('failed to create category');
             });
         },
         postNewOptions: function(questionid, categoryid) {
             var data = this.model.toJSON(),
                 self = this;
-            $.ajax({
-                url: Backbone.Model.gateWayUrl + '/createOptions',
-                data: JSON.stringify(this.convertOptionData(data, [questionid, categoryid])),
-                success: function(data, response) {
-                    if (response === 'success') {
-                        console.log("options added successfully");
-                        console.log(response);
-                        console.log("All done");
+            /* Service call: createOption */
+            services.createOptions(this.convertOptionData(data, [questionid, categoryid])).then(
+                function(data, responseText) {
+                    if (responseText === 'success') {
                         $('#surveyDetailedModal').modal('hide');
                         self.addQuestionToView(questionid);
                     }
-                }
-            });
+                }, function() {
+                    console.error('failed to create category');
+                });
         },
         addQuestionToView: function(questionid) {
-            $.ajax({
-                url: Backbone.Model.gateWayUrl + '/getQuestionById',
-                data: JSON.stringify({
-                    id: questionid
-                }),
-                success: function(data, response) {
-                    QuestionModel=require('models/survey/wizard/questionDetails');
-                    Events.trigger("addQuestion",new QuestionModel(data));
-                }
+            /* Service call :  createQuestions */
+            services.getQuestionById({
+                id: questionid
+            }).then(function(data) {
+                QuestionModel = require('models/survey/wizard/questionDetails');
+                Events.trigger("addQuestion", new QuestionModel(data));
+            }, function() {
+                console.error('failed to get questionById');
             });
         },
         updateOptions: function(options) {
-            console.log("in the updateOptions");
+            /* Service call :  updateOptions */
             _.each(options, function(option) {
-                $.ajax({
-                    url: Backbone.Model.gateWayUrl + '/updateOptions',
-                    data: JSON.stringify(
-                        option
-                    ),
-                    success: function(data, response) {
-                        console.log("option updated successfully");
-                    }
-                });
+                services.updateOptions(option).then(
+                    function(data, responseText) {
+                        if (responseText === 'success') {
+                            console.log("option updated successfully");
+                        }
+                    }, function() {
+                        console.error('failed to update option');
+                    });
             });
         },
         deleteOption: function(option) {
-            console.log("in the delete option");
-            $.ajax({
-                url: Backbone.Model.gateWayUrl + '/deleteOptions',
-                data: JSON.stringify({
-                    id: option.id
-                }),
-                success: function(data, response) {
-                    console.log("option deleted successfully");
-                    console.log(response);
+            services.deleteOptions({
+                id: option.id
+            }).then(
+                function(data, responseText) {
+                    if (responseText === 'success') {
+                        console.log("option deleted successfully");
+                    }
+                }, function() {
+                    console.error('failed to delete option');
                 }
-            });
+            );
         },
         createOption: function(option) {
             var finalOption = {};
             finalOption.categoriesid = this.options.categoryId;
             finalOption.questionid = this.options.questionid;
             finalOption.options = [option];
-            $.ajax({
-                url: Backbone.Model.gateWayUrl + '/createOptions',
-                data: JSON.stringify(finalOption),
-                success: function(data, response) {
-                    console.log("option created successfully");
-                    console.log(response);
+            services.createOptions(finalOption).then(
+                function(data, responseText) {
+                    if (parseInt(data, 10)) {
+                        console.log("option created successfully");
+                    }
+                }, function() {
+                    console.error('failed to created option');
                 }
-            });
+            );
         },
         convertOptionData: function(data, idHash) {
             var correctOptions = [],

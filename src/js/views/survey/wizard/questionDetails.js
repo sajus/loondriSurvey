@@ -1,13 +1,13 @@
-define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizard/questionDetails', 'modelBinder', 'bootstrapAlert'],
-    function(Backbone, Events, BaseView, questionDetailsTemplate) {
+define(['backbone', 'services', 'events', 'views/BaseView', 'template!templates/survey/wizard/questionDetails', 'modelBinder', 'bootstrapAlert'],
+    function(Backbone, services, Events, BaseView, questionDetailsTemplate) {
 
         return BaseView.extend({
             el: '#questionDetails',
             initialize: function() {
-                var self=this;
-                this.idHash=this.getIdHashCookie();
+                var self = this;
+                this.idHash = this.getIdHashCookie();
                 /* Redirect if invalid */
-                if(this.idHash[0]===null){
+                if (this.idHash[0] === null) {
                     Events.trigger('alert:error', [{
                         message: "Invalid operation. Please create survey before adding question."
                     }]);
@@ -20,18 +20,13 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizar
                 }
                 this._modelBinder = new Backbone.ModelBinder();
                 if (parseInt(this.idHash[1], 10)) {
-                    $.ajax({
-                        url: Backbone.Model.gateWayUrl + "/getQuestionById",
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify({
-                            id: self.idHash[1]
-                        }),
-                        success: function(data, response) {
-                            self.model.set(data);
-                            console.log(data);
-                        }
-                    })
+                    services.getQuestionById({
+                        id: self.idHash[1]
+                    }).then(function(data) {
+                        self.model.set(data);
+                    }, function() {
+                        console.error('failed to get questionById');
+                    });
                 }
             },
             events: {

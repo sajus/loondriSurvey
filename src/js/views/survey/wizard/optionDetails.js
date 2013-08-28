@@ -1,5 +1,5 @@
-define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizard/optionDetails', 'template!templates/survey/newOption', 'modelBinder', 'bootstrapAlert'],
-    function(Backbone, Events, BaseView, optionDetailsTemplate, newOptionTemplate) {
+define(['backbone', 'services', 'events', 'views/BaseView', 'template!templates/survey/wizard/optionDetails', 'template!templates/survey/newOption', 'modelBinder', 'bootstrapAlert'],
+    function(Backbone, services, Events, BaseView, optionDetailsTemplate, newOptionTemplate) {
 
         return BaseView.extend({
             el: '#optionDetails',
@@ -69,30 +69,20 @@ define(['backbone', 'events', 'views/BaseView', 'template!templates/survey/wizar
                 console.log("In the post data function");
                 console.log(this.model.toJSON());
                 var self = this,
-                    url = Backbone.Model.gateWayUrl;
-                url += (this.model.get('id') === undefined) ? "/createOptions" : "/updateOptions";
-                $.ajax({
-                    url: url,
-                    data: JSON.stringify(
-                        this.convertOptionData(self.model.toJSON())
-                    ),
-                    success: function(data, response) {
-                        console.log("response is : " + response);
-                        if (data.toLowerCase() === 'success') {
-                            Events.trigger("change:wizardState", {
-                                id: "NA",
-                                message: "Option details & wizard completed successfully !!"
-                            });
-                        } else {
-                            Events.trigger('alert:error', [{
-                                message: "Some error occured while saving options"
-                            }]);
-                        }
-                    },
-                    error: function(model, xhr, options) {
-                        console.log("in the error");
-                        console.log(model);
+                    sFunction += (this.model.get('id') === undefined) ? "createOptions" : "updateOptions";
+                services[sFunction](this.convertOptionData(self.model.toJSON())).then(function(data) {
+                    if (data.toLowerCase() === 'success') {
+                        Events.trigger("change:wizardState", {
+                            id: "NA",
+                            message: "Option details & wizard completed successfully !!"
+                        });
+                    } else {
+                        Events.trigger('alert:error', [{
+                            message: "Some error occured while saving options"
+                        }]);
                     }
+                }, function() {
+                    console.error('failed to create/update options');
                 });
             },
             convertOptionData: function(data) {
